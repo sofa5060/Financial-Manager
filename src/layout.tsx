@@ -14,7 +14,8 @@ const PageLayout = () => {
   // }
 
   return (
-    <div lang={i18n.language} dir={i18n.dir(i18n.language)}>
+    // <div lang={i18n.language} dir={i18n.dir(i18n.language)}>
+    <div>
       <div className="hidden md:block border-r rtl:border-r-0 rtl:border-l fixed z-20 shadow-lg -mt-16">
         <SideBar />
       </div>
