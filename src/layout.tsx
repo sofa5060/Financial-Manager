@@ -7,7 +7,7 @@ import SideBar from "./components/common/SideBar/SideBar";
 
 const PageLayout = () => {
   // const { token } = useAuth();
-  const { i18n } = useTranslation();
+  // const { i18n } = useTranslation();
   // if (!token) {
   //   // If not authenticated, redirect to the login page
   //   return <Navigate to="/login" />;
