@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 // import Appbar from "./components/common/AppBar/appbar";
 // import { useAuth } from "./providers/auth-provider";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import SideBar from "./components/common/SideBar/SideBar";
 // import ChatBubble from "./components/common/chat-bubble";
 
