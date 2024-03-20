@@ -6,6 +6,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import PageLayout from "./layout";
 import AccountsCharts from "./pages/AccountsCharts";
 import CostCentersCharts from "./pages/CostCentersCharts";
+import ParkAccountingEntries from "./pages/ParkAccountingEntries";
+import Redirect from "./lib/Redirect";
+import PostAccountingEntries from "./pages/PostAccountingEntries";
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,7 +27,18 @@ function App() {
             <Route path="/" element={<PageLayout />}>
               <Route path="/" element={<AccountsCharts />} />
               <Route path="/cost-centers" element={<CostCentersCharts />} />
-              <Route path="/about" element={<h1>about</h1>} />
+              <Route
+                path="/accounting-entries"
+                element={<Redirect to="/accounting-entries/park" />}
+              />
+              <Route
+                path="/accounting-entries/park"
+                element={<ParkAccountingEntries />}
+              />
+              <Route
+                path="/accounting-entries/post"
+                element={<PostAccountingEntries />}
+              />
             </Route>
           </Routes>
         </BrowserRouter>
