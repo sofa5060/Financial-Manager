@@ -1,10 +1,18 @@
-import { Eye, Pen, Plus, Trash2 } from "lucide-react";
+import {
+  ArrowDownFromLine,
+  ArrowRightFromLine,
+  Eye,
+  Pen,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { Account } from "../schema";
 import { Button } from "@/components/ui/button";
 import HierarchicalAccounts from "./HierarchicalAccounts";
 import { cn } from "@/lib/utils";
 import AccountForm from "./AccountForm";
 import DeleteModal from "./DeleteModal";
+import { useState } from "react";
 
 type HierarchicalAccountProps = {
   account: Account;
@@ -20,6 +28,8 @@ const HierarchicalAccount = ({
   lastElement = false,
   parentAccount,
 }: HierarchicalAccountProps) => {
+  const [hideChildren, setHideChildren] = useState(level !== 1);
+  
   return (
     <div className="flex items-stretch">
       <div
@@ -52,9 +62,11 @@ const HierarchicalAccount = ({
                     <h5 className="text-xs bg-primary text-white px-2">
                       {account.code}
                     </h5>
-                    <h4 className="text-sm">{account.properties=== "main"
+                    <h4 className="text-sm">
+                      {account.properties === "main"
                         ? "Main Account"
-                        : "Sub Account"}</h4>
+                        : "Sub Account"}
+                    </h4>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -77,6 +89,19 @@ const HierarchicalAccount = ({
                   <DeleteModal accountId="1">
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
+                  <div className="w-5 text-primary cursor-pointer ml-4">
+                    {hideChildren ? (
+                      <ArrowRightFromLine
+                        className="w-full"
+                        onClick={() => setHideChildren(false)}
+                      />
+                    ) : (
+                      <ArrowDownFromLine
+                        className="w-full"
+                        onClick={() => setHideChildren(true)}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -89,7 +114,7 @@ const HierarchicalAccount = ({
           </div>
         </div>
         {account.children.length > 0 && (
-          <div className="ml-12">
+          <div className={cn("ml-12", { hidden: hideChildren })}>
             <HierarchicalAccounts
               accounts={account.children}
               level={level + 1}

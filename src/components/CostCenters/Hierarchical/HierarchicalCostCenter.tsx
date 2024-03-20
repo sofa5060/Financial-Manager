@@ -1,10 +1,18 @@
-import { Eye, Pen, Plus, Trash2 } from "lucide-react";
+import {
+  ArrowDownFromLine,
+  ArrowRightFromLine,
+  Eye,
+  Pen,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { CostCenter } from "../schema";
 import { Button } from "@/components/ui/button";
 import HierarchicalCostCenters from "./HierarchicalCostCenters";
 import { cn } from "@/lib/utils";
 import DeleteModal from "./DeleteModal";
 import CostCenterForm from "./CostCenterForm";
+import { useState } from "react";
 
 type HierarchicalCostCenterProps = {
   costCenter: CostCenter;
@@ -20,6 +28,8 @@ const HierarchicalCostCenter = ({
   lastElement = false,
   parentCostCenter,
 }: HierarchicalCostCenterProps) => {
+  const [hideChildren, setHideChildren] = useState(level !== 1);
+
   return (
     <div className="flex items-stretch">
       <div
@@ -79,6 +89,19 @@ const HierarchicalCostCenter = ({
                   <DeleteModal costCenterId="1">
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
+                  <div className="w-5 text-primary cursor-pointer ml-4">
+                    {hideChildren ? (
+                      <ArrowRightFromLine
+                        className="w-full"
+                        onClick={() => setHideChildren(false)}
+                      />
+                    ) : (
+                      <ArrowDownFromLine
+                        className="w-full"
+                        onClick={() => setHideChildren(true)}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,7 +114,7 @@ const HierarchicalCostCenter = ({
           </div>
         </div>
         {costCenter.children.length > 0 && (
-          <div className="ml-12">
+          <div className={cn("ml-12", { hidden: hideChildren })}>
             <HierarchicalCostCenters
               costCenters={costCenter.children}
               level={level + 1}
