@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import PageLayout from "./layout";
 import AccountsCharts from "./pages/AccountsCharts";
+import CostCentersCharts from "./pages/CostCentersCharts";
 
 function App() {
   const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<PageLayout />}>
               <Route path="/" element={<AccountsCharts />} />
+              <Route path="/cost-centers" element={<CostCentersCharts />} />
               <Route path="/about" element={<h1>about</h1>} />
             </Route>
           </Routes>

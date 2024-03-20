@@ -21,7 +21,7 @@ const PageLayout = () => {
       </div>
       <div className="md:ms-16">
         <div className="fixed w-full z-10 top-0">{/* <Appbar /> */}</div>
-        <div className="mt-16 w-full pl-12">
+        <div className="mt-16 w-full px-12">
           <Outlet />
         </div>
       </div>

@@ -70,6 +70,10 @@
   @apply py-2 px-2.5 rounded-md border-2 border-primary text-primary bg-white hover:bg-primary hover:text-white ease-in-out transition duration-300;
 }
 
+.error-text {
+  @apply text-xs text-destructive font-semibold;
+}
+
 @layer base {
   * {
     @apply border-border;

@@ -1,40 +1,30 @@
-import AccountForm from "@/components/Accounts/Hierarchical/AccountForm";
-import Filter from "@/components/Accounts/Hierarchical/Filter";
-import HierarchicalAccounts from "@/components/Accounts/Hierarchical/HierarchicalAccounts";
-import { Account } from "@/components/Accounts/schema";
+import CostCenterForm from "@/components/CostCenters/Hierarchical/CostCenterForm";
+import Filter from "@/components/CostCenters/Hierarchical/Filter";
+import HierarchicalCostCenters from "@/components/CostCenters/Hierarchical/HierarchicalCostCenters";
+import { CostCenter } from "@/components/CostCenters/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 
-const AccountsCharts = () => {
-  const ACCOUNTS: Account[] = [
+const CostCentersCharts = () => {
+  const COST_CENTERS: CostCenter[] = [
     {
       id: "1",
       code: "001",
-      name_en: "Account 1",
+      name_en: "CostCenter 1",
       name_ar: "حساب 1",
       properties: "main",
-      type: "debit",
-      reporting_type: "balance_sheet",
-      cost_center: true,
       parentId: undefined,
-      categories: [1, 2, 3],
-      currencies: [0],
       children: [
         {
           id: "2",
           code: "001.1",
           children: [],
-          name_en: "Account 1.1",
+          name_en: "CostCenter 1.1",
           name_ar: "حساب 1.1",
           properties: "sub",
-          type: "debit",
-          reporting_type: "balance_sheet",
-          cost_center: true,
           parentId: "1",
-          categories: [1, 2, 3],
-          currencies: [0, 1],
         },
       ],
     },
@@ -43,9 +33,7 @@ const AccountsCharts = () => {
   return (
     <div className="pb-12">
       <div className="flex justify-between">
-        <h1 className="text-primary text-3xl font-semibold">
-          Chart Of Accounts
-        </h1>
+        <h1 className="text-primary text-3xl font-semibold">Cost Centers</h1>
         <Button className="btn-outline">Download Excel File</Button>
       </div>
       <div className="flex mb-4 mt-8 justify-between gap-16">
@@ -58,6 +46,7 @@ const AccountsCharts = () => {
               { label: "Option 2", value: "2" },
               { label: "Option 3", value: "3" },
             ]}
+            defaultSelected={["1"]}
           />
           <Filter
             title="Filter 2"
@@ -66,7 +55,6 @@ const AccountsCharts = () => {
               { label: "Option 2", value: "2" },
               { label: "Option 3", value: "3" },
             ]}
-            defaultSelected={["1"]}
           />
           <Filter
             title="Filter 3"
@@ -75,21 +63,20 @@ const AccountsCharts = () => {
               { label: "Option 2", value: "2" },
               { label: "Option 3", value: "3" },
             ]}
-            defaultSelected={["1", "2"]}
           />
         </div>
       </div>
       <Separator />
-      <HierarchicalAccounts accounts={ACCOUNTS} />
+      <HierarchicalCostCenters costCenters={COST_CENTERS} />
       <div className="fixed bottom-16 right-32">
-        <AccountForm level={1}>
+        <CostCenterForm level={1}>
           <Button className="btn btn-primary">
             <Plus className="w-6 h-6 mr-2" />
-            Create New Account in Level 1
+            Create Cost Center in Level 1
           </Button>
-        </AccountForm>
+        </CostCenterForm>
       </div>
     </div>
   );
 };
-export default AccountsCharts;
+export default CostCentersCharts;

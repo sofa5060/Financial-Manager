@@ -1,25 +1,25 @@
 import { Eye, Pen, Plus, Trash2 } from "lucide-react";
-import { Account } from "../schema";
+import { CostCenter } from "../schema";
 import { Button } from "@/components/ui/button";
-import HierarchicalAccounts from "./HierarchicalAccounts";
+import HierarchicalCostCenters from "./HierarchicalCostCenters";
 import { cn } from "@/lib/utils";
-import AccountForm from "./AccountForm";
 import DeleteModal from "./DeleteModal";
+import CostCenterForm from "./CostCenterForm";
 
-type HierarchicalAccountProps = {
-  account: Account;
+type HierarchicalCostCenterProps = {
+  costCenter: CostCenter;
   level?: number;
   lastElement?: boolean;
   addChild: () => void;
-  parentAccount?: Account;
+  parentCostCenter?: CostCenter;
 };
 
-const HierarchicalAccount = ({
-  account,
+const HierarchicalCostCenter = ({
+  costCenter,
   level = 1,
   lastElement = false,
-  parentAccount,
-}: HierarchicalAccountProps) => {
+  parentCostCenter,
+}: HierarchicalCostCenterProps) => {
   return (
     <div className="flex items-stretch">
       <div
@@ -47,53 +47,55 @@ const HierarchicalAccount = ({
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
               <div className="border-l-4 border-primary pl-2 flex items-center gap-12">
                 <div className="flex flex-col gap-2">
-                  <h4 className="text-sm">{account.name_en}</h4>
+                  <h4 className="text-sm">{costCenter.name_en}</h4>
                   <div className="flex items-center gap-2">
                     <h5 className="text-xs bg-primary text-white px-2">
-                      {account.code}
+                      {costCenter.code}
                     </h5>
-                    <h4 className="text-sm">{account.properties=== "main"
+                    <h4 className="text-sm">
+                      {costCenter.properties === "main"
                         ? "Main Account"
-                        : "Sub Account"}</h4>
+                        : "Sub Account"}
+                    </h4>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <AccountForm
+                  <CostCenterForm
                     level={level + 1}
-                    parentAccount={parentAccount}
+                    parentCostCenter={parentCostCenter}
                     type="view"
-                    account={account}
+                    costCenter={costCenter}
                   >
                     <Eye className="w-4 text-primary cursor-pointer" />
-                  </AccountForm>
-                  <AccountForm
+                  </CostCenterForm>
+                  <CostCenterForm
                     level={level + 1}
-                    parentAccount={parentAccount}
+                    parentCostCenter={parentCostCenter}
                     type="edit"
-                    account={account}
+                    costCenter={costCenter}
                   >
                     <Pen className="w-4 text-[#A16207] cursor-pointer" />
-                  </AccountForm>
-                  <DeleteModal accountId="1">
+                  </CostCenterForm>
+                  <DeleteModal costCenterId="1">
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
                 </div>
               </div>
             </div>
-            <AccountForm level={level + 1} parentAccount={account}>
+            <CostCenterForm level={level + 1} parentCostCenter={costCenter}>
               <Button className="btn-outline">
                 <Plus className="w-4 mr-1" />
-                Add New Sub Account
+                Add New Sub CostCenter
               </Button>
-            </AccountForm>
+            </CostCenterForm>
           </div>
         </div>
-        {account.children.length > 0 && (
+        {costCenter.children.length > 0 && (
           <div className="ml-12">
-            <HierarchicalAccounts
-              accounts={account.children}
+            <HierarchicalCostCenters
+              costCenters={costCenter.children}
               level={level + 1}
-              parentAccount={account}
+              parentCostCenter={costCenter}
             />
           </div>
         )}
@@ -101,4 +103,4 @@ const HierarchicalAccount = ({
     </div>
   );
 };
-export default HierarchicalAccount;
+export default HierarchicalCostCenter;
