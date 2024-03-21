@@ -83,7 +83,7 @@ const useSidebarLinks = () => {
     },
     {
       label: t("sidebar.settings"),
-      href: EXTERNAL_LINKS.CONTROL_PANEL,
+      href: "/settings",
       icon: Settings,
     },
   ];

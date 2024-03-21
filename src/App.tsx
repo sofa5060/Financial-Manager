@@ -16,6 +16,11 @@ import TreasuryReceiptBond from "./pages/TreasuryReceiptBond";
 import TreasuryPaymentBond from "./pages/TreasuryPaymentBond";
 import ParkAccountsTransactions from "./pages/ParkAccountsTransactions";
 import PostAccountsTransactions from "./pages/PostAccountsTransactions";
+import GeneralSettingsPage from "./components/settings/subpages/general-settings";
+import TasksCategoriesPage from "./components/settings/subpages/tasks-categories/tasks-categories-settings";
+import TasksSubCategoriesPage from "./components/settings/subpages/tasks-subcategories/tasks-subcategories-settings";
+import OrgDepartmentsSettingsPage from "./components/settings/subpages/org-departments/org-departments-settings";
+import OrgTitlesSettingsPage from "./components/settings/subpages/org-titles/org-titles-settings";
 
 function App() {
   const queryClient = new QueryClient();
@@ -55,18 +60,12 @@ function App() {
                 path="/treasury-receipts/new"
                 element={<TreasuryReceiptBond />}
               />
-              <Route
-                path="/treasury-receipts"
-                element={<TreasuryReceipts />}
-              />
+              <Route path="/treasury-receipts" element={<TreasuryReceipts />} />
               <Route
                 path="/treasury-payments/new"
                 element={<TreasuryPaymentBond />}
               />
-              <Route
-                path="/treasury-payments"
-                element={<TreasuryPayments />}
-              />
+              <Route path="/treasury-payments" element={<TreasuryPayments />} />
               <Route
                 path="/accounting-entries/park/transactions"
                 element={<ParkAccountsTransactions />}
@@ -74,6 +73,23 @@ function App() {
               <Route
                 path="/accounting-entries/post/transactions"
                 element={<PostAccountsTransactions />}
+              />
+              <Route path="/settings" element={<GeneralSettingsPage />} />
+              <Route
+                path="settings/taskcat"
+                element={<TasksCategoriesPage />}
+              />
+              <Route
+                path="settings/tasksubcat"
+                element={<TasksSubCategoriesPage />}
+              />
+              <Route
+                path="settings/orgdep"
+                element={<OrgDepartmentsSettingsPage />}
+              />
+              <Route
+                path="settings/orgtitles"
+                element={<OrgTitlesSettingsPage />}
               />
             </Route>
           </Routes>
