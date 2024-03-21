@@ -6,6 +6,7 @@ import {
   MessagesSquare,
   PenBox,
   Settings,
+  Table,
   Table2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -36,6 +37,11 @@ const useSidebarLinks = () => {
       icon: Table2,
     },
     {
+      label: "Accounting Transactions (Park)",
+      href: "/accounting-entries/park/transactions",
+      icon: Table,
+    },
+    {
       label: "Add Accounting Entry (Park)",
       href: "/accounting-entries/park/new",
       icon: PenBox,
@@ -44,6 +50,11 @@ const useSidebarLinks = () => {
       label: "Accounting Entries (Post)",
       href: "/accounting-entries/post",
       icon: Table2,
+    },
+    {
+      label: "Accounting Transactions (Post)",
+      href: "/accounting-entries/post/transactions",
+      icon: Table,
     },
     {
       label: "Treasury Receipts",

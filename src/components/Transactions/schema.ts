@@ -2,15 +2,16 @@ import z from "zod"
 
 export const TransactionSchema =  z.object({
   id: z.number(),
-  account_id: z.number(),
-  currency_id: z.number(),
-  category_id: z.number(),
-  cost_center_id: z.number().nullable(),
-  f_debit: z.number(),
-  f_credit: z.number(),
+  code: z.string(),
+  created_at: z.string(),
+  posted_by: z.string(),
+  posted_by_id: z.number(),
+  type: z.string(),
+  description: z.string(),
+  cost_center: z.boolean(),
   debit: z.number(),
   credit: z.number(),
-  description: z.string(),
+  currency: z.string(),
 })
 
 export type Transaction = z.infer<typeof TransactionSchema>

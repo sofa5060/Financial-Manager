@@ -23,20 +23,7 @@ const ParkAccountingEntries = () => {
       description: "Entry 1 description",
       created_at: "2022-01-01",
       updated_at: "2022-01-01",
-      transactions: [
-        {
-          id: 1,
-          account_id: 1,
-          currency_id: 1,
-          category_id: 1,
-          cost_center_id: null,
-          f_debit: 100,
-          f_credit: 0,
-          debit: 100,
-          credit: 0,
-          description: "Transaction 1",
-        },
-      ],
+      transactions: [],
     },
   ];
 

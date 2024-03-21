@@ -14,6 +14,8 @@ import TreasuryReceipts from "./pages/TreasuryReceipt";
 import TreasuryPayments from "./pages/TreasuryPayment";
 import TreasuryReceiptBond from "./pages/TreasuryReceiptBond";
 import TreasuryPaymentBond from "./pages/TreasuryPaymentBond";
+import ParkAccountsTransactions from "./pages/ParkAccountsTransactions";
+import PostAccountsTransactions from "./pages/PostAccountsTransactions";
 
 function App() {
   const queryClient = new QueryClient();
@@ -64,6 +66,14 @@ function App() {
               <Route
                 path="/treasury-payments"
                 element={<TreasuryPayments />}
+              />
+              <Route
+                path="/accounting-entries/park/transactions"
+                element={<ParkAccountsTransactions />}
+              />
+              <Route
+                path="/accounting-entries/post/transactions"
+                element={<PostAccountsTransactions />}
               />
             </Route>
           </Routes>

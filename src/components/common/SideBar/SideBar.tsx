@@ -25,7 +25,7 @@ const SideBar = () => {
   if (isOpen) {
     return (
       <div
-        className="flex flex-col items-center w-[230px] h-[100vh] overflow-hidden text-green-700  bg-white rounded"
+        className="flex flex-col items-center w-[270px] h-[100vh] overflow-hidden text-green-700  bg-white rounded"
         onMouseLeave={() => setIsOpen(false)}
       >
         <Link className="flex items-center justify-center mt-3" to="/">
