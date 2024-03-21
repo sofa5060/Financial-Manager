@@ -9,6 +9,7 @@ import CostCentersCharts from "./pages/CostCentersCharts";
 import ParkAccountingEntries from "./pages/ParkAccountingEntries";
 import PostAccountingEntries from "./pages/PostAccountingEntries";
 import LoginPage from "./pages/Login";
+import NewParkAccountEntry from "./pages/NewParkAccountingEntry";
 
 function App() {
   const queryClient = new QueryClient();
@@ -35,6 +36,10 @@ function App() {
               <Route
                 path="/accounting-entries/park"
                 element={<ParkAccountingEntries />}
+              />
+              <Route
+                path="/accounting-entries/park/new"
+                element={<NewParkAccountEntry />}
               />
               <Route
                 path="/accounting-entries/post"

@@ -9,6 +9,8 @@ export const NewEntrySchema = z.object({
   date: z.string(),
   description: z.string(),
   transactions: z.array(TransactionSchema),
+  document_code: z.string().optional(),
+  created_by: z.string().optional(),
 });
 
 export type Entry = {

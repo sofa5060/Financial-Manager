@@ -4,6 +4,7 @@ import {
   Calculator,
   LucideIcon,
   MessagesSquare,
+  PenBox,
   Settings,
   Table2,
 } from "lucide-react";
@@ -35,6 +36,11 @@ const useSidebarLinks = () => {
       label: "Accounting Entries (Park)",
       href: "/accounting-entries/park",
       icon: Table2,
+    },
+    {
+      label: "Add Accounting Entry (Park)",
+      href: "/accounting-entries/park/new",
+      icon: PenBox,
     },
     {
       label: "Accounting Entries (Post)",

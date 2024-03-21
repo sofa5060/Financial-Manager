@@ -2,7 +2,6 @@ import { Entry } from "@/components/Entries/schema";
 import { usePostAccountingEntriesColumns } from "@/components/Entries/TableView/Columns";
 import { DataTable } from "@/components/Entries/TableView/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 const PostAccountingEntries = () => {
   const columns = usePostAccountingEntriesColumns();
@@ -47,11 +46,7 @@ const PostAccountingEntries = () => {
           Accounting Entries / <span className="text-primary">Post</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline mr-4">Print Selected</Button>
-          <Button className="btn-primary">
-            <Plus className="mr-2 w-4" />
-            New Entry
-          </Button>
+          <Button className="btn-outline">Print Selected</Button>
         </div>
       </div>
       <DataTable data={data} columns={columns} />
