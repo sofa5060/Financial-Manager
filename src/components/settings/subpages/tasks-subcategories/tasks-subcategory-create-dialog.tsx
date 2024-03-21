@@ -104,7 +104,7 @@ export function TaskSubCategoryCreateDialog() {
   }));
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={isOpen ? closeDialog : () => setIsOpen(true)}>
       <Button
         size="sm"
         className="ms-auto hidden h-8 lg:flex bg-green-700"
@@ -116,7 +116,6 @@ export function TaskSubCategoryCreateDialog() {
 
       <DialogContent
         className="sm:max-w-[425px] max-w-[90%]"
-        onClose={closeDialog}
         onEscapeKeyDown={closeDialog}
         onInteractOutside={closeDialog}
       >
