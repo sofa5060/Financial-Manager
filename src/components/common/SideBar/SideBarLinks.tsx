@@ -19,8 +19,6 @@ export type SidebarLink = {
 const useSidebarLinks = () => {
   const { t } = useTranslation("sidebar");
 
-  console.log(t("sidebar.chat"));
-
   const sidebarLinks: SidebarLink[] = [
     {
       label: "Charts of accounts",
@@ -46,6 +44,26 @@ const useSidebarLinks = () => {
       label: "Accounting Entries (Post)",
       href: "/accounting-entries/post",
       icon: Table2,
+    },
+    {
+      label: "Treasury Receipts",
+      href: "/treasury-receipts",
+      icon: Table2,
+    },
+    {
+      label: "Add Treasury Receipt",
+      href: "/treasury-receipts/new",
+      icon: PenBox,
+    },
+    {
+      label: "Treasury Payments",
+      href: "/treasury-payments",
+      icon: Table2,
+    },
+    {
+      label: "Add Treasury Payment",
+      href: "/treasury-payments/new",
+      icon: PenBox,
     },
     {
       label: t("sidebar.chat"),

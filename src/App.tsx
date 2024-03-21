@@ -10,6 +10,8 @@ import ParkAccountingEntries from "./pages/ParkAccountingEntries";
 import PostAccountingEntries from "./pages/PostAccountingEntries";
 import LoginPage from "./pages/Login";
 import NewParkAccountEntry from "./pages/NewParkAccountingEntry";
+import TreasuryReceipts from "./pages/TreasuryReceipt";
+import TreasuryPayments from "./pages/TreasuryPayment";
 
 function App() {
   const queryClient = new QueryClient();
@@ -44,6 +46,22 @@ function App() {
               <Route
                 path="/accounting-entries/post"
                 element={<PostAccountingEntries />}
+              />
+              <Route
+                path="/treasury-receipts/new"
+                element={<PostAccountingEntries />}
+              />
+              <Route
+                path="/treasury-receipts"
+                element={<TreasuryReceipts />}
+              />
+              <Route
+                path="/treasury-payments/new"
+                element={<PostAccountingEntries />}
+              />
+              <Route
+                path="/treasury-payments"
+                element={<TreasuryPayments />}
               />
             </Route>
           </Routes>

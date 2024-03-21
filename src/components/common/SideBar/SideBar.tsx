@@ -35,7 +35,8 @@ const SideBar = () => {
           <div className="flex flex-col items-center w-full mt-3 border-t border-gray-300">
             {sidebarLinks.map((link) => {
               const isActive =
-                link.href == `/${location.pathname.split("/")[1]}`;
+                link.href ==
+                `/${location.pathname.split("/").slice(1).join("/")}`;
 
               return (
                 <Link
@@ -90,7 +91,9 @@ const SideBar = () => {
       </Link>
       <div className="flex flex-col items-center mt-3 border-t border-gray-300">
         {sidebarLinks.map((link) => {
-          const isActive = link.href == `/${location.pathname.split("/")[1]}`;
+          const isActive =
+            link.href == `/${location.pathname.split("/").slice(1).join("/")}`;
+
           return (
             <Link
               key={link.href}

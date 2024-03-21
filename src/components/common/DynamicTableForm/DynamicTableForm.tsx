@@ -17,7 +17,7 @@ const DynamicTableForm = () => {
 
   const handleChange = (index: number, field: string, value: string) => {
     const updatedRows = [...rows];
-    updatedRows[index][field] = value;
+    updatedRows[index][field as keyof (typeof rows)[0]] = value;
     setRows(updatedRows);
 
     // Add a new row if the last row is being edited
@@ -38,7 +38,7 @@ const DynamicTableForm = () => {
   };
 
   const removeRow = (index: number) => {
-    const updatedRows = rows.filter((row, i) => i !== index);
+    const updatedRows = rows.filter((_, i) => i !== index);
     setRows(updatedRows);
   };
 
