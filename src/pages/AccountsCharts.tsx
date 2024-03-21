@@ -45,6 +45,7 @@ const AccountsCharts = () => {
       <div className="flex justify-between">
         <h1 className="text-primary text-3xl font-semibold">
           Chart Of Accounts
+          
         </h1>
         <Button className="btn-outline">Download Excel File</Button>
       </div>

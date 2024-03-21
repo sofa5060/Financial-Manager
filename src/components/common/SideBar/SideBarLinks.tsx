@@ -1,12 +1,11 @@
 import { EXTERNAL_LINKS } from "@/lib/external_links";
 import {
-  Archive,
-  AreaChart,
-  CheckSquare,
+  BarChartHorizontalBig,
+  Calculator,
   LucideIcon,
-  MailQuestion,
   MessagesSquare,
   Settings,
+  Table2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -19,26 +18,28 @@ export type SidebarLink = {
 const useSidebarLinks = () => {
   const { t } = useTranslation("sidebar");
 
+  console.log(t("sidebar.chat"));
+
   const sidebarLinks: SidebarLink[] = [
     {
-      label: t("sidebar.tasks"),
+      label: "Charts of accounts",
       href: "/",
-      icon: CheckSquare,
+      icon: BarChartHorizontalBig,
     },
     {
-      label: t("sidebar.requests"),
-      href: "/requests",
-      icon: MailQuestion,
+      label: "Cost centers",
+      href: "/cost-centers",
+      icon: Calculator,
     },
     {
-      label: t("sidebar.archive"),
-      href: "/tasks-archive",
-      icon: Archive,
+      label: "Accounting Entries (Park)",
+      href: "/accounting-entries/park",
+      icon: Table2,
     },
     {
-      label: t("sidebar.home"),
-      href: "/stats",
-      icon: AreaChart,
+      label: "Accounting Entries (Post)",
+      href: "/accounting-entries/post",
+      icon: Table2,
     },
     {
       label: t("sidebar.chat"),

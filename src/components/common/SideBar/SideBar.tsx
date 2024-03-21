@@ -1,21 +1,22 @@
-import { Link, useLocation } from "react-router-dom";
-// import { UserNav } from "../user-nav/user-nav";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-// import { useAuth } from "@/providers/auth-provider";
 import useSidebarLinks from "./SideBarLinks";
+import { UserNav } from "../UserNav/UserNav";
+import { useAuthStore } from "@/hooks/useAuthStore";
 
 const SideBar = () => {
   const location = useLocation();
-  // const { setToken, name } = useAuth();
-  // const navigate = useNavigate();
+  const name = useAuthStore((state) => state.name);
+  const clearUserData = useAuthStore((state) => state.clearUserData);
+  const navigate = useNavigate();
 
-  // const handleLogOut = () => {
-  //   setToken(null);
-  //   navigate("/login", { replace: true });
-  // };
+  const handleLogOut = () => {
+    clearUserData();
+    navigate("/login", { replace: true });
+  };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -57,16 +58,18 @@ const SideBar = () => {
         <div className="flex h-16 mt-auto mb-3">
           <div className="flex items-center justify-between mt-6">
             <div className="flex items-center gap-x-2">
-              {/* <UserNav /> */}
+              <UserNav />
               <div className="text-gray-700 flex flex-col ms-1">
-                <span className="text-sm font-medium">Name</span>
+                <span className="text-sm font-medium">
+                  {name ? name : "User"}
+                </span>
                 {/* <span className="text-xs text-gray-400">{title}</span> */}
               </div>
             </div>
 
             <Button
               variant="ghost"
-              // onClick={handleLogOut}
+              onClick={handleLogOut}
               className="text-gray-500 transition-colors duration-200 rtl:rotate-0 hover:text-green-500 "
             >
               <LogOut className="w-5 h-5" />
@@ -105,7 +108,7 @@ const SideBar = () => {
       </div>
 
       <div className="flex items-center justify-center w-16 h-16 mt-auto">
-        {/* <UserNav /> */}
+        <UserNav />
       </div>
     </div>
   );

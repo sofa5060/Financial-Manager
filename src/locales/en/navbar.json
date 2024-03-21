@@ -1,0 +1,13 @@
+{
+  "dashboard": "Dashboard",
+  "home": "Home",
+  "tasks": "Tasks",
+  "requests": "Requests",
+  "archive": "Archive",
+  "notifications": "Notifications",
+  "notifications.markAll": "Mark all as read",
+  "underDevelopment": "Under development",
+  "chat": "Go to chat",
+  "settings": "Settings",
+  "logout": "Log out"
+}

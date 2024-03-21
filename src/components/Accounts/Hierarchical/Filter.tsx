@@ -1,21 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { CheckIcon, PlusCircle } from "lucide-react";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -30,11 +23,13 @@ type FiltersProps = {
 };
 
 const Filter = ({ title, options, defaultSelected = [] }: FiltersProps) => {
-  const [selectedValues, setSelectedValues] = useState(new Set(defaultSelected));
+  const [selectedValues, setSelectedValues] = useState(
+    new Set(defaultSelected)
+  );
 
   return (
-    <Popover>
-      <PopoverTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle className="me-2 h-4 w-4" />
           {title}
@@ -72,64 +67,54 @@ const Filter = ({ title, options, defaultSelected = [] }: FiltersProps) => {
             </>
           )}
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder={title} />
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.value);
-                return (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => {
-                      console.log("option.value", option.value);
-                      if (isSelected) {
-                        selectedValues.delete(option.value);
-                      } else {
-                        selectedValues.add(option.value);
-                      }
-                      const filterValues = Array.from(selectedValues);
-                      setSelectedValues(new Set(filterValues));
-                    }}
-                  >
-                    <div
-                      className={cn(
-                        "me-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
-                      )}
-                    >
-                      <CheckIcon className={cn("h-4 w-4")} />
-                    </div>
-                    {option.icon && (
-                      <option.icon className="me-2 h-4 w-4 text-muted-foreground" />
-                    )}
-                    <span className="text-black">{option.label}</span>
-                  </CommandItem>
-                );
-              })}
-            </CommandGroup>
-            {selectedValues.size > 0 && (
-              <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem
-                    onSelect={() => setSelectedValues(new Set())}
-                    className="justify-center text-center"
-                  >
-                    Clear filters
-                  </CommandItem>
-                </CommandGroup>
-              </>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[200px]">
+        {options.map((option) => {
+          const isSelected = selectedValues.has(option.value);
+          return (
+            <DropdownMenuItem
+              key={option.value}
+              onSelect={() => {
+                console.log("option.value", option.value);
+                if (isSelected) {
+                  selectedValues.delete(option.value);
+                } else {
+                  selectedValues.add(option.value);
+                }
+                const filterValues = Array.from(selectedValues);
+                setSelectedValues(new Set(filterValues));
+              }}
+            >
+              <div
+                className={cn(
+                  "me-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                  isSelected
+                    ? "bg-primary text-primary-foreground"
+                    : "opacity-50 [&_svg]:invisible"
+                )}
+              >
+                <CheckIcon className={cn("h-4 w-4")} />
+              </div>
+              {option.icon && (
+                <option.icon className="me-2 h-4 w-4 text-muted-foreground" />
+              )}
+              <span className="text-black">{option.label}</span>
+            </DropdownMenuItem>
+          );
+        })}
+        {selectedValues.size > 0 && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={() => setSelectedValues(new Set())}
+              className="justify-center text-center"
+            >
+              Clear filters
+            </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 export default Filter;

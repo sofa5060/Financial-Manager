@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -7,8 +7,8 @@ import PageLayout from "./layout";
 import AccountsCharts from "./pages/AccountsCharts";
 import CostCentersCharts from "./pages/CostCentersCharts";
 import ParkAccountingEntries from "./pages/ParkAccountingEntries";
-import Redirect from "./lib/Redirect";
 import PostAccountingEntries from "./pages/PostAccountingEntries";
+import LoginPage from "./pages/Login";
 
 function App() {
   const queryClient = new QueryClient();
@@ -17,19 +17,20 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Suspense
         fallback={
-          <div className="grid place-items-center w-full h-full">
+          <div className="grid place-items-center w-full h-full min-h-screen">
             <FlowerSpinner color="green" size={100} />
           </div>
         }
       >
         <BrowserRouter>
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<PageLayout />}>
               <Route path="/" element={<AccountsCharts />} />
               <Route path="/cost-centers" element={<CostCentersCharts />} />
               <Route
                 path="/accounting-entries"
-                element={<Redirect to="/accounting-entries/park" />}
+                element={<Navigate to="/accounting-entries/park" />}
               />
               <Route
                 path="/accounting-entries/park"
