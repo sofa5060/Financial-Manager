@@ -77,6 +77,16 @@ const useSidebarLinks = () => {
       icon: PenBox,
     },
     {
+      label: "Account Templates",
+      href: "/accounts/templates",
+      icon: Table2,
+    },
+    {
+      label: "Add Account Template",
+      href: "/accounts/templates/new",
+      icon: PenBox,
+    },
+    {
       label: t("sidebar.chat"),
       href: EXTERNAL_LINKS.CHAT,
       icon: MessagesSquare,

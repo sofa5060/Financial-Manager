@@ -25,7 +25,80 @@ const AccountsCharts = () => {
         {
           id: "2",
           code: "001.1",
-          children: [],
+          children: [
+            {
+              id: "3",
+              code: "001.1",
+              children: [],
+              name_en: "Account 1.1",
+              name_ar: "حساب 1.1",
+              properties: "sub",
+              type: "debit",
+              reporting_type: "balance_sheet",
+              cost_center: true,
+              parentId: "1",
+              categories: [1, 2, 3],
+              currencies: [0, 1],
+            },
+            {
+              id: "3",
+              code: "001.1",
+              children: [],
+              name_en: "Account 1.1",
+              name_ar: "حساب 1.1",
+              properties: "sub",
+              type: "debit",
+              reporting_type: "balance_sheet",
+              cost_center: true,
+              parentId: "1",
+              categories: [1, 2, 3],
+              currencies: [0, 1],
+            },
+          ],
+          name_en: "Account 1.1",
+          name_ar: "حساب 1.1",
+          properties: "sub",
+          type: "debit",
+          reporting_type: "balance_sheet",
+          cost_center: true,
+          parentId: "1",
+          categories: [1, 2, 3],
+          currencies: [0, 1],
+        },
+      ],
+    },
+    {
+      id: "1",
+      code: "001",
+      name_en: "Account 1",
+      name_ar: "حساب 1",
+      properties: "main",
+      type: "debit",
+      reporting_type: "balance_sheet",
+      cost_center: true,
+      parentId: undefined,
+      categories: [1, 2, 3],
+      currencies: [0],
+      children: [
+        {
+          id: "2",
+          code: "001.1",
+          children: [
+            {
+              id: "3",
+              code: "001.1",
+              children: [],
+              name_en: "Account 1.1",
+              name_ar: "حساب 1.1",
+              properties: "sub",
+              type: "debit",
+              reporting_type: "balance_sheet",
+              cost_center: true,
+              parentId: "1",
+              categories: [1, 2, 3],
+              currencies: [0, 1],
+            },
+          ],
           name_en: "Account 1.1",
           name_ar: "حساب 1.1",
           properties: "sub",
@@ -45,7 +118,6 @@ const AccountsCharts = () => {
       <div className="flex justify-between">
         <h1 className="text-primary text-3xl font-semibold">
           Chart Of Accounts
-          
         </h1>
         <Button className="btn-outline">Download Excel File</Button>
       </div>

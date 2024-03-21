@@ -21,6 +21,8 @@ import TasksCategoriesPage from "./components/settings/subpages/tasks-categories
 import TasksSubCategoriesPage from "./components/settings/subpages/tasks-subcategories/tasks-subcategories-settings";
 import OrgDepartmentsSettingsPage from "./components/settings/subpages/org-departments/org-departments-settings";
 import OrgTitlesSettingsPage from "./components/settings/subpages/org-titles/org-titles-settings";
+import AccountsTemplates from "./pages/AccountsTemplates";
+import AccountsTemplateForm from "./pages/AccountsTemplateForm";
 
 function App() {
   const queryClient = new QueryClient();
@@ -73,6 +75,14 @@ function App() {
               <Route
                 path="/accounting-entries/post/transactions"
                 element={<PostAccountsTransactions />}
+              />
+              <Route
+                path="/accounts/templates"
+                element={<AccountsTemplates />}
+              />
+              <Route
+                path="/accounts/templates/new"
+                element={<AccountsTemplateForm />}
               />
               <Route path="/settings" element={<GeneralSettingsPage />} />
               <Route
