@@ -12,6 +12,8 @@ import LoginPage from "./pages/Login";
 import NewParkAccountEntry from "./pages/NewParkAccountingEntry";
 import TreasuryReceipts from "./pages/TreasuryReceipt";
 import TreasuryPayments from "./pages/TreasuryPayment";
+import TreasuryReceiptBond from "./pages/TreasuryReceiptBond";
+import TreasuryPaymentBond from "./pages/TreasuryPaymentBond";
 
 function App() {
   const queryClient = new QueryClient();
@@ -49,7 +51,7 @@ function App() {
               />
               <Route
                 path="/treasury-receipts/new"
-                element={<PostAccountingEntries />}
+                element={<TreasuryReceiptBond />}
               />
               <Route
                 path="/treasury-receipts"
@@ -57,7 +59,7 @@ function App() {
               />
               <Route
                 path="/treasury-payments/new"
-                element={<PostAccountingEntries />}
+                element={<TreasuryPaymentBond />}
               />
               <Route
                 path="/treasury-payments"
