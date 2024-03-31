@@ -21,7 +21,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import AccountsManager from "@/managers/AccountsManager";
+import { useToast } from "@/components/ui/use-toast";
 
 type AccountFormProps = {
   level: number;
@@ -38,10 +41,26 @@ const AccountForm = ({
   account,
   type = "add",
 }: AccountFormProps) => {
+  useEffect(() => {
+    form.reset({
+      currencies: [],
+      categories: [],
+      cost_center: false,
+      parent_id: parentAccount?.id ?? null,
+      ...account,
+    });
+  }, [account]);
+
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<NewAccount>({
     resolver: zodResolver(NewAccountSchema),
     defaultValues: {
+      currencies: [],
+      categories: [],
+      cost_center: false,
+      parent_id: parentAccount?.id ?? null,
       ...account,
     },
   });
@@ -50,13 +69,6 @@ const AccountForm = ({
     formState: { errors },
     setValue,
   } = form;
-
-  const closeDialog = () => {
-    setIsOpen(false);
-    form.reset();
-  };
-
-  const openDialog = () => setIsOpen(true);
 
   const TITLES = {
     add: `Add New Account in Level ${level}`,
@@ -70,7 +82,58 @@ const AccountForm = ({
     view: "The Record is View Only",
   };
 
-  const onSubmit: SubmitHandler<NewAccount> = (data) => console.log(data);
+  const { mutate: addAccountMutate, isPending } = useMutation({
+    mutationFn: AccountsManager.addAccount,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      form.reset();
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      console.log(error.message);
+      toast({
+        variant: "destructive",
+        title: "Failed to add account",
+        description: error.message,
+      });
+    },
+  });
+
+  const { mutate: updateAccountMutate, isPending: isPendingUpdate } =
+    useMutation({
+      mutationFn: (data: Partial<Account>) =>
+        AccountsManager.updateAccount(data, account!.id),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["accounts"] });
+        setIsOpen(false);
+      },
+      onError: (error) => {
+        console.log(error.message);
+        toast({
+          variant: "destructive",
+          title: "Failed to update account",
+          description: error.message,
+        });
+      },
+    });
+
+  const onSubmit: SubmitHandler<NewAccount> = (data) => {
+    console.log(data);
+    if (type === "add") {
+      addAccountMutate(data);
+    } else if (type === "edit") {
+      updateAccountMutate(data as Partial<Account>);
+    }
+  };
+
+  const closeDialog = () => {
+    if (isPending || isPendingUpdate) return;
+    form.reset();
+    setIsOpen(false);
+  };
+
+  const openDialog = () => setIsOpen(true);
+
   return (
     <Dialog open={isOpen} onOpenChange={isOpen ? closeDialog : openDialog}>
       <DialogTrigger>{children}</DialogTrigger>
@@ -126,28 +189,18 @@ const AccountForm = ({
               )}
             />
             {parentAccount && (
-              <FormField
-                control={form.control}
-                name="parentId"
-                render={({ field }) => (
-                  <FormItem className="flex gap-4 items-center justify-end w-full">
-                    <FormLabel className="whitespace-nowrap">
-                      Parent Account
-                    </FormLabel>
-                    <div className="flex-col w-full max-w-[65%]">
-                      <FormControl>
-                        <Input
-                          disabled
-                          {...field}
-                          className="w-full"
-                          value={`${parentAccount.name_ar} - ${parentAccount.code}`}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+              <FormItem className="flex gap-4 items-center justify-end w-full">
+                <FormLabel className="whitespace-nowrap">
+                  Parent Account
+                </FormLabel>
+                <div className="flex-col w-full max-w-[65%]">
+                  <Input
+                    disabled
+                    className="w-full"
+                    value={`${parentAccount.name_ar} - ${parentAccount.code}`}
+                  />
+                </div>
+              </FormItem>
             )}
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="properties" className="font-medium text-sm">
@@ -340,10 +393,13 @@ const AccountForm = ({
                     type="button"
                     className="bg-destructive"
                     onClick={closeDialog}
+                    disabled={isPending || isPendingUpdate}
                   >
                     Cancel
                   </Button>
-                  <Button type="submit">Save changes</Button>
+                  <Button type="submit" disabled={isPending || isPendingUpdate}>
+                    Save changes
+                  </Button>
                 </>
               )}
             </div>

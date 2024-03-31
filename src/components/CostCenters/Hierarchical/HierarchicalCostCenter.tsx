@@ -86,7 +86,7 @@ const HierarchicalCostCenter = ({
                   >
                     <Pen className="w-4 text-[#A16207] cursor-pointer" />
                   </CostCenterForm>
-                  <DeleteModal costCenterId="1">
+                  <DeleteModal costCenterId={costCenter.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
                   <div className="w-5 text-primary cursor-pointer ml-4">

@@ -23,9 +23,11 @@ import OrgDepartmentsSettingsPage from "./components/settings/subpages/org-depar
 import OrgTitlesSettingsPage from "./components/settings/subpages/org-titles/org-titles-settings";
 import AccountsTemplates from "./pages/AccountsTemplates";
 import AccountsTemplateForm from "./pages/AccountsTemplateForm";
+import axios from "axios";
 
 function App() {
   const queryClient = new QueryClient();
+  axios.defaults.baseURL = import.meta.env.VITE_API_ROOT;
 
   return (
     <QueryClientProvider client={queryClient}>

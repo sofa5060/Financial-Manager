@@ -6,7 +6,7 @@ import {
 } from "./Hierarchical/data";
 
 export type Account = {
-  id: string;
+  id: number;
   code: string;
   children: Account[];
 } & NewAccount;
@@ -18,9 +18,9 @@ export const NewAccountSchema = z.object({
   type: AccountTypeSchema,
   reporting_type: ReportingTypeSchema,
   cost_center: z.boolean(),
-  parentId: z.string().optional(),
-  categories: z.array(z.number()).min(1, "At least one category is required"),
-  currencies: z.array(z.number()).min(1, "At least one currency is required"),
+  parent_id: z.number().optional().nullable(),
+  categories: z.array(z.number()),
+  currencies: z.array(z.number()),
 });
 
 export type NewAccount = z.infer<typeof NewAccountSchema>;

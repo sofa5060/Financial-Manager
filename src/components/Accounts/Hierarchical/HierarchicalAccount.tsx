@@ -29,6 +29,8 @@ const HierarchicalAccount = ({
   parentAccount,
 }: HierarchicalAccountProps) => {
   const [hideChildren, setHideChildren] = useState(level !== 1);
+
+  if(!account) return <></>;
   
   return (
     <div className="flex items-stretch">
@@ -75,6 +77,7 @@ const HierarchicalAccount = ({
                     parentAccount={parentAccount}
                     type="view"
                     account={account}
+                    key="view"
                   >
                     <Eye className="w-4 text-primary cursor-pointer" />
                   </AccountForm>
@@ -83,10 +86,11 @@ const HierarchicalAccount = ({
                     parentAccount={parentAccount}
                     type="edit"
                     account={account}
+                    key="edit"
                   >
                     <Pen className="w-4 text-[#A16207] cursor-pointer" />
                   </AccountForm>
-                  <DeleteModal accountId="1">
+                  <DeleteModal accountId={account.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
                   <div className="w-5 text-primary cursor-pointer ml-4">

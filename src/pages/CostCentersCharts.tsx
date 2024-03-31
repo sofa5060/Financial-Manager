@@ -1,34 +1,37 @@
 import CostCenterForm from "@/components/CostCenters/Hierarchical/CostCenterForm";
 import Filter from "@/components/CostCenters/Hierarchical/Filter";
 import HierarchicalCostCenters from "@/components/CostCenters/Hierarchical/HierarchicalCostCenters";
-import { CostCenter } from "@/components/CostCenters/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
+import CostCentersManager from "@/managers/CostCentersManager";
+import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
+import { FlowerSpinner } from "react-epic-spinners";
 
 const CostCentersCharts = () => {
-  const COST_CENTERS: CostCenter[] = [
-    {
-      id: "1",
-      code: "001",
-      name_en: "CostCenter 1",
-      name_ar: "حساب 1",
-      properties: "main",
-      parentId: undefined,
-      children: [
-        {
-          id: "2",
-          code: "001.1",
-          children: [],
-          name_en: "CostCenter 1.1",
-          name_ar: "حساب 1.1",
-          properties: "sub",
-          parentId: "1",
-        },
-      ],
-    },
-  ];
+  const { toast } = useToast();
+
+  const {data: costCenters, isLoading, isError} = useQuery({
+    queryKey: ["costCenters"],
+    queryFn: CostCentersManager.getCostCenters,
+  });
+
+  if (isLoading)
+    return (
+      <div className="grid place-items-center w-full h-full min-h-screen">
+        <FlowerSpinner color="green" size={100} />
+      </div>
+    );
+
+  if (isError) {
+    toast({
+      variant: "destructive",
+      title: "Failed to fetch cost centers",
+    });
+    return <></>;
+  }
 
   return (
     <div className="pb-12">
@@ -67,7 +70,7 @@ const CostCentersCharts = () => {
         </div>
       </div>
       <Separator />
-      <HierarchicalCostCenters costCenters={COST_CENTERS} />
+      <HierarchicalCostCenters costCenters={costCenters!} />
       <div className="fixed bottom-16 right-32">
         <CostCenterForm level={1}>
           <Button className="btn btn-primary">

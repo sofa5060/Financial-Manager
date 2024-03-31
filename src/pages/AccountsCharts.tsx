@@ -1,117 +1,39 @@
 import AccountForm from "@/components/Accounts/Hierarchical/AccountForm";
 import Filter from "@/components/Accounts/Hierarchical/Filter";
 import HierarchicalAccounts from "@/components/Accounts/Hierarchical/HierarchicalAccounts";
-import { Account } from "@/components/Accounts/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "@/components/ui/use-toast";
+import AccountsManager from "@/managers/AccountsManager";
+import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
+import { FlowerSpinner } from "react-epic-spinners";
 
 const AccountsCharts = () => {
-  const ACCOUNTS: Account[] = [
-    {
-      id: "1",
-      code: "001",
-      name_en: "Account 1",
-      name_ar: "حساب 1",
-      properties: "main",
-      type: "debit",
-      reporting_type: "balance_sheet",
-      cost_center: true,
-      parentId: undefined,
-      categories: [1, 2, 3],
-      currencies: [0],
-      children: [
-        {
-          id: "2",
-          code: "001.1",
-          children: [
-            {
-              id: "3",
-              code: "001.1",
-              children: [],
-              name_en: "Account 1.1",
-              name_ar: "حساب 1.1",
-              properties: "sub",
-              type: "debit",
-              reporting_type: "balance_sheet",
-              cost_center: true,
-              parentId: "1",
-              categories: [1, 2, 3],
-              currencies: [0, 1],
-            },
-            {
-              id: "3",
-              code: "001.1",
-              children: [],
-              name_en: "Account 1.1",
-              name_ar: "حساب 1.1",
-              properties: "sub",
-              type: "debit",
-              reporting_type: "balance_sheet",
-              cost_center: true,
-              parentId: "1",
-              categories: [1, 2, 3],
-              currencies: [0, 1],
-            },
-          ],
-          name_en: "Account 1.1",
-          name_ar: "حساب 1.1",
-          properties: "sub",
-          type: "debit",
-          reporting_type: "balance_sheet",
-          cost_center: true,
-          parentId: "1",
-          categories: [1, 2, 3],
-          currencies: [0, 1],
-        },
-      ],
-    },
-    {
-      id: "1",
-      code: "001",
-      name_en: "Account 1",
-      name_ar: "حساب 1",
-      properties: "main",
-      type: "debit",
-      reporting_type: "balance_sheet",
-      cost_center: true,
-      parentId: undefined,
-      categories: [1, 2, 3],
-      currencies: [0],
-      children: [
-        {
-          id: "2",
-          code: "001.1",
-          children: [
-            {
-              id: "3",
-              code: "001.1",
-              children: [],
-              name_en: "Account 1.1",
-              name_ar: "حساب 1.1",
-              properties: "sub",
-              type: "debit",
-              reporting_type: "balance_sheet",
-              cost_center: true,
-              parentId: "1",
-              categories: [1, 2, 3],
-              currencies: [0, 1],
-            },
-          ],
-          name_en: "Account 1.1",
-          name_ar: "حساب 1.1",
-          properties: "sub",
-          type: "debit",
-          reporting_type: "balance_sheet",
-          cost_center: true,
-          parentId: "1",
-          categories: [1, 2, 3],
-          currencies: [0, 1],
-        },
-      ],
-    },
-  ];
+  const {
+    data: accounts,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: AccountsManager.getAccounts,
+  });
+
+  if (isLoading)
+    return (
+      <div className="grid place-items-center w-full h-full min-h-screen">
+        <FlowerSpinner color="green" size={100} />
+      </div>
+    );
+
+  if (isError) {
+    toast({
+      variant: "destructive",
+      title: "Failed to fetch accounts",
+    });
+    return <></>;
+  }
 
   return (
     <div className="pb-12">
@@ -153,7 +75,7 @@ const AccountsCharts = () => {
         </div>
       </div>
       <Separator />
-      <HierarchicalAccounts accounts={ACCOUNTS} />
+      <HierarchicalAccounts accounts={accounts!} />
       <div className="fixed bottom-16 right-32">
         <AccountForm level={1}>
           <Button className="btn btn-primary">

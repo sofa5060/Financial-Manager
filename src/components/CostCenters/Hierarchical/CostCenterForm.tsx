@@ -1,10 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CostCenter,
-  NewCostCenter,
-  NewCostCenterSchema,
-} from "../schema";
+import { CostCenter, NewCostCenter, NewCostCenterSchema } from "../schema";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +21,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import CostCentersManager from "@/managers/CostCentersManager";
 
 type CostCenterFormProps = {
   level: number;
@@ -42,6 +41,15 @@ const CostCenterForm = ({
   costCenter,
   type = "add",
 }: CostCenterFormProps) => {
+  useEffect(() => {
+    form.reset({
+      parent_id: parentCostCenter?.id ?? null,
+      ...costCenter,
+    });
+  }, [costCenter]);
+
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<NewCostCenter>({
     resolver: zodResolver(NewCostCenterSchema),
@@ -55,13 +63,6 @@ const CostCenterForm = ({
     setValue,
   } = form;
 
-  const closeDialog = () => {
-    setIsOpen(false);
-    form.reset();
-  };
-
-  const openDialog = () => setIsOpen(true);
-
   const TITLES = {
     add: `Add New Cost Center in Level ${level}`,
     edit: "Edit Cost Center",
@@ -74,7 +75,57 @@ const CostCenterForm = ({
     view: "The Record is View Only",
   };
 
-  const onSubmit: SubmitHandler<NewCostCenter> = (data) => console.log(data);
+  const { mutate: addCostCenterMutate, isPending } = useMutation({
+    mutationFn: CostCentersManager.addCostCenter,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["costCenters"] });
+      form.reset();
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      console.log(error.message);
+      toast({
+        variant: "destructive",
+        title: "Failed to add cost center",
+        description: error.message,
+      });
+    },
+  });
+
+  const { mutate: updateCostCenterMutate, isPending: isPendingUpdate } =
+    useMutation({
+      mutationFn: (data: Partial<CostCenter>) =>
+        CostCentersManager.updateCostCenter(data, costCenter!.id),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["costCenters"] });
+        setIsOpen(false);
+      },
+      onError: (error) => {
+        console.log(error.message);
+        toast({
+          variant: "destructive",
+          title: "Failed to update cost center",
+          description: error.message,
+        });
+      },
+    });
+
+  const onSubmit: SubmitHandler<NewCostCenter> = (data) => {
+    if (type === "add") {
+      addCostCenterMutate(data);
+    } else if (type === "edit") {
+      updateCostCenterMutate(data as Partial<CostCenter>);
+    }
+  };
+
+  const closeDialog = () => {
+    if (isPending || isPendingUpdate) return;
+    form.reset();
+    setIsOpen(false);
+  };
+
+  const openDialog = () => setIsOpen(true);
+
   return (
     <Dialog open={isOpen} onOpenChange={isOpen ? closeDialog : openDialog}>
       <DialogTrigger>{children}</DialogTrigger>
@@ -130,28 +181,18 @@ const CostCenterForm = ({
               )}
             />
             {parentCostCenter && (
-              <FormField
-                control={form.control}
-                name="parentId"
-                render={({ field }) => (
-                  <FormItem className="flex gap-4 items-center justify-end w-full">
-                    <FormLabel className="whitespace-nowrap">
-                      Parent Account
-                    </FormLabel>
-                    <div className="flex-col w-full max-w-[65%]">
-                      <FormControl>
-                        <Input
-                          disabled
-                          {...field}
-                          className="w-full"
-                          value={`${parentCostCenter.name_ar} - ${parentCostCenter.code}`}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+              <FormItem className="flex gap-4 items-center justify-end w-full">
+                <FormLabel className="whitespace-nowrap">
+                  Parent Account
+                </FormLabel>
+                <div className="flex-col w-full max-w-[65%]">
+                  <Input
+                    disabled
+                    className="w-full"
+                    value={`${parentCostCenter.name_ar} - ${parentCostCenter.code}`}
+                  />
+                </div>
+              </FormItem>
             )}
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="properties" className="font-medium text-sm">
@@ -197,10 +238,13 @@ const CostCenterForm = ({
                     type="button"
                     className="bg-destructive"
                     onClick={closeDialog}
+                    disabled={isPending || isPendingUpdate}
                   >
                     Cancel
                   </Button>
-                  <Button type="submit">Save changes</Button>
+                  <Button type="submit" disabled={isPending || isPendingUpdate}>
+                    Save changes
+                  </Button>
                 </>
               )}
             </div>

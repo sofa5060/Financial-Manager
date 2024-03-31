@@ -4,7 +4,7 @@ import {
 } from "./Hierarchical/data";
 
 export type CostCenter = {
-  id: string;
+  id: number;
   code: string;
   children: CostCenter[];
 } & NewCostCenter;
@@ -13,7 +13,7 @@ export const NewCostCenterSchema = z.object({
   name_en: z.string(),
   name_ar: z.string(),
   properties: CostCenterPropertiesSchema,
-  parentId: z.string().optional(),
+  parent_id: z.number().optional().nullable(),
 });
 
 export type NewCostCenter = z.infer<typeof NewCostCenterSchema>;
