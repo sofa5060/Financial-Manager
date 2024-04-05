@@ -9,8 +9,22 @@ import AccountsManager from "@/managers/AccountsManager";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useDebounce } from "@uidotdev/usehooks";
+import { useState } from "react";
 
 const AccountsCharts = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchTerm = useDebounce(searchQuery, 500);
+
+  const {
+    data: searchResults,
+    isError: searchError,
+  } = useQuery({
+    queryKey: ["searchAccounts", debouncedSearchTerm],
+    queryFn: () => AccountsManager.searchAccounts(debouncedSearchTerm),
+    enabled: debouncedSearchTerm.length > 0,
+  });
+
   const {
     data: accounts,
     isLoading,
@@ -27,7 +41,7 @@ const AccountsCharts = () => {
       </div>
     );
 
-  if (isError) {
+  if (isError || searchError) {
     toast({
       variant: "destructive",
       title: "Failed to fetch accounts",
@@ -44,7 +58,12 @@ const AccountsCharts = () => {
         <Button className="btn-outline">Download Excel File</Button>
       </div>
       <div className="flex mb-4 mt-8 justify-between gap-16">
-        <Input placeholder="Search by code or name" className="max-w-2xl" />
+        <Input
+          placeholder="Search by code or name"
+          className="max-w-2xl"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <div className="flex gap-4">
           <Filter
             title="Filter 1"
@@ -75,7 +94,7 @@ const AccountsCharts = () => {
         </div>
       </div>
       <Separator />
-      <HierarchicalAccounts accounts={accounts!} />
+      <HierarchicalAccounts accounts={searchResults! ?? accounts!} />
       <div className="fixed bottom-16 right-32">
         <AccountForm level={1}>
           <Button className="btn btn-primary">

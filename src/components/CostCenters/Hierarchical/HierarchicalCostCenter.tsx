@@ -89,19 +89,21 @@ const HierarchicalCostCenter = ({
                   <DeleteModal costCenterId={costCenter.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
-                  <div className="w-5 text-primary cursor-pointer ml-4">
-                    {hideChildren ? (
-                      <ArrowRightFromLine
-                        className="w-full"
-                        onClick={() => setHideChildren(false)}
-                      />
-                    ) : (
-                      <ArrowDownFromLine
-                        className="w-full"
-                        onClick={() => setHideChildren(true)}
-                      />
-                    )}
-                  </div>
+                  {costCenter.children && costCenter.children.length > 0 && (
+                    <div className="w-5 text-primary cursor-pointer ml-4">
+                      {hideChildren ? (
+                        <ArrowRightFromLine
+                          className="w-full"
+                          onClick={() => setHideChildren(false)}
+                        />
+                      ) : (
+                        <ArrowDownFromLine
+                          className="w-full"
+                          onClick={() => setHideChildren(true)}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -113,7 +115,7 @@ const HierarchicalCostCenter = ({
             </CostCenterForm>
           </div>
         </div>
-        {costCenter.children.length > 0 && (
+        {costCenter.children && costCenter.children.length > 0 && (
           <div className={cn("ml-12", { hidden: hideChildren })}>
             <HierarchicalCostCenters
               costCenters={costCenter.children}

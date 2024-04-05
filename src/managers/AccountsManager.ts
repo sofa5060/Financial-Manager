@@ -23,6 +23,16 @@ class AccountsManager {
     }
   }
 
+  static async searchAccounts(query: string): Promise<Account[] | undefined> {
+    try {
+      const response = await axios.get(`/api/account?search=${query}`);
+      console.log(response.data.data)
+      return response.data.data;
+    } catch (error) {
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
   static async addAccount(account: NewAccount): Promise<Account | undefined> {
     try {
       const response = await axios.post("/api/account", account);

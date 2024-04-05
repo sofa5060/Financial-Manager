@@ -7,13 +7,27 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import CostCentersManager from "@/managers/CostCentersManager";
 import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "@uidotdev/usehooks";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 
 const CostCentersCharts = () => {
   const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchTerm = useDebounce(searchQuery, 500);
 
-  const {data: costCenters, isLoading, isError} = useQuery({
+  const { data: searchResults, isError: searchError } = useQuery({
+    queryKey: ["searchCostCenters", debouncedSearchTerm],
+    queryFn: () => CostCentersManager.searchCostCenters(debouncedSearchTerm),
+    enabled: debouncedSearchTerm.length > 0,
+  });
+
+  const {
+    data: costCenters,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["costCenters"],
     queryFn: CostCentersManager.getCostCenters,
   });
@@ -25,7 +39,7 @@ const CostCentersCharts = () => {
       </div>
     );
 
-  if (isError) {
+  if (isError || searchError) {
     toast({
       variant: "destructive",
       title: "Failed to fetch cost centers",
@@ -40,7 +54,12 @@ const CostCentersCharts = () => {
         <Button className="btn-outline">Download Excel File</Button>
       </div>
       <div className="flex mb-4 mt-8 justify-between gap-16">
-        <Input placeholder="Search by code or name" className="max-w-2xl" />
+        <Input
+          placeholder="Search by code or name"
+          className="max-w-2xl"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <div className="flex gap-4">
           <Filter
             title="Filter 1"
@@ -70,7 +89,7 @@ const CostCentersCharts = () => {
         </div>
       </div>
       <Separator />
-      <HierarchicalCostCenters costCenters={costCenters!} />
+      <HierarchicalCostCenters costCenters={searchResults! ?? costCenters!} />
       <div className="fixed bottom-16 right-32">
         <CostCenterForm level={1}>
           <Button className="btn btn-primary">

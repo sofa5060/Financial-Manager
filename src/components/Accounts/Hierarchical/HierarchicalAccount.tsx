@@ -30,8 +30,8 @@ const HierarchicalAccount = ({
 }: HierarchicalAccountProps) => {
   const [hideChildren, setHideChildren] = useState(level !== 1);
 
-  if(!account) return <></>;
-  
+  if (!account) return <></>;
+
   return (
     <div className="flex items-stretch">
       <div
@@ -93,19 +93,21 @@ const HierarchicalAccount = ({
                   <DeleteModal accountId={account.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
-                  <div className="w-5 text-primary cursor-pointer ml-4">
-                    {hideChildren ? (
-                      <ArrowRightFromLine
-                        className="w-full"
-                        onClick={() => setHideChildren(false)}
-                      />
-                    ) : (
-                      <ArrowDownFromLine
-                        className="w-full"
-                        onClick={() => setHideChildren(true)}
-                      />
-                    )}
-                  </div>
+                  {account.children && account.children.length > 0 && (
+                    <div className="w-5 text-primary cursor-pointer ml-4">
+                      {hideChildren ? (
+                        <ArrowRightFromLine
+                          className="w-full"
+                          onClick={() => setHideChildren(false)}
+                        />
+                      ) : (
+                        <ArrowDownFromLine
+                          className="w-full"
+                          onClick={() => setHideChildren(true)}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -117,7 +119,7 @@ const HierarchicalAccount = ({
             </AccountForm>
           </div>
         </div>
-        {account.children.length > 0 && (
+        {account.children && account.children.length > 0 && (
           <div className={cn("ml-12", { hidden: hideChildren })}>
             <HierarchicalAccounts
               accounts={account.children}

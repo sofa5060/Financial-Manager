@@ -21,6 +21,16 @@ class CostCentersManager {
     }
   }
 
+  static async searchCostCenters(query: string): Promise<CostCenter[] | undefined> {
+    try {
+      const response = await axios.get(`/api/cost-center?search=${query}`);
+      console.log(response.data.data)
+      return response.data.data;
+    } catch (error) {
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
   static async addCostCenter(costCenter: NewCostCenter): Promise<CostCenter | undefined> {
     try {
       const response = await axios.post("/api/cost-center", costCenter);
