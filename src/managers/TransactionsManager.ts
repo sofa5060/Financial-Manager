@@ -45,6 +45,16 @@ class TransactionsManager{
       handleAxiosError(error as AxiosError);
     }
   }
+
+  static async getTransactionsOfEntry(entryId: number): Promise<Transaction[] | undefined> {
+    try {
+      const response = await axios.get(`/api/entry/${entryId}`);
+      console.log(response.data.data)
+      return response.data.data.transactions;
+    } catch (error) {
+      handleAxiosError(error as AxiosError);
+    }
+  }
 }
 
 export default TransactionsManager;

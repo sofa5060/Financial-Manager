@@ -67,18 +67,27 @@ class AccountingEntriesManager {
   static async postEntry(entryId: number): Promise<Entry | undefined> {
     try {
       const response = await axios.put(`/api/entry/${entryId}/post`);
-      console.log(response.data)
+      console.log(response.data);
       return response.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
   }
 
-  static async reverseEntry(entryId: number): Promise<Entry | undefined> {
+  static async reverseEntry(
+    entryId: number,
+    reason: string,
+    date: string
+  ): Promise<Entry | undefined> {
+    console.log(entryId, reason, date)
     try {
-      const response = await axios.post(`/api/entry/${entryId}/reverse`);
+      const response = await axios.post(`/api/entry/${entryId}/reverse`, {
+        reason,
+        date,
+      });
       return response.data;
     } catch (error) {
+      console.log(error);
       handleAxiosError(error as AxiosError);
     }
   }

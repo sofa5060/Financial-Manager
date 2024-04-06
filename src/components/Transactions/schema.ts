@@ -12,6 +12,12 @@ export const TransactionSchema =  z.object({
   debit: z.number(),
   credit: z.number(),
   currency: z.string(),
+  account_name_en: z.string(),
+  account_name_ar: z.string(),
+  account_code: z.string(),
+  date: z.string(),
+  posted_at: z.string().nullable(),
+  created_by_name: z.string(),
 })
 
 export type Transaction = z.infer<typeof TransactionSchema>

@@ -7,25 +7,33 @@ import TransactionsManager from "@/managers/TransactionsManager";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useSearchParams } from "react-router-dom";
 
 const ParkAccountsTransactions = () => {
+  const [searchParams] = useSearchParams();
   const columns = useParkAccountTransactionsColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+
+  const { data: EntryTransactions, isError: searchError, isLoading: isSearching } = useQuery({
+    queryKey: ["transactions", "park", "entry", searchParams.get("entry")],
+    queryFn: () => TransactionsManager.getTransactionsOfEntry(parseInt(searchParams.get("entry")!)),
+    enabled: searchParams.get("entry") != null && searchParams.get("entry")!.length > 0,
+  });
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["transactions", "park", "page", page],
     queryFn: () => TransactionsManager.getParkTransactions(page, size),
   });
 
-  if (isLoading)
+  if (isLoading || isSearching)
     return (
       <div className="grid place-items-center w-full h-full min-h-screen">
         <FlowerSpinner color="green" size={100} />
       </div>
     );
 
-  if (isError) {
+  if (isError || searchError) {
     toast({
       variant: "destructive",
       title: "Failed to fetch transactions",
@@ -43,7 +51,7 @@ const ParkAccountsTransactions = () => {
           <Button className="btn-outline">Print Selected</Button>
         </div>
       </div>
-      <DataTable data={data!.transactions} columns={columns} />
+      <DataTable data={EntryTransactions ?? data!.transactions} columns={columns} />
       <PaginationAndSizeFooter
         page={page}
         setPage={setPage}

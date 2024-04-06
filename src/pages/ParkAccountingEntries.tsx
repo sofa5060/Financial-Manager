@@ -8,8 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useNavigate } from "react-router-dom";
 
 const ParkAccountingEntries = () => {
+  const navigate = useNavigate();
   const columns = useParkAccountingEntriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -34,7 +36,7 @@ const ParkAccountingEntries = () => {
     return <></>;
   }
 
-  console.log(data)
+  console.log(data);
 
   return (
     <div>
@@ -44,7 +46,12 @@ const ParkAccountingEntries = () => {
         </h1>
         <div className="flex gap-5">
           <Button className="btn-outline mr-4">Print Selected</Button>
-          <Button className="btn-primary">
+          <Button
+            className="btn-primary"
+            onClick={() => {
+              navigate("/accounting-entries/park/new");
+            }}
+          >
             <Plus className="mr-2 w-4" />
             New Entry
           </Button>

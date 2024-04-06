@@ -42,11 +42,6 @@ const useSidebarLinks = () => {
       icon: Table,
     },
     {
-      label: "Add Accounting Entry (Park)",
-      href: "/accounting-entries/park/new",
-      icon: PenBox,
-    },
-    {
       label: "Accounting Entries (Post)",
       href: "/accounting-entries/post",
       icon: Table2,

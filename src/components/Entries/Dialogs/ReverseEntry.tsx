@@ -21,6 +21,9 @@ import { z } from "zod";
 import { Entry } from "../schema";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 
 type ReverseEntryProps = {
   children: React.ReactNode;
@@ -30,9 +33,38 @@ type ReverseEntryProps = {
 const ReverseEntrySchema = z.object({
   code: z.string(),
   reason: z.string(),
+  date: z.string(),
 });
 
 const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const closeDialog = () => {
+    setIsOpen(false);
+  };
+
+  const { mutate: reverseEntryMutate, isPending } = useMutation({
+    mutationFn: ({ reason, date }: { reason: string; date: string }) =>
+      AccountingEntriesManager.reverseEntry(entry.id, reason, date),
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to reverse entry",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["entries", "park"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions", "park"] });
+
+      toast({
+        title: "Entry reversed successfully",
+      });
+      closeDialog();
+    },
+  });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof ReverseEntrySchema>>({
@@ -44,11 +76,7 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
 
   const onSubmit = (data: z.infer<typeof ReverseEntrySchema>) => {
     console.log(data);
-  };
-
-  const closeDialog = () => {
-    setIsOpen(false);
-    form.reset();
+    reverseEntryMutate({ reason: data.reason, date: data.date });
   };
 
   const openDialog = () => setIsOpen(true);
@@ -82,6 +110,21 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
             />
             <FormField
               control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem className="flex gap-4 items-center justify-end">
+                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
+                  <div className="flex-col w-full max-w-[65%]">
+                    <FormControl>
+                      <Input {...field} className="w-full" type="date" />
+                    </FormControl>
+                    <FormMessage />
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="reason"
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
@@ -100,10 +143,13 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
                 type="button"
                 className="bg-destructive"
                 onClick={closeDialog}
+                disabled={isPending}
               >
                 Cancel
               </Button>
-              <Button type="submit">Reverse</Button>
+              <Button type="submit" disabled={isPending}>
+                Reverse
+              </Button>
             </div>
           </form>
         </Form>

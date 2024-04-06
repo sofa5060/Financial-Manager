@@ -33,6 +33,8 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
       toast({
         title: "Entry posted successfully",
       });

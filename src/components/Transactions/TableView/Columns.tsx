@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Transaction } from "../schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { formatDateTime } from "@/lib/utils";
 
-export const useParkAccountTransactionsColumns = () => {
+export const usePostAccountTransactionsColumns = () => {
   const columns: ColumnDef<Transaction>[] = [
     {
       accessorKey: "id",
@@ -19,16 +20,28 @@ export const useParkAccountTransactionsColumns = () => {
       },
     },
     {
-      accessorKey: "created_at",
+      accessorKey: "date",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Document Date" />
       ),
+      cell: ({ row }) => {
+        return formatDateTime(row.original.date);
+      },
       meta: {
         header: "Document Date",
       },
     },
     {
-      accessorKey: "posted_by",
+      accessorKey: "posted_at",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Posting Date" />
+      ),
+      meta: {
+        header: "Posting Date",
+      },
+    },
+    {
+      accessorKey: "created_by_name",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="User" />
       ),
@@ -37,7 +50,7 @@ export const useParkAccountTransactionsColumns = () => {
       },
     },
     {
-      accessorKey: "posted_by_id",
+      accessorKey: "account_code",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Account Code" />
       ),
@@ -46,7 +59,7 @@ export const useParkAccountTransactionsColumns = () => {
       },
     },
     {
-      accessorKey: "type",
+      accessorKey: "account_name_en",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Account Name" />
       ),
@@ -100,31 +113,15 @@ export const useParkAccountTransactionsColumns = () => {
         header: "Currency",
       },
     },
-    // {
-    //   id: "actions",
-    //   header: "Actions",
-    //   cell: ({row}) => {
-    //     const bondId = row.original.id;
-    //     return (
-    //       <div className="flex gap-2">
-    //         <Eye className="cursor-pointer text-primary w-5" />
-    //         <DeleteModal bondId={bondId}>
-    //           <Trash2 className="cursor-pointer text-red-400 w-5" />
-    //         </DeleteModal>
-    //       </div>
-    //     );
-    //   },
-    //   meta: {
-    //     header: "Actions",
-    //   },
-    // },
   ];
 
   return columns;
 };
 
-export const usePostAccountTransactionsColumns = () => {
-  const columns = useParkAccountTransactionsColumns();
+export const useParkAccountTransactionsColumns = () => {
+  const columns = usePostAccountTransactionsColumns();
+
+  columns.splice(3, 1);
 
   return columns;
 };
