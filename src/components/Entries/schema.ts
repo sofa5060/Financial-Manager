@@ -5,7 +5,7 @@ export const EntryStatusSchema = z.enum(["park", "post"]);
 
 export const NewEntrySchema = z.object({
   title: z.string(),
-  currency: z.string(),
+  currency: z.string().or(z.number()),
   date: z.string(),
   description: z.string(),
   transactions: z.array(TransactionSchema),
@@ -18,7 +18,6 @@ export type Entry = {
   code: string;
   status: EntryStatus;
   title: string;
-  currency: string;
   posted_by: number | null;
   posted_by_name: string | null;
   created_by_name: string | null;

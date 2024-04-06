@@ -19,10 +19,16 @@ export const handleAxiosError = (error: AxiosError) => {
     console.error(error.response.data);
     console.error(error.response.status);
     console.error(error.response.headers);
-
-    throw new Error(
-      (error.response.data as { statue: string; errors: string }).errors
-    );
+    const err = error.response.data as unknown as {
+      statue: string;
+      errors: string;
+      message: string;
+    };
+    if (err.errors) {
+      throw new Error(err.errors);
+    } else if (err.message) {
+      throw new Error(err.message);
+    }
   } else if (error.request) {
     // The request was made but no response was received
     console.error(error.request);
@@ -38,4 +44,4 @@ export const handleAxiosError = (error: AxiosError) => {
 
 export const formatDateTime = (date: string) => {
   return new Date(date).toLocaleString();
-}
+};

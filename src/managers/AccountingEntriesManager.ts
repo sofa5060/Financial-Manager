@@ -1,4 +1,4 @@
-import { Entry } from "@/components/Entries/schema";
+import { Entry, NewEntry } from "@/components/Entries/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
@@ -55,11 +55,13 @@ class AccountingEntriesManager {
     }
   }
 
-  static async addEntry(entry: Entry): Promise<Entry | undefined> {
+  static async addEntry(entry: NewEntry): Promise<Entry | undefined> {
     try {
       const response = await axios.post("/api/entry", entry);
+      console.log(response.data);
       return response.data;
     } catch (error) {
+      console.log(error);
       handleAxiosError(error as AxiosError);
     }
   }

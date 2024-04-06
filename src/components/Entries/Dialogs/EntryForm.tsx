@@ -13,13 +13,45 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Entry, NewEntry, NewEntrySchema } from "../schema";
 import { Button } from "@/components/ui/button";
-import DynamicTableForm from "@/components/common/DynamicTableForm/DynamicTableForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { NewTransaction, Transaction } from "@/components/Transactions/schema";
+import DynamicTableForm from "./DynamicTableForm";
 
 type EntryFormProps = {
   type?: "view" | "edit" | "add";
   entry?: Entry;
 };
 const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { mutate: addEntryMutate, isPending } = useMutation({
+    mutationFn: AccountingEntriesManager.addEntry,
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to add entry",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      toast({
+        title: "Entry added successfully",
+      });
+
+      navigate("/accounting-entries/park");
+    },
+  });
+
   const HEADERS = {
     view: "View Entry",
     edit: "Edit Entry",
@@ -28,14 +60,27 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
 
   const form = useForm<NewEntry>({
     resolver: zodResolver(NewEntrySchema),
+    defaultValues: {
+      transactions: [],
+    },
   });
 
   const {
+    setValue,
     formState: { errors },
   } = form;
 
   const onSubmit = (data: NewEntry) => {
     console.log(data);
+    console.log(transactions)
+    // remove accountCategory from transactions
+    transactions.forEach((transaction) => {
+      delete transaction.accountCategory;
+    });
+    
+    data.transactions = transactions
+    console.log(data)
+    addEntryMutate(data);
   };
 
   return (
@@ -101,7 +146,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                   isDisabled={type === "view"}
                   // onChange={(val) => {
                   //   form.clearErrors("currency");
-                  //   setValue("currency", val.value);
+                  //   setValue("currency", val!.value);
                   // }}
                   className="w-full"
                   options={[
@@ -124,12 +169,13 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                   isSearchable={false}
                   isClearable={false}
                   isDisabled={type === "view"}
-                  // onChange={(val) => {
-                  //   form.clearErrors("currency");
-                  //   setValue("currency", val.value);
-                  // }}
+                  onChange={(val) => {
+                    form.clearErrors("currency");
+                    setValue("currency", val!.value);
+                  }}
                   className="w-full"
                   options={[
+                    { label: "Default", value: "default" },
                     { label: "USD", value: 0 },
                     { label: "SAR", value: 1 },
                   ]}
@@ -175,7 +221,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
             )}
           />
           <div className="mt-4">
-            <DynamicTableForm />
+            <DynamicTableForm transactions={transactions} setTransactions={setTransactions as (transactions: NewTransaction[]) => void} />
           </div>
           <FormField
             control={form.control}
@@ -201,13 +247,19 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
             )}
           />
           <div className="flex justify-end gap-4">
-            <Button type="button" className="bg-red-500">
+            <Button type="button" className="bg-red-500" disabled={isPending}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-gray-200 text-black">
+            <Button
+              type="button"
+              className="bg-gray-200 text-black"
+              disabled={isPending}
+            >
               Save As Template
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit" disabled={isPending}>
+              Save
+            </Button>
           </div>
         </form>
       </Form>
