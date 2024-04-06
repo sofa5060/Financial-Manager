@@ -1,30 +1,39 @@
-import { Entry } from "@/components/Entries/schema";
+import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
 import { usePostAccountingEntriesColumns } from "@/components/Entries/TableView/Columns";
 import { DataTable } from "@/components/Entries/TableView/DataTable";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
+import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { FlowerSpinner } from "react-epic-spinners";
 
 const PostAccountingEntries = () => {
   const columns = usePostAccountingEntriesColumns();
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
 
-  const data: Entry[] = [
-    {
-      id: 1,
-      code: "1",
-      status: "post",
-      title: "Entry 1",
-      currency: "USD",
-      posted_by: null,
-      posted_by_name: null,
-      created_by_name: "User 1",
-      amount: 100,
-      company_id: 1,
-      date: "2022-01-01",
-      description: "Entry 1 description",
-      created_at: "2022-01-01",
-      updated_at: "2022-01-01",
-      transactions: [],
-    },
-  ];
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["entries", "post", "page", page],
+    queryFn: () => AccountingEntriesManager.getPostEntries(page, size),
+  });
+
+  if (isLoading)
+    return (
+      <div className="grid place-items-center w-full h-full min-h-screen">
+        <FlowerSpinner color="green" size={100} />
+      </div>
+    );
+
+  if (isError) {
+    toast({
+      variant: "destructive",
+      title: "Failed to fetch entries",
+    });
+    return <></>;
+  }
+
+  console.log(data)
 
   return (
     <div>
@@ -36,7 +45,14 @@ const PostAccountingEntries = () => {
           <Button className="btn-outline">Print Selected</Button>
         </div>
       </div>
-      <DataTable data={data} columns={columns} />
+      <DataTable data={data!.entries} columns={columns} />
+      <PaginationAndSizeFooter
+        page={page}
+        setPage={setPage}
+        totalPages={data!.totalPages}
+        size={size}
+        setSize={setSize}
+      />
     </div>
   );
 };

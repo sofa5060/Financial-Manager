@@ -38,7 +38,7 @@ const useSidebarLinks = () => {
     },
     {
       label: "Accounting Transactions (Park)",
-      href: "/accounting-entries/park/transactions",
+      href: "/transactions/park",
       icon: Table,
     },
     {
@@ -53,7 +53,7 @@ const useSidebarLinks = () => {
     },
     {
       label: "Accounting Transactions (Post)",
-      href: "/accounting-entries/post/transactions",
+      href: "/transactions/post",
       icon: Table,
     },
     {

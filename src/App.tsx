@@ -71,11 +71,11 @@ function App() {
               />
               <Route path="/treasury-payments" element={<TreasuryPayments />} />
               <Route
-                path="/accounting-entries/park/transactions"
+                path="/transactions/park"
                 element={<ParkAccountsTransactions />}
               />
               <Route
-                path="/accounting-entries/post/transactions"
+                path="/transactions/post"
                 element={<PostAccountsTransactions />}
               />
               <Route

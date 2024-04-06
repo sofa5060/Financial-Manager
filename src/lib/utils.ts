@@ -35,3 +35,7 @@ export const handleAxiosError = (error: AxiosError) => {
     throw new Error("Something went wrong, please try again later.");
   }
 };
+
+export const formatDateTime = (date: string) => {
+  return new Date(date).toLocaleString();
+}
