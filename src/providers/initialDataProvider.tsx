@@ -1,6 +1,12 @@
+import { useBanksStore } from "@/hooks/useBanksStore";
+import { useCategoriesStore } from "@/hooks/useCategories";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
+import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
 import AccountsManager from "@/managers/AccountsManager";
+import BanksManager from "@/managers/BanksManager";
+import CategoriesManager from "@/managers/CategoriesManager";
+import CostCentersManager from "@/managers/CostCentersManager";
 import CurrenciesManager from "@/managers/CurrenciesManager";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -11,6 +17,11 @@ type initialDataProviderProps = {
 const InitialDataProvider = ({ children }: initialDataProviderProps) => {
   const setCurrencies = useCurrenciesStore((state) => state.setCurrencies);
   const setAccounts = useSubAccountsStore((state) => state.setSubAccounts);
+  const setSubCostCenters = useSubCostCentersStore(
+    (state) => state.setSubCostCenters
+  );
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+  const setBanks = useBanksStore((state) => state.setBanks);
 
   // fetch currencies
   const { data: currencies } = useQuery({
@@ -37,6 +48,45 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
       setAccounts(accounts);
     }
   }, [accounts, setAccounts]);
+
+  // fetch sub cost centers
+  const { data: subCostCenters } = useQuery({
+    queryKey: ["sub-cost-centers"],
+    queryFn: () => CostCentersManager.getSubCostCenters(1, 1000),
+  });
+
+  // store sub cost centers
+  useEffect(() => {
+    if (subCostCenters) {
+      setSubCostCenters(subCostCenters);
+    }
+  }, [subCostCenters, setSubCostCenters]);
+
+  // fetch categories
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => CategoriesManager.getCategories(),
+  });
+
+  // store categories
+  useEffect(() => {
+    if (categories) {
+      setCategories(categories);
+    }
+  }, [categories, setCategories]);
+
+  // fetch banks
+  const { data: banks } = useQuery({
+    queryKey: ["banks"],
+    queryFn: BanksManager.getBanks,
+  });
+
+  // store banks
+  useEffect(() => {
+    if (banks) {
+      setBanks(banks);
+    }
+  }, [banks, setBanks]);
 
   return <div>{children}</div>;
 };

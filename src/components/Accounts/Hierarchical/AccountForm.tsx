@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountsManager from "@/managers/AccountsManager";
 import { useToast } from "@/components/ui/use-toast";
+import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 
 type AccountFormProps = {
   level: number;
@@ -41,6 +42,10 @@ const AccountForm = ({
   account,
   type = "add",
 }: AccountFormProps) => {
+  const currenciesOptions = useCurrenciesStore(
+    (state) => state.currenciesOptions
+  );
+
   useEffect(() => {
     form.reset({
       currencies: [],
@@ -356,18 +361,20 @@ const AccountForm = ({
                   isSearchable={false}
                   isClearable={false}
                   isDisabled={type === "view"}
+                  defaultValue={account?.currencies?.map((currency) =>
+                    currenciesOptions.find(
+                      (option) => option.value === currency
+                    )
+                  )}
                   onChange={(values) => {
                     form.clearErrors("currencies");
                     setValue(
                       "currencies",
-                      values!.map((val) => val.value)
+                      values!.map((val) => val!.value)
                     );
                   }}
                   className="w-full"
-                  options={[
-                    { label: "USD", value: 0 },
-                    { label: "SAR", value: 1 },
-                  ]}
+                  options={currenciesOptions}
                 />
                 {errors.currencies && (
                   <span className="error-text">

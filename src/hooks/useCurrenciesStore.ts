@@ -4,7 +4,7 @@ import { create } from "zustand";
 type State = {
   currencies: Currency[];
   defaultCurrency: Currency | null;
-  currenciesOptions: { value: string; label: string }[];
+  currenciesOptions: { value: number; label: string }[];
 };
 
 type Actions = {
@@ -22,8 +22,8 @@ export const useCurrenciesStore = create<State & Actions>((set) => ({
         (currency) => currency.functional_currency
       ),
       currenciesOptions: currencies.map((currency) => ({
-        value: currency.currency,
-        label: currency.currency,
+        value: currency.id,
+        label: currency.functional_currency ? "Default" : currency.currency,
       })),
     }),
 }));

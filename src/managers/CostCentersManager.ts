@@ -1,4 +1,4 @@
-import { CostCenter, NewCostCenter } from "@/components/CostCenters/schema";
+import { CostCenter, NewCostCenter, SubCostCenter } from "@/components/CostCenters/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
@@ -6,6 +6,15 @@ class CostCentersManager {
   static async getCostCenters(): Promise<CostCenter[] | undefined> {
     try {
       const response = await axios.get("/api/cost-center");
+      return response.data.data;
+    } catch (error) {
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
+  static async getSubCostCenters(page: number = 1, size: number = 1000): Promise<SubCostCenter[] | undefined> {
+    try {
+      const response = await axios.get(`/api/cost-center/sub?size=${size}&page=${page}`);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);

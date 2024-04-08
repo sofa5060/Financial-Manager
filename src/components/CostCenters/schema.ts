@@ -3,6 +3,19 @@ import {
   CostCenterPropertiesSchema,
 } from "./Hierarchical/data";
 
+export type SubCostCenter = {
+  id: number;
+  code: string;
+  name_en: string;
+  name_ar: string;
+  properties: string;
+  parent_id: number | null;
+  company_id: number;
+  created_at: string;
+  updated_at: string;
+};
+
+
 export type CostCenter = {
   id: number;
   code: string;

@@ -29,6 +29,7 @@ export const handleAxiosError = (error: AxiosError) => {
     } else if (err.message) {
       throw new Error(err.message);
     }
+    
   } else if (error.request) {
     // The request was made but no response was received
     console.error(error.request);

@@ -1,4 +1,5 @@
 import { Entry, NewEntry } from "@/components/Entries/schema";
+import { Transaction } from "@/components/Transactions/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
@@ -56,6 +57,21 @@ class AccountingEntriesManager {
   }
 
   static async addEntry(entry: NewEntry): Promise<Entry | undefined> {
+    const tempTransactions = JSON.parse(JSON.stringify(entry.transactions)) as Transaction[];
+
+    tempTransactions.forEach((transaction) => {
+      if (transaction.debit === undefined) {
+        transaction.debit = 0;
+      }
+
+      if (transaction.credit === undefined) {
+        transaction.credit = 0;
+      }
+    });
+
+    entry.transactions = tempTransactions;
+
+    console.log(entry)
     try {
       const response = await axios.post("/api/entry", entry);
       console.log(response.data);

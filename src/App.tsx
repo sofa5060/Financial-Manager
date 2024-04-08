@@ -28,6 +28,7 @@ import axios from "axios";
 function App() {
   const queryClient = new QueryClient();
   axios.defaults.baseURL = import.meta.env.VITE_API_ROOT;
+  axios.defaults.headers.common["Accept"] = "application/json";
 
   return (
     <QueryClientProvider client={queryClient}>

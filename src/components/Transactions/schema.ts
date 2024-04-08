@@ -2,7 +2,6 @@ import z from "zod";
 
 export const NewTransactionSchema = z.object({
   account_id: z.number().optional(),
-  currency_id: z.number(),
   category_id: z.number().nullable(),
   cost_center_id: z.number().nullable(),
   f_debit: z.number().nullable(),
