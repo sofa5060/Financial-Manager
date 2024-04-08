@@ -4,6 +4,24 @@ import {
   AccountTypeSchema,
   ReportingTypeSchema,
 } from "./Hierarchical/data";
+import { Currency } from "@/managers/CurrenciesManager";
+
+export type SubAccount = {
+  id: number;
+  code: string;
+  name_en: string;
+  name_ar: string;
+  properties: string;
+  type: string;
+  currencies: Currency[];
+  categories: number[];
+  cost_center: boolean;
+  parent_id: number | null;
+  reporting_type: string;
+  company_id: number;
+  created_at: string;
+  updated_at: string;
+};
 
 export type Account = {
   id: number;

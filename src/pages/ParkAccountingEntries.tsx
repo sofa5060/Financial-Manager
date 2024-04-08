@@ -4,8 +4,8 @@ import { DataTable } from "@/components/Entries/TableView/DataTable";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
-import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PackageCheck, Plus } from "lucide-react";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +15,30 @@ const ParkAccountingEntries = () => {
   const columns = useParkAccountingEntriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [selectedEntries, setSelectedEntries] = useState<number[]>([]);
+
+  const queryClient = useQueryClient();
+  const { mutate: postEntriesMutate, isPending } = useMutation({
+    mutationFn: AccountingEntriesManager.postEntries,
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to post entry",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      toast({
+        title: "Entries posted successfully",
+      });
+    },
+  });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["entries", "park", "page", page],
+    queryKey: ["entries", "park", "page", page, "size", size],
     queryFn: () => AccountingEntriesManager.getParkEntries(page, size),
   });
 
@@ -46,6 +67,18 @@ const ParkAccountingEntries = () => {
         </h1>
         <div className="flex gap-5">
           <Button className="btn-outline mr-4">Print Selected</Button>
+          {selectedEntries.length > 0 && (
+            <Button
+              className="mr-4"
+              disabled={isPending}
+              onClick={() => {
+                postEntriesMutate(selectedEntries);
+              }}
+            >
+              <PackageCheck className="mr-2 w-4" />
+              Post Selected
+            </Button>
+          )}
           <Button
             className="btn-primary"
             onClick={() => {
@@ -57,7 +90,11 @@ const ParkAccountingEntries = () => {
           </Button>
         </div>
       </div>
-      <DataTable data={data!.entries} columns={columns} />
+      <DataTable
+        data={data!.entries}
+        columns={columns}
+        setSelectedEntries={setSelectedEntries}
+      />
       <PaginationAndSizeFooter
         page={page}
         setPage={setPage}

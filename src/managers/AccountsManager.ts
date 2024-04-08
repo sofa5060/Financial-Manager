@@ -1,4 +1,4 @@
-import { Account, NewAccount } from "@/components/Accounts/schema";
+import { Account, NewAccount, SubAccount } from "@/components/Accounts/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
@@ -10,6 +10,15 @@ class AccountsManager {
       return response.data.data;
     } catch (error) {
       console.log(error);
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
+  static async getSubAccounts(page: number = 1, size: number = 1000): Promise<SubAccount[] | undefined> {
+    try {
+      const response = await axios.get(`/api/account/sub?page=${page}&size=${size}`);
+      return response.data.data;
+    } catch (error) {
       handleAxiosError(error as AxiosError);
     }
   }

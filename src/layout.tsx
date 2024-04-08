@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import SideBar from "./components/common/SideBar/SideBar";
 import AppBar from "./components/common/AppBar/AppBar";
 import { useAuthStore } from "./hooks/useAuthStore";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import InitialDataProvider from "./providers/initialDataProvider";
 // import ChatBubble from "./components/common/chat-bubble";
 
 const PageLayout = () => {
@@ -24,8 +25,10 @@ const PageLayout = () => {
           <AppBar />
         </div>
         <div className="mt-16 w-full px-12 py-12">
-          <Outlet />
-          <Toaster />
+          <InitialDataProvider>
+            <Outlet />
+            <Toaster />
+          </InitialDataProvider>
         </div>
       </div>
       {/* <ChatBubble /> */}

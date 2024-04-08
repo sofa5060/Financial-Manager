@@ -14,7 +14,7 @@ const PostAccountingEntries = () => {
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["entries", "post", "page", page],
+    queryKey: ["entries", "post", "page", page, "size", size],
     queryFn: () => AccountingEntriesManager.getPostEntries(page, size),
   });
 

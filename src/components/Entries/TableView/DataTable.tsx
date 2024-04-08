@@ -19,17 +19,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataTableToolbar } from "./DataTableToolbar";
+import { Entry } from "../schema";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  setSelectedEntries?: (entries: number[]) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  setSelectedEntries,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -50,6 +53,17 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
+
+  const selected = table.getFilteredSelectedRowModel();
+
+  useEffect(() => {
+    if (!setSelectedEntries) return;
+    setSelectedEntries(
+      table
+        .getFilteredSelectedRowModel()
+        .rows.map((row) => (row.original as Entry).id)
+    );
+  }, [table, selected, setSelectedEntries]);
 
   return (
     <div className="space-y-4 mt-6">

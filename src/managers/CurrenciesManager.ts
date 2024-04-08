@@ -15,7 +15,8 @@ export type Currency = {
 class CurrenciesManager {
   static async getCurrencies(): Promise<Currency[] | undefined> {
     try {
-      const response = await axios.get("/api/currencies");
+      const response = await axios.get("/api/currency");
+      console.log(response)
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);

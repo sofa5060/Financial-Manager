@@ -1,7 +1,6 @@
 import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
 import { useParkAccountTransactionsColumns } from "@/components/Transactions/TableView/Columns";
 import { DataTable } from "@/components/Transactions/TableView/DataTable";
-import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import TransactionsManager from "@/managers/TransactionsManager";
 import { useQuery } from "@tanstack/react-query";
@@ -47,9 +46,6 @@ const ParkAccountsTransactions = () => {
         <h1 className="font-semibold text-2xl">
           Accounting Transactions<span className="text-primary"> / Park</span>
         </h1>
-        <div className="flex gap-5">
-          <Button className="btn-outline">Print Selected</Button>
-        </div>
       </div>
       <DataTable data={EntryTransactions ?? data!.transactions} columns={columns} />
       <PaginationAndSizeFooter
