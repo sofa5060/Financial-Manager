@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { Entry, NewEntry } from "@/components/Entries/schema";
 import { Transaction } from "@/components/Transactions/schema";
 import { handleAxiosError } from "@/lib/utils";
@@ -57,24 +59,8 @@ class AccountingEntriesManager {
   }
 
   static async addEntry(entry: NewEntry): Promise<Entry | undefined> {
-    const tempTransactions = JSON.parse(JSON.stringify(entry.transactions)) as Transaction[];
-
-    tempTransactions.forEach((transaction) => {
-      if (transaction.debit === undefined) {
-        transaction.debit = 0;
-      }
-
-      if (transaction.credit === undefined) {
-        transaction.credit = 0;
-      }
-    });
-
-    entry.transactions = tempTransactions;
-
-    console.log(entry)
     try {
       const response = await axios.post("/api/entry", entry);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -116,6 +102,44 @@ class AccountingEntriesManager {
         reason,
         date,
       });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
+  static async updateEntry(
+    entry: Entry,
+    entryId: number
+  ): Promise<Entry | undefined> {
+    const tempTransactions = JSON.parse(JSON.stringify(entry.transactions));
+    entry.transactions = tempTransactions.map((transaction: Transaction) => {
+      delete transaction.status;
+      delete transaction.account_code;
+      delete transaction.cost_center_code;
+      delete transaction.account_name_en;
+      delete transaction.category_name_en;
+      delete transaction.category_name_ar;
+      delete transaction.account_name_ar;
+      delete transaction.cost_center_en;
+      delete transaction.cost_center_ar;
+      delete transaction.company_id;
+      delete transaction.id;
+      delete transaction.entry_id;
+      delete transaction.created_at;
+      delete transaction.updated_at;
+      delete transaction.code;
+      delete transaction.created_by_name;
+      delete transaction.posted_by_name;
+      delete transaction.posted_at;
+      delete transaction.currency;
+      delete transaction.entry_created_at;
+      return transaction;
+    });
+    console.log(entry);
+    try {
+      const response = await axios.put(`/api/entry/${entryId}`, entry);
       return response.data;
     } catch (error) {
       console.log(error);

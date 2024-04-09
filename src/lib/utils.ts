@@ -7,6 +7,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Handles an Axios error.
+ * 
+ * @param {AxiosError} error - The Axios error object.
+ * @throws {Error} - Throws an error if there is a response error with a status code of 401, or if there is an error in setting up the request.
+ * @returns {void}
+ */
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     if (error.response.status === 401) {
@@ -43,6 +50,23 @@ export const handleAxiosError = (error: AxiosError) => {
   }
 };
 
+/**
+ * Formats a date and time string into a localized string representation.
+ *
+ * @param {string} date - The date and time string to format.
+ * @returns {string} The formatted date and time string.
+ */
 export const formatDateTime = (date: string) => {
   return new Date(date).toLocaleString();
 };
+
+/**
+ * Formats a date string by returning only the date portion.
+ * 
+ * @param {string} date - The date string to be formatted.
+ * @returns {string} The formatted date string.
+ */
+export const formatDate = (date: string) => {
+  // return date only
+  return formatDateTime(date).replace(/\//g, "-").split(",")[0]
+}

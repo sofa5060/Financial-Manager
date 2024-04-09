@@ -26,6 +26,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountsManager from "@/managers/AccountsManager";
 import { useToast } from "@/components/ui/use-toast";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
+import { useCategoriesStore } from "@/hooks/useCategories";
 
 type AccountFormProps = {
   level: number;
@@ -45,6 +46,7 @@ const AccountForm = ({
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
   );
+  const categoriesOptions = useCategoriesStore((state) => state.categoriesOptions);
 
   useEffect(() => {
     form.reset({
@@ -91,6 +93,7 @@ const AccountForm = ({
     mutationFn: AccountsManager.addAccount,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      await queryClient.invalidateQueries({ queryKey: ["sub-accounts"] });
       form.reset();
       setIsOpen(false);
     },
@@ -110,6 +113,7 @@ const AccountForm = ({
         AccountsManager.updateAccount(data, account!.id),
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["accounts"] });
+        await queryClient.invalidateQueries({ queryKey: ["sub-accounts"] });
         setIsOpen(false);
       },
       onError: (error) => {
@@ -306,10 +310,7 @@ const AccountForm = ({
                     );
                   }}
                   className="w-full"
-                  options={[
-                    { label: "Tax", value: 0 },
-                    { label: "Non-Tax", value: 1 },
-                  ]}
+                  options={categoriesOptions}
                 />
                 {errors.categories && (
                   <span className="error-text">

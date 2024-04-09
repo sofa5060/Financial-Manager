@@ -24,21 +24,29 @@ import { useAuthStore } from "@/hooks/useAuthStore";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useEntryType } from "../data";
 import { useBanksStore } from "@/hooks/useBanksStore";
+import { formatDate } from "@/lib/utils";
 
 type EntryFormProps = {
   type?: "view" | "edit" | "add";
   entry?: Entry;
 };
 const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
-  const [isDefaultCurrency, setIsDefaultCurrency] = useState(true);
-  const [isCheckPayment, setIsCheckPayment] = useState(false);
   const name = useAuthStore((state) => state.name);
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
   );
+  const currencies = useCurrenciesStore((state) => state.currencies);
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
   const banksOptions = useBanksStore((state) => state.banksOptions);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isDefaultCurrency, setIsDefaultCurrency] = useState(
+    entry ? entry.currency_id === defaultCurrency?.id : true
+  );
+  const [isCheckPayment, setIsCheckPayment] = useState(
+    entry ? entry.type === "check" : false
+  );
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    entry?.transactions || []
+  );
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -65,6 +73,29 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     },
   });
 
+  const { mutate: editEntryMutate, isPending: isUpdating } = useMutation({
+    mutationFn: (data: Entry) =>
+      AccountingEntriesManager.updateEntry(data, entry!.id),
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to edit entry",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["entry", entry!.id] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      toast({
+        title: "Entry edited successfully",
+      });
+
+      navigate("/accounting-entries/park");
+    },
+  });
+
   const HEADERS = {
     view: "View Entry",
     edit: "Edit Entry",
@@ -74,6 +105,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
   const form = useForm<NewEntry>({
     resolver: zodResolver(NewEntrySchema),
     defaultValues: {
+      ...entry,
       transactions: [],
     },
   });
@@ -84,12 +116,13 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
   } = form;
 
   const onSubmit = (data: NewEntry) => {
-    console.log(data);
-    console.log(transactions);
     data.transactions = transactions;
-    delete data.created_by;
 
     console.log(data);
+    if (type === "edit") {
+      editEntryMutate(data as Entry);
+      return;
+    }
     addEntryMutate(data);
   };
 
@@ -129,7 +162,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">date</FormLabel>
+                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
                   <div className="flex-col w-full">
                     <FormControl>
                       <Input
@@ -137,6 +170,8 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                         className="w-full"
                         placeholder="Pick a date"
                         type="date"
+                        defaultValue={entry && formatDate(entry.date)}
+                        disabled={type === "view"}
                       />
                     </FormControl>
                     <FormMessage />
@@ -159,6 +194,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     setValue("currency_id", val!.value);
                     setIsDefaultCurrency(val!.value === defaultCurrency?.id);
                   }}
+                  defaultValue={currenciesOptions.find(
+                    (currency) => currency.value === entry?.currency_id
+                  )}
                   className="w-full"
                   options={currenciesOptions}
                 />
@@ -183,6 +221,11 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                           className="w-full"
                           placeholder="Rate (Optional)"
                           type="number"
+                          value={field.value}
+                          onChange={(e) => {
+                            form.setValue("rate", parseFloat(e.target.value));
+                          }}
+                          disabled={type === "view"}
                         />
                       </FormControl>
                       <FormMessage />
@@ -212,6 +255,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     setValue("type", val!.value as EntryType);
                     setIsCheckPayment(val!.value === "check");
                   }}
+                  defaultValue={entryTypes.find(
+                    (entryType) => entryType.value === entry?.type
+                  )}
                   className="w-full"
                   options={entryTypes}
                 />
@@ -237,6 +283,8 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                             className="w-full"
                             placeholder="Check No"
                             type="text"
+                            disabled={type === "view"}
+                            value={field.value ?? undefined}
                           />
                         </FormControl>
                         <FormMessage />
@@ -258,6 +306,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                         form.clearErrors("bank_id");
                         setValue("bank_id", val!.value);
                       }}
+                      defaultValue={banksOptions.find(
+                        (bank) => bank.value === entry?.bank_id
+                      )}
                       className="w-full"
                       options={banksOptions}
                     />
@@ -284,7 +335,12 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                 <FormLabel className="whitespace-nowrap">Title</FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
-                    <Input {...field} className="w-full" placeholder="Title" />
+                    <Input
+                      {...field}
+                      className="w-full"
+                      placeholder="Title"
+                      disabled={type === "view"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </div>
@@ -303,6 +359,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                       {...field}
                       className="w-full"
                       placeholder="Description"
+                      disabled={type === "view"}
                     />
                   </FormControl>
                   <FormMessage />
@@ -317,47 +374,62 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                 setTransactions as (transactions: NewTransaction[]) => void
               }
               isDefaultCurrency={isDefaultCurrency}
+              disabled={type === "view"}
+              rate={
+                form.getValues("rate") ??
+                currencies.find(
+                  (currency) => currency.id === form.getValues("currency_id")
+                )?.default_rate
+              }
             />
           </div>
-          <FormField
-            control={form.control}
-            name="created_by"
-            render={({ field }) => (
-              <FormItem className="flex gap-4 items-center max-w-[400px] ms-auto">
-                <FormLabel className="whitespace-nowrap font-normal">
-                  Signature (Created by):
-                </FormLabel>
-                <div className="flex-col w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full"
-                      placeholder="Created By"
-                      disabled
-                      value={name!}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4 items-center max-w-[400px] ms-auto">
+            <p className="whitespace-nowrap font-normal text-sm">
+              Signature (Created by):
+            </p>
+            <Input
+              className="w-full"
+              placeholder="Created By"
+              disabled
+              value={name!}
+            />
+          </div>
           <div className="flex justify-end gap-4">
-            <Button type="button" className="bg-red-500" disabled={isPending}>
-              Cancel
-            </Button>
-            {type === "view" && (
-              <Button
-                type="button"
-                className="bg-gray-200 text-black"
-                disabled={isPending}
-              >
-                Save As Template
-              </Button>
+            {type === "view" ? (
+              <>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  Close
+                </Button>
+                <Button
+                  type="button"
+                  className="bg-gray-200 text-black"
+                  disabled={isPending}
+                >
+                  Save As Template
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  className="bg-red-500"
+                  disabled={isPending || isUpdating}
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isPending || isUpdating}>
+                  Save
+                </Button>
+              </>
             )}
-            <Button type="submit" disabled={isPending}>
-              Save
-            </Button>
           </div>
         </form>
       </Form>

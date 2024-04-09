@@ -10,13 +10,12 @@ export const NewEntrySchema = z.object({
   currency_id: z.number(),
   rate: z.number().optional(),
   type: EntryType,
-  bank_id: z.number().optional(),
-  check_no: z.string().optional(),
+  bank_id: z.number().optional().nullable(),
+  check_no: z.string().optional().nullable(),
   date: z.string(),
   description: z.string(),
   transactions: z.array(TransactionSchema),
   document_code: z.string().optional(),
-  created_by: z.string().optional(),
 });
 
 export type Entry = {

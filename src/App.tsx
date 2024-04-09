@@ -24,6 +24,9 @@ import OrgTitlesSettingsPage from "./components/settings/subpages/org-titles/org
 import AccountsTemplates from "./pages/AccountsTemplates";
 import AccountsTemplateForm from "./pages/AccountsTemplateForm";
 import axios from "axios";
+import EditParkAccountEntry from "./pages/EditParkAccountingEntry";
+import ViewParkAccountEntry from "./pages/ViewParkAccountingEntry";
+import ViewPostAccountEntry from "./pages/ViewPostAccountingEntry";
 
 function App() {
   const queryClient = new QueryClient();
@@ -39,80 +42,86 @@ function App() {
           </div>
         }
       >
-          <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/" element={<PageLayout />}>
-                <Route path="/" element={<AccountsCharts />} />
-                <Route path="/cost-centers" element={<CostCentersCharts />} />
-                <Route
-                  path="/accounting-entries"
-                  element={<Navigate to="/accounting-entries/park" />}
-                />
-                <Route
-                  path="/accounting-entries/park"
-                  element={<ParkAccountingEntries />}
-                />
-                <Route
-                  path="/accounting-entries/park/new"
-                  element={<NewParkAccountEntry />}
-                />
-                <Route
-                  path="/accounting-entries/post"
-                  element={<PostAccountingEntries />}
-                />
-                <Route
-                  path="/treasury-receipts/new"
-                  element={<TreasuryReceiptBond />}
-                />
-                <Route
-                  path="/treasury-receipts"
-                  element={<TreasuryReceipts />}
-                />
-                <Route
-                  path="/treasury-payments/new"
-                  element={<TreasuryPaymentBond />}
-                />
-                <Route
-                  path="/treasury-payments"
-                  element={<TreasuryPayments />}
-                />
-                <Route
-                  path="/transactions/park"
-                  element={<ParkAccountsTransactions key="park" />}
-                />
-                <Route
-                  path="/transactions/post"
-                  element={<PostAccountsTransactions key="post" />}
-                />
-                <Route
-                  path="/accounts/templates"
-                  element={<AccountsTemplates />}
-                />
-                <Route
-                  path="/accounts/templates/new"
-                  element={<AccountsTemplateForm />}
-                />
-                <Route path="/settings" element={<GeneralSettingsPage />} />
-                <Route
-                  path="settings/taskcat"
-                  element={<TasksCategoriesPage />}
-                />
-                <Route
-                  path="settings/tasksubcat"
-                  element={<TasksSubCategoriesPage />}
-                />
-                <Route
-                  path="settings/orgdep"
-                  element={<OrgDepartmentsSettingsPage />}
-                />
-                <Route
-                  path="settings/orgtitles"
-                  element={<OrgTitlesSettingsPage />}
-                />
-              </Route>
-            </Routes>
-          </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<PageLayout />}>
+              <Route path="/" element={<AccountsCharts />} />
+              <Route path="/cost-centers" element={<CostCentersCharts />} />
+              <Route
+                path="/accounting-entries"
+                element={<Navigate to="/accounting-entries/park" />}
+              />
+              <Route
+                path="/accounting-entries/park"
+                element={<ParkAccountingEntries />}
+              />
+              <Route
+                path="/accounting-entries/park/new"
+                element={<NewParkAccountEntry />}
+              />
+              <Route
+                path="/accounting-entries/park/:id/view"
+                element={<ViewParkAccountEntry />}
+              />
+              <Route
+                path="/accounting-entries/park/:id"
+                element={<EditParkAccountEntry />}
+              />
+              <Route
+                path="/accounting-entries/post"
+                element={<PostAccountingEntries />}
+              />
+              <Route
+                path="/accounting-entries/post/:id/view"
+                element={<ViewPostAccountEntry />}
+              />
+              <Route
+                path="/treasury-receipts/new"
+                element={<TreasuryReceiptBond />}
+              />
+              <Route path="/treasury-receipts" element={<TreasuryReceipts />} />
+              <Route
+                path="/treasury-payments/new"
+                element={<TreasuryPaymentBond />}
+              />
+              <Route path="/treasury-payments" element={<TreasuryPayments />} />
+              <Route
+                path="/transactions/park"
+                element={<ParkAccountsTransactions key="park" />}
+              />
+              <Route
+                path="/transactions/post"
+                element={<PostAccountsTransactions key="post" />}
+              />
+              <Route
+                path="/accounts/templates"
+                element={<AccountsTemplates />}
+              />
+              <Route
+                path="/accounts/templates/new"
+                element={<AccountsTemplateForm />}
+              />
+              <Route path="/settings" element={<GeneralSettingsPage />} />
+              <Route
+                path="settings/taskcat"
+                element={<TasksCategoriesPage />}
+              />
+              <Route
+                path="settings/tasksubcat"
+                element={<TasksSubCategoriesPage />}
+              />
+              <Route
+                path="settings/orgdep"
+                element={<OrgDepartmentsSettingsPage />}
+              />
+              <Route
+                path="settings/orgtitles"
+                element={<OrgTitlesSettingsPage />}
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </Suspense>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

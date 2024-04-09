@@ -36,6 +36,9 @@ export const usePostAccountTransactionsColumns = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Posting Date" />
       ),
+      cell: ({ row }) => {
+        return formatDateTime(row.original.posted_at!);
+      },
       meta: {
         header: "Posting Date",
       },

@@ -11,12 +11,16 @@ type DynamicTableFormProps = {
   transactions: NewTransaction[];
   setTransactions: (transactions: NewTransaction[]) => void;
   isDefaultCurrency: boolean;
+  disabled: boolean;
+  rate?: number;
 };
 
 const DynamicTableForm = ({
   transactions,
   setTransactions,
   isDefaultCurrency,
+  disabled,
+  rate,
 }: DynamicTableFormProps) => {
   const subAccountOptions = useSubAccountsStore(
     (state) => state.subAccountOptions
@@ -39,11 +43,11 @@ const DynamicTableForm = ({
             account_id: undefined,
             category_id: null,
             cost_center_id: null,
-            f_debit: null,
-            f_credit: null,
+            f_debit: 0,
+            f_credit: 0,
             description: "",
-            debit: undefined,
-            credit: undefined,
+            debit: 0,
+            credit: 0,
           },
         ]
   );
@@ -67,24 +71,25 @@ const DynamicTableForm = ({
   };
 
   const removeRow = (index: number) => {
+    if (disabled) return;
     if (rows.length === 1) return; // Prevent removing the last row
     console.log(index);
     const updatedRows = rows.filter((_, i) => i !== index);
-    console.log(updatedRows);
     setRows(updatedRows);
   };
 
   const addRowAfter = (index: number) => {
+    if (disabled) return;
     const updatedRows = [...rows];
     updatedRows.splice(index + 1, 0, {
       account_id: undefined,
       category_id: null,
       cost_center_id: null,
-      f_debit: null,
-      f_credit: null,
+      f_debit: 0,
+      f_credit: 0,
       description: "",
-      debit: undefined,
-      credit: undefined,
+      debit: 0,
+      credit: 0,
     });
     setRows(updatedRows);
   };
@@ -156,12 +161,14 @@ const DynamicTableForm = ({
                 </th>
               </>
             )}
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Actions
-            </th>
+            {!disabled && (
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            )}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -169,17 +176,18 @@ const DynamicTableForm = ({
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Select
-                  id="accountCategory"
+                  id="category_id"
                   isSearchable={false}
                   isClearable={false}
                   onChange={(val) => {
-                    handleChange(index, "accountCategory", val!.value!);
+                    handleChange(index, "category_id", val!.value!);
                   }}
                   value={categoriesOptions.find(
                     (option) => option.value === row.account_id
                   )}
                   className="min-w-48"
                   options={categoriesOptions}
+                  isDisabled={disabled}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -197,6 +205,7 @@ const DynamicTableForm = ({
                   className="min-w-40"
                   options={subAccountCodesOptions}
                   required
+                  isDisabled={disabled}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -214,6 +223,7 @@ const DynamicTableForm = ({
                   className="min-w-48"
                   options={subAccountOptions}
                   required
+                  isDisabled={disabled}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -225,6 +235,7 @@ const DynamicTableForm = ({
                   }
                   required
                   className="min-w-64"
+                  disabled={disabled}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -236,32 +247,41 @@ const DynamicTableForm = ({
                     handleChange(index, "cost_center_id", val!.value!);
                   }}
                   value={subCostCentersOptions.find(
-                    (option) => option.value === row.account_id
+                    (option) => option.value === row.cost_center_id
                   )}
                   className="min-w-48"
                   options={subCostCentersOptions}
+                  isDisabled={disabled}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Input
                   type="number"
-                  value={row.debit}
+                  value={
+                    !isDefaultCurrency
+                      ? (row.f_debit as number) * rate!
+                      : row.debit
+                  }
                   onChange={(e) => handleChange(index, "debit", e.target.value)}
                   required
                   className="min-w-32"
-                  disabled={row.credit !== undefined || !isDefaultCurrency}
+                  disabled={row.credit !== 0 || !isDefaultCurrency || disabled}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Input
                   type="number"
-                  value={row.credit}
+                  value={
+                    !isDefaultCurrency
+                      ? (row.f_credit as number) * rate!
+                      : row.credit
+                  }
                   onChange={(e) =>
                     handleChange(index, "credit", e.target.value)
                   }
                   required
                   className="min-w-32"
-                  disabled={row.debit !== undefined || !isDefaultCurrency}
+                  disabled={row.debit !== 0 || !isDefaultCurrency || disabled}
                 />
               </td>
               {!isDefaultCurrency && (
@@ -269,41 +289,43 @@ const DynamicTableForm = ({
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Input
                       type="number"
-                      value={row.f_debit ?? undefined}
+                      value={row.f_debit as number}
                       onChange={(e) =>
                         handleChange(index, "f_debit", e.target.value)
                       }
                       required
                       className="min-w-32"
-                      disabled={row.f_credit !== null}
+                      disabled={row.f_credit !== 0 || disabled}
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Input
                       type="number"
-                      value={row.f_credit ?? undefined}
+                      value={row.f_credit as number}
                       onChange={(e) =>
                         handleChange(index, "f_credit", e.target.value)
                       }
                       required
                       className="min-w-32"
-                      disabled={row.f_debit !== null}
+                      disabled={row.f_debit !== 0 || disabled}
                     />
                   </td>
                 </>
               )}
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex gap-2">
-                  <Trash2
-                    className="w-5 text-red-500 cursor-pointer"
-                    onClick={() => removeRow(index)}
-                  />
-                  <PlusCircle
-                    className="w-5 text-primary cursor-pointer"
-                    onClick={() => addRowAfter(index)}
-                  />
-                </div>
-              </td>
+              {!disabled && (
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex gap-2">
+                    <Trash2
+                      className="w-5 text-red-500 cursor-pointer"
+                      onClick={() => removeRow(index)}
+                    />
+                    <PlusCircle
+                      className="w-5 text-primary cursor-pointer"
+                      onClick={() => addRowAfter(index)}
+                    />
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

@@ -33,6 +33,7 @@ const DeleteModal = ({ children, accountId }: DeleteModalProps) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      await queryClient.invalidateQueries({ queryKey: ["sub-accounts"] });
       toast({
         title: "Account deleted successfully",
       });
