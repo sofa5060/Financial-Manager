@@ -57,8 +57,6 @@ const ParkAccountingEntries = () => {
     return <></>;
   }
 
-  console.log(data);
-
   return (
     <div>
       <div className="flex gap-5 justify-between">

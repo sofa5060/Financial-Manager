@@ -4,6 +4,7 @@ import {
   Eye,
   PackageCheckIcon,
   Pencil,
+  SaveAll,
   TableProperties,
   Trash2,
   Undo,
@@ -11,7 +12,7 @@ import {
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import ReverseEntry from "../Dialogs/ReverseEntry";
-import { formatDateTime } from "@/lib/utils";
+import { cn, formatDateTime } from "@/lib/utils";
 import DeleteModal from "../Dialogs/DeleteModal";
 import { useNavigate } from "react-router-dom";
 import PostModal from "../Dialogs/PostModal";
@@ -21,8 +22,30 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import TemplatesManager from "@/managers/TemplatesManager";
+import { toast } from "@/components/ui/use-toast";
 
 export const useParkAccountingEntriesColumns = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate: saveTemplateMutate, isPending } = useMutation({
+    mutationFn: TemplatesManager.addTemplate,
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to save template",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["templates"] });
+      toast({
+        title: "Entry saved successfully",
+      });
+    },
+  });
+
   const navigate = useNavigate();
   const columns: ColumnDef<Entry>[] = [
     {
@@ -157,6 +180,15 @@ export const useParkAccountingEntriesColumns = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+            <SaveAll
+              className={cn("cursor-pointer text-primary w-5", {
+                "opacity-50": isPending,
+              })}
+              onClick={() => {
+                if(isPending) return;
+                saveTemplateMutate(entry.id);
+              }}
+            />
             <DeleteModal entryId={entry.id}>
               <Trash2 className="cursor-pointer text-red-400 w-5" />
             </DeleteModal>
@@ -173,7 +205,26 @@ export const useParkAccountingEntriesColumns = () => {
 };
 
 export const usePostAccountingEntriesColumns = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  const { mutate: saveTemplateMutate, isPending } = useMutation({
+    mutationFn: TemplatesManager.addTemplate,
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to save template",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["templates"] });
+      toast({
+        title: "Entry saved successfully",
+      });
+    },
+  });
+  
   const columns: ColumnDef<Entry>[] = [
     {
       id: "select",
@@ -275,6 +326,15 @@ export const usePostAccountingEntriesColumns = () => {
               className="cursor-pointer text-primary w-5"
               onClick={() => {
                 navigate(`/transactions/post?entry=${entry.id}`);
+              }}
+            />
+            <SaveAll
+              className={cn("cursor-pointer text-primary w-5", {
+                "opacity-50": isPending,
+              })}
+              onClick={() => {
+                if(isPending) return;
+                saveTemplateMutate(entry.id);
               }}
             />
             <ReverseEntry entry={entry}>

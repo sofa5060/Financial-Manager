@@ -11,31 +11,128 @@ import Select from "react-select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Template,
+  TemplateType,
+  NewTemplate,
+  NewTemplateSchema,
+} from "../schema";
 import { Button } from "@/components/ui/button";
-import DynamicTableForm from "@/components/common/DynamicTableForm/DynamicTableForm";
-import { NewTemplate, NewTemplateSchema, Template } from "../schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { NewTransaction, Transaction } from "@/components/Transactions/schema";
+import DynamicTableForm from "./DynamicTableForm";
+import { useAuthStore } from "@/hooks/useAuthStore";
+import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
+import { useBanksStore } from "@/hooks/useBanksStore";
+import { formatDate } from "@/lib/utils";
+import TemplatesManager from "@/managers/TemplatesManager";
+import { useTemplateType } from "../data";
 
 type TemplateFormProps = {
-  type?: "view" | "edit" | "add";
+  type?: "view" | "edit" | "apply";
   template?: Template;
 };
-const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
+const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
+  const name = useAuthStore((state) => state.name);
+  const currenciesOptions = useCurrenciesStore(
+    (state) => state.currenciesOptions
+  );
+  const currencies = useCurrenciesStore((state) => state.currencies);
+  const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
+  const banksOptions = useBanksStore((state) => state.banksOptions);
+  const [isDefaultCurrency, setIsDefaultCurrency] = useState(
+    template ? template.currency_id === defaultCurrency?.id : true
+  );
+  const [isCheckPayment, setIsCheckPayment] = useState(
+    template ? template.type === "check" : false
+  );
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    template?.transactions || []
+  );
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { templateTypes } = useTemplateType();
+
+  const { mutate: applyTemplateMutate, isPending } = useMutation({
+    mutationFn: AccountingEntriesManager.addEntry,
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to apply template",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      toast({
+        title: "Template applied successfully",
+      });
+
+      navigate("/accounting-entries/park");
+    },
+  });
+
+  const { mutate: editTemplateMutate, isPending: isUpdating } = useMutation({
+    mutationFn: (data: Template) =>
+      TemplatesManager.updateTemplate(data, template!.id),
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to edit template",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["templates"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["template", template!.id],
+      });
+
+      toast({
+        title: "Template edited successfully",
+      });
+
+      navigate("/accounts/templates");
+    },
+  });
+
   const HEADERS = {
     view: "View Template",
     edit: "Edit Template",
-    add: "Add New Template",
+    apply: "Apply Template",
   };
 
   const form = useForm<NewTemplate>({
     resolver: zodResolver(NewTemplateSchema),
+    defaultValues: {
+      ...template,
+      transactions: [],
+    },
   });
 
   const {
+    setValue,
     formState: { errors },
   } = form;
 
   const onSubmit = (data: NewTemplate) => {
+    if(type === "view") return;
+    data.transactions = transactions;
+
     console.log(data);
+    if (type === "edit") {
+      editTemplateMutate(data as Template);
+      return;
+    }
+
+    applyTemplateMutate(data);
   };
 
   return (
@@ -45,36 +142,12 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex max-w-[50%] gap-4">
-            {template && (
-              <FormField
-                control={form.control}
-                name="document_code"
-                render={({ field }) => (
-                  <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                    <FormLabel className="whitespace-nowrap">
-                      Document Number
-                    </FormLabel>
-                    <div className="flex-col w-full">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="w-full"
-                          disabled
-                          defaultValue={template.code}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
-            )}
             <FormField
               control={form.control}
               name="date"
               render={({ field }) => (
                 <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">date</FormLabel>
+                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
                   <div className="flex-col w-full">
                     <FormControl>
                       <Input
@@ -82,6 +155,8 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
                         className="w-full"
                         placeholder="Pick a date"
                         type="date"
+                        defaultValue={template && formatDate(template.date)}
+                        disabled={type === "view"}
                       />
                     </FormControl>
                     <FormMessage />
@@ -89,6 +164,67 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
                 </FormItem>
               )}
             />
+            <div className="flex justify-end flex-1 flex-col items-start gap-1">
+              <label htmlFor="currency_id" className="font-medium text-sm">
+                Currency
+              </label>
+              <div className="flex-col w-full">
+                <Select
+                  id="currency_id"
+                  isSearchable={false}
+                  isClearable={false}
+                  isDisabled={type === "view"}
+                  onChange={(val) => {
+                    form.clearErrors("currency_id");
+                    setValue("currency_id", val!.value);
+                    setIsDefaultCurrency(val!.value === defaultCurrency?.id);
+                  }}
+                  defaultValue={currenciesOptions.find(
+                    (currency) => currency.value === template?.currency_id
+                  )}
+                  className="w-full"
+                  options={currenciesOptions}
+                />
+                {errors.currency_id && (
+                  <span className="error-text">
+                    {errors.currency_id.message}
+                  </span>
+                )}
+              </div>
+            </div>
+            {!isDefaultCurrency ? (
+              <FormField
+                control={form.control}
+                name="rate"
+                render={({ field }) => (
+                  <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
+                    <FormLabel className="whitespace-nowrap">rate</FormLabel>
+                    <div className="flex-col w-full">
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className="w-full"
+                          placeholder="Rate (Optional)"
+                          type="number"
+                          value={field.value}
+                          onChange={(e) => {
+                            form.setValue("rate", parseFloat(e.target.value));
+                          }}
+                          disabled={type === "view"}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </div>
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                {/* Temp to keep design consistent */}
+              </div>
+            )}
+          </div>
+          <div className="flex items-center max-w-[50%] gap-4">
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="type" className="font-medium text-sm">
                 Type
@@ -99,46 +235,82 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
                   isSearchable={false}
                   isClearable={false}
                   isDisabled={type === "view"}
-                  // onChange={(val) => {
-                  //   form.clearErrors("currency");
-                  //   setValue("currency", val.value);
-                  // }}
+                  onChange={(val) => {
+                    form.clearErrors("type");
+                    setValue("type", val!.value as TemplateType);
+                    setIsCheckPayment(val!.value === "check");
+                  }}
+                  defaultValue={templateTypes.find(
+                    (templateType) => templateType.value === template?.type
+                  )}
                   className="w-full"
-                  options={[
-                    { label: "KZ", value: "KZ" },
-                    { label: "AB", value: "AB" },
-                  ]}
+                  options={templateTypes}
                 />
-                {errors.currency && (
-                  <span className="error-text">{errors.currency.message}</span>
+                {errors.type && (
+                  <span className="error-text">{errors.type.message}</span>
                 )}
               </div>
             </div>
-            <div className="flex justify-end flex-1 flex-col items-start gap-1">
-              <label htmlFor="currency" className="font-medium text-sm">
-                Currency
-              </label>
-              <div className="flex-col w-full">
-                <Select
-                  id="currency"
-                  isSearchable={false}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  // onChange={(val) => {
-                  //   form.clearErrors("currency");
-                  //   setValue("currency", val.value);
-                  // }}
-                  className="w-full"
-                  options={[
-                    { label: "USD", value: 0 },
-                    { label: "SAR", value: 1 },
-                  ]}
+            {isCheckPayment ? (
+              <>
+                <FormField
+                  control={form.control}
+                  name="check_no"
+                  render={({ field }) => (
+                    <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
+                      <FormLabel className="whitespace-nowrap">
+                        Check No
+                      </FormLabel>
+                      <div className="flex-col w-full">
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="w-full"
+                            placeholder="Check No"
+                            type="text"
+                            disabled={type === "view"}
+                            value={field.value ?? undefined}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
                 />
-                {errors.currency && (
-                  <span className="error-text">{errors.currency.message}</span>
-                )}
-              </div>
-            </div>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                  <label htmlFor="bank_id" className="font-medium text-sm">
+                    Bank
+                  </label>
+                  <div className="flex-col w-full">
+                    <Select
+                      id="currency_id"
+                      isSearchable={false}
+                      isClearable={false}
+                      isDisabled={type === "view"}
+                      onChange={(val) => {
+                        form.clearErrors("bank_id");
+                        setValue("bank_id", val!.value);
+                      }}
+                      defaultValue={banksOptions.find(
+                        (bank) => bank.value === template?.bank_id
+                      )}
+                      className="w-full"
+                      options={banksOptions}
+                    />
+                    {errors.bank_id && (
+                      <span className="error-text">
+                        {errors.bank_id.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+              </>
+            )}
           </div>
           <FormField
             control={form.control}
@@ -148,7 +320,12 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
                 <FormLabel className="whitespace-nowrap">Title</FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
-                    <Input {...field} className="w-full" placeholder="Title" />
+                    <Input
+                      {...field}
+                      className="w-full"
+                      placeholder="Title"
+                      disabled={type === "view"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </div>
@@ -167,6 +344,7 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
                       {...field}
                       className="w-full"
                       placeholder="Description"
+                      disabled={type === "view"}
                     />
                   </FormControl>
                   <FormMessage />
@@ -174,40 +352,71 @@ const TemplateForm = ({ type = "add", template }: TemplateFormProps) => {
               </FormItem>
             )}
           />
-          <div className="pt-8">
-            <DynamicTableForm />
+          <div className="mt-4">
+            <DynamicTableForm
+              transactions={transactions}
+              setTransactions={
+                setTransactions as (transactions: NewTransaction[]) => void
+              }
+              isDefaultCurrency={isDefaultCurrency}
+              disabled={type === "view"}
+              rate={
+                form.getValues("rate") ??
+                currencies.find(
+                  (currency) => currency.id === form.getValues("currency_id")
+                )?.default_rate
+              }
+              type={type}
+            />
           </div>
-          <FormField
-            control={form.control}
-            name="created_by"
-            render={({ field }) => (
-              <FormItem className="flex gap-4 items-center max-w-[400px] ms-auto">
-                <FormLabel className="whitespace-nowrap font-normal">
-                  Signature (Created by):
-                </FormLabel>
-                <div className="flex-col w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full"
-                      placeholder="Created By"
-                      disabled
-                      defaultValue="Amir Hesham"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4 items-center max-w-[400px] ms-auto">
+            <p className="whitespace-nowrap font-normal text-sm">
+              Signature (Created by):
+            </p>
+            <Input
+              className="w-full"
+              placeholder="Created By"
+              disabled
+              value={name!}
+            />
+          </div>
           <div className="flex justify-end gap-4">
-            <Button type="button" className="bg-red-500">
-              Cancel
-            </Button>
-            <Button type="submit" className="bg-gray-200 text-black">
-              Save As Template
-            </Button>
-            <Button type="submit">Save</Button>
+            {type === "view" ? (
+              <>
+                <Button
+                  type="button"
+                  className="bg-gray-200 text-black"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  Close
+                </Button>
+                <Button type="button" disabled={isPending}
+                  onClick={() => {
+                    navigate(`/accounts/templates/${template!.id}/apply`);
+                  }}
+                >
+                  Apply Template
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  className="bg-red-500"
+                  disabled={isPending || isUpdating}
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isPending || isUpdating}>
+                  {type === "apply" ? "Apply" : "Save"}
+                </Button>
+              </>
+            )}
           </div>
         </form>
       </Form>

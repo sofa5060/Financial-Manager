@@ -22,11 +22,13 @@ import TasksSubCategoriesPage from "./components/settings/subpages/tasks-subcate
 import OrgDepartmentsSettingsPage from "./components/settings/subpages/org-departments/org-departments-settings";
 import OrgTitlesSettingsPage from "./components/settings/subpages/org-titles/org-titles-settings";
 import AccountsTemplates from "./pages/AccountsTemplates";
-import AccountsTemplateForm from "./pages/AccountsTemplateForm";
 import axios from "axios";
 import EditParkAccountEntry from "./pages/EditParkAccountingEntry";
 import ViewParkAccountEntry from "./pages/ViewParkAccountingEntry";
 import ViewPostAccountEntry from "./pages/ViewPostAccountingEntry";
+import EditTemplateForm from "./pages/EditTemplateForm";
+import ViewTemplateForm from "./pages/ViewTemplate";
+import ApplyTemplateForm from "./pages/ApplyTemplate";
 
 function App() {
   const queryClient = new QueryClient();
@@ -99,8 +101,16 @@ function App() {
                 element={<AccountsTemplates />}
               />
               <Route
-                path="/accounts/templates/new"
-                element={<AccountsTemplateForm />}
+                path="/accounts/templates/:id"
+                element={<EditTemplateForm />}
+              />
+              <Route
+                path="/accounts/templates/:id/view"
+                element={<ViewTemplateForm />}
+              />
+              <Route
+                path="/accounts/templates/:id/apply"
+                element={<ApplyTemplateForm />}
               />
               <Route path="/settings" element={<GeneralSettingsPage />} />
               <Route

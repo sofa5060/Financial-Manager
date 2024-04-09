@@ -1,37 +1,36 @@
-import { Template } from "@/components/Templates/schema";
+import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
 import { useTemplatesColumns } from "@/components/Templates/TableView/Columns";
 import { DataTable } from "@/components/Templates/TableView/DataTable";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/use-toast";
+import TemplatesManager from "@/managers/TemplatesManager";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { FlowerSpinner } from "react-epic-spinners";
 
 const AccountsTemplates = () => {
   const columns = useTemplatesColumns();
-  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["templates", "page", page, "size", size],
+    queryFn: () => TemplatesManager.getTemplates(page, size),
+  });
 
-  const data: Template[] = [
-    {
-      id: 1,
-      code: "TB001",
-      created_at: "2022-01-01",
-      posted_at: "2022-01-02",
-      title: "Title 1",
-      posted_by: "User1",
-      amount: 1000,
-      currency: "USD",
-    },
-    {
-      id: 2,
-      code: "TB002",
-      created_at: "2022-02-01",
-      posted_at: "2022-02-02",
-      title: "Title 2",
-      posted_by: "User2",
-      amount: 2000,
-      currency: "EUR",
-    },
-  ];
+  if (isLoading)
+    return (
+      <div className="grid place-items-center w-full h-full min-h-screen">
+        <FlowerSpinner color="green" size={100} />
+      </div>
+    );
+
+  if (isError) {
+    toast({
+      variant: "destructive",
+      title: "Failed to fetch templates",
+    });
+    return <></>;
+  }
 
   return (
     <div>
@@ -39,17 +38,15 @@ const AccountsTemplates = () => {
         <h1 className="font-semibold text-2xl">
           Accounting <span className="text-primary">Templates</span>
         </h1>
-        <div className="flex gap-5">
-          <Button className="btn-outline mr-4">Print Selected</Button>
-          <Button className="btn-primary"
-            onClick={() => navigate("/treasury-payments/new")}
-          >
-            <Plus className="mr-2 w-4" />
-            New Template
-          </Button>
-        </div>
       </div>
-      <DataTable data={data} columns={columns} />
+      <DataTable data={data!.templates} columns={columns} />
+      <PaginationAndSizeFooter
+        page={page}
+        setPage={setPage}
+        totalPages={data!.totalPages}
+        size={size}
+        setSize={setSize}
+      />
     </div>
   );
 };
