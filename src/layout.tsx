@@ -5,14 +5,36 @@ import AppBar from "./components/common/AppBar/AppBar";
 import { useAuthStore } from "./hooks/useAuthStore";
 import { Toaster } from "@/components/ui/toaster";
 import InitialDataProvider from "./providers/initialDataProvider";
+import axios from "axios";
 // import ChatBubble from "./components/common/chat-bubble";
 
 const PageLayout = () => {
   const token = useAuthStore((state) => state.token);
+  const setLoginData = useAuthStore((state) => state.setLoginData);
+  const clearUserData = useAuthStore((state) => state.clearUserData);
   const { i18n } = useTranslation();
   if (!token) {
-    // If not authenticated, redirect to the login page
-    return <Navigate to="/login" />;
+
+    // fetch user data from local storage
+    const token = localStorage.getItem("FM_token");
+    const name = localStorage.getItem("FM_name");
+    const id = localStorage.getItem("FM_id");
+    const type = localStorage.getItem("FM_type");
+
+    
+    if(!token || !name || !id || !type){
+      // clear user data from store
+      clearUserData();
+      
+      // redirect to login page
+      return <Navigate to="/login" />;
+    }
+    
+    // set axios headers
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    
+    // set user data to store
+    setLoginData(token, name, id, type);
   }
 
   return (

@@ -15,6 +15,17 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const token = useAuthStore((state) => state.token);
   const setLoginData = useAuthStore((state) => state.setLoginData);
+  const clearUserData = useAuthStore((state) => state.clearUserData);
+
+  useEffect(() => {
+    localStorage.removeItem("FM_token");
+    localStorage.removeItem("FM_name");
+    localStorage.removeItem("FM_id");
+    localStorage.removeItem("FM_type");
+
+    clearUserData();
+  }, []);
+
 
   useEffect(() => {
     if (token) {
@@ -43,7 +54,15 @@ const LoginPage = () => {
           loginResponse.data.type
         );
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.token}`;
+        // store in local storage
+        localStorage.setItem("FM_token", loginResponse.token);
+        localStorage.setItem("FM_name", loginResponse.data.name);
+        localStorage.setItem("FM_id", loginResponse.data.user_id);
+        localStorage.setItem("FM_type", loginResponse.data.type);
+
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${loginResponse.token}`;
 
         navigate("/", { replace: true });
         toast({

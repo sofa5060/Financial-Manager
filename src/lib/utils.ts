@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Handles an Axios error.
- * 
+ *
  * @param {AxiosError} error - The Axios error object.
  * @throws {Error} - Throws an error if there is a response error with a status code of 401, or if there is an error in setting up the request.
  * @returns {void}
@@ -21,6 +21,7 @@ export const handleAxiosError = (error: AxiosError) => {
       redirect("/login");
       return;
     }
+
     console.log(error.response);
     // Request made and server responded
     console.error(error.response.data);
@@ -36,7 +37,6 @@ export const handleAxiosError = (error: AxiosError) => {
     } else if (err.message) {
       throw new Error(err.message);
     }
-    
   } else if (error.request) {
     // The request was made but no response was received
     console.error(error.request);
@@ -62,11 +62,11 @@ export const formatDateTime = (date: string) => {
 
 /**
  * Formats a date string by returning only the date portion.
- * 
+ *
  * @param {string} date - The date string to be formatted.
  * @returns {string} The formatted date string.
  */
 export const formatDate = (date: string) => {
   // return date only
-  return formatDateTime(date).replace(/\//g, "-").split(",")[0]
-}
+  return formatDateTime(date).replace(/\//g, "-").split(",")[0];
+};
