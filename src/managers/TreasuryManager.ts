@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+import { Transaction } from "@/components/Transactions/schema";
 import { NewBond, TreasuryBond } from "@/components/Treasury/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
@@ -73,8 +76,38 @@ class TreasuryManager {
     bond: TreasuryBond,
     bondId: number
   ): Promise<TreasuryBond | undefined> {
+    const transactions = JSON.parse(JSON.stringify(bond.transactions));
+
+    transactions.map((transaction: Transaction) => {
+      delete transaction.debit;
+      delete transaction.f_debit;
+      delete transaction.status;
+      delete transaction.credit;
+      delete transaction.f_credit;
+      delete transaction.account_code;
+      delete transaction.cost_center_code;
+      delete transaction.account_name_en;
+      delete transaction.account_name_ar;
+      delete transaction.category_name_en;
+      delete transaction.category_name_ar;
+      delete transaction.cost_center_en;
+      delete transaction.cost_center_ar;
+      delete transaction.company_id;
+      delete transaction.id;
+      delete transaction.entry_id;
+      delete transaction.created_at;
+      delete transaction.updated_at;
+      delete transaction.code;
+      delete transaction.created_by_name;
+      delete transaction.posted_by_name;
+      delete transaction.posted_at;
+      delete transaction.currency;
+      delete transaction.entry_created_at;
+    });
+
+    bond.transactions = transactions;
     try {
-      const response = await axios.put(`/api/safe/receive/${bondId}`, bond);
+      const response = await axios.put(`/api/safe/${bondId}/receive`, bond);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
@@ -85,8 +118,38 @@ class TreasuryManager {
     bond: TreasuryBond,
     bondId: number
   ): Promise<TreasuryBond | undefined> {
+    const transactions = JSON.parse(JSON.stringify(bond.transactions));
+
+    transactions.map((transaction: Transaction) => {
+      delete transaction.debit;
+      delete transaction.f_debit;
+      delete transaction.status;
+      delete transaction.credit;
+      delete transaction.f_credit;
+      delete transaction.account_code;
+      delete transaction.cost_center_code;
+      delete transaction.account_name_en;
+      delete transaction.account_name_ar;
+      delete transaction.category_name_en;
+      delete transaction.category_name_ar;
+      delete transaction.cost_center_en;
+      delete transaction.cost_center_ar;
+      delete transaction.company_id;
+      delete transaction.id;
+      delete transaction.entry_id;
+      delete transaction.created_at;
+      delete transaction.updated_at;
+      delete transaction.code;
+      delete transaction.created_by_name;
+      delete transaction.posted_by_name;
+      delete transaction.posted_at;
+      delete transaction.currency;
+      delete transaction.entry_created_at;
+    });
+
+    bond.transactions = transactions;
     try {
-      const response = await axios.put(`/api/safe/payment/${bondId}`, bond);
+      const response = await axios.put(`/api/safe/${bondId}/payment`, bond);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);

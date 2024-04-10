@@ -12,8 +12,6 @@ import LoginPage from "./pages/Login";
 import NewParkAccountEntry from "./pages/NewParkAccountingEntry";
 import TreasuryReceipts from "./pages/TreasuryReceive";
 import TreasuryPayments from "./pages/TreasuryPayment";
-import TreasuryReceiptBond from "./pages/TreasuryReceiveBond";
-import TreasuryPaymentBond from "./pages/TreasuryPaymentBond";
 import ParkAccountsTransactions from "./pages/ParkAccountsTransactions";
 import PostAccountsTransactions from "./pages/PostAccountsTransactions";
 import GeneralSettingsPage from "./components/settings/subpages/general-settings";
@@ -29,6 +27,12 @@ import ViewPostAccountEntry from "./pages/ViewPostAccountingEntry";
 import EditTemplateForm from "./pages/EditTemplateForm";
 import ViewTemplateForm from "./pages/ViewTemplate";
 import ApplyTemplateForm from "./pages/ApplyTemplate";
+import NewTreasuryPaymentBond from "./pages/NewTreasuryPaymentBond";
+import NewTreasuryReceiveBond from "./pages/NewTreasuryReceiveBond";
+import ViewTreasuryReceiveBond from "./pages/ViewTreasuryReceiveBond";
+import EditTreasuryReceiveBond from "./pages/NewTreasuryReceiveBond";
+import ViewTreasuryPaymentBond from "./pages/ViewTreasuryPaymentBond";
+import EditTreasuryPaymentBond from "./pages/EditTreasuryPaymentBond";
 
 function App() {
   const queryClient = new QueryClient();
@@ -78,16 +82,32 @@ function App() {
                 path="/accounting-entries/post/:id/view"
                 element={<ViewPostAccountEntry />}
               />
-              <Route
-                path="/treasury/receive/new"
-                element={<TreasuryReceiptBond />}
-              />
               <Route path="/treasury/receive" element={<TreasuryReceipts />} />
               <Route
-                path="/treasury/payment/new"
-                element={<TreasuryPaymentBond />}
+                path="/treasury/receive/:id/view"
+                element={<ViewTreasuryReceiveBond />}
+              />
+              <Route
+                path="/treasury/receive/:id"
+                element={<EditTreasuryReceiveBond />}
+              />
+              <Route
+                path="/treasury/receive/new"
+                element={<NewTreasuryReceiveBond />}
               />
               <Route path="/treasury/payment" element={<TreasuryPayments />} />
+              <Route
+                path="/treasury/payment/:id/view"
+                element={<ViewTreasuryPaymentBond />}
+              />
+              <Route
+                path="/treasury/payment/:id"
+                element={<EditTreasuryPaymentBond />}
+              />
+              <Route
+                path="/treasury/payment/new"
+                element={<NewTreasuryPaymentBond />}
+              />
               <Route
                 path="/transactions/park"
                 element={<ParkAccountsTransactions key="park" />}

@@ -415,12 +415,12 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
           />
           <div className="flex items-center max-w-[50%] gap-4">
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
-              <label htmlFor="type" className="font-medium text-sm">
+              <label htmlFor="safe_account_id" className="font-medium text-sm">
                 Safe Account
               </label>
               <div className="flex-col w-full">
                 <Select
-                  id="type"
+                  id="safe_account_id"
                   isSearchable={false}
                   isClearable={false}
                   isDisabled={type === "view"}
@@ -434,8 +434,8 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                   className="w-full"
                   options={subAccountOptions}
                 />
-                {errors.type && (
-                  <span className="error-text">{errors.type.message}</span>
+                {errors.safe_account_id && (
+                  <span className="error-text">{errors.safe_account_id.message}</span>
                 )}
               </div>
             </div>
@@ -474,13 +474,6 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                   }}
                 >
                   Close
-                </Button>
-                <Button
-                  type="button"
-                  className="bg-gray-200 text-black"
-                  disabled={isPending}
-                >
-                  Save As Template
                 </Button>
               </>
             ) : (
