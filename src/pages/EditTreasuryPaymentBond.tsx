@@ -1,8 +1,10 @@
 import BondForm from "@/components/Treasury/Dialogs/BondForm";
+import { TreasuryBond } from "@/components/Treasury/schema";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import TreasuryManager from "@/managers/TreasuryManager";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useParams } from "react-router-dom";
 
@@ -10,10 +12,33 @@ const EditTreasuryPaymentBond = () => {
   const { id } = useParams();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bond", "payment", id],
+    queryKey: ["bond", id, "payment"],
     queryFn: () => TreasuryManager.getBond(parseInt(id as string)),
     enabled: !!id,
   });
+
+  const fixedData = useMemo(() => {
+    if (!data) return null;
+    const fixed: TreasuryBond = {
+      ...data,
+      transactions: data.transactions.map((transaction) => ({
+        ...transaction,
+        amount:
+          transaction.debit && transaction.debit > 0
+            ? transaction.debit
+            : transaction.credit!,
+        f_amount:
+          transaction.f_debit && transaction.f_debit > 0
+            ? transaction.f_debit
+            : transaction.f_credit!,
+      })),
+    };
+    
+    // drop last element
+    fixed.transactions.pop();
+
+    return fixed;
+  }, [data]);
 
   if (isLoading)
     return (
@@ -41,7 +66,7 @@ const EditTreasuryPaymentBond = () => {
         </div>
       </div>
       <div className="mt-7 ml-2">
-        <BondForm type="edit" bondType="payment" bond={data!} />
+        <BondForm type="edit" bondType="payment" bond={fixedData!} />
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const PostAccountsTransactions = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["transactions", "post", "page", page],
+    queryKey: ["transactions", "post", "page", page, "size", size],
     queryFn: () => TransactionsManager.getPostTransactions(page, size),
   });
 

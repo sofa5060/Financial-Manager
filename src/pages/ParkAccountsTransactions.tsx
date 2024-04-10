@@ -21,7 +21,7 @@ const ParkAccountsTransactions = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["transactions", "park", "page", page],
+    queryKey: ["transactions", "park", "page", page, "size", size],
     queryFn: () => TransactionsManager.getParkTransactions(page, size),
   });
 

@@ -30,9 +30,9 @@ import ApplyTemplateForm from "./pages/ApplyTemplate";
 import NewTreasuryPaymentBond from "./pages/NewTreasuryPaymentBond";
 import NewTreasuryReceiveBond from "./pages/NewTreasuryReceiveBond";
 import ViewTreasuryReceiveBond from "./pages/ViewTreasuryReceiveBond";
-import EditTreasuryReceiveBond from "./pages/NewTreasuryReceiveBond";
 import ViewTreasuryPaymentBond from "./pages/ViewTreasuryPaymentBond";
 import EditTreasuryPaymentBond from "./pages/EditTreasuryPaymentBond";
+import EditTreasuryReceiveBond from "./pages/EditTreasuryReceiveBond";
 
 function App() {
   const queryClient = new QueryClient();

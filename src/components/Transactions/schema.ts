@@ -60,6 +60,10 @@ export const TreasuryTransactionSchema = z
     date: z.string(),
     posted_at: z.string().nullable(),
     created_by_name: z.string(),
+    debit: z.number().nullable(),
+    credit: z.number().nullable(),
+    f_credit: z.number().nullable(),
+    f_debit: z.number().nullable(),
   })
   .merge(NewTreasuryTransactionSchema);
 
