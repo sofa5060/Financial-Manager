@@ -22,7 +22,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NewTransaction, Transaction } from "@/components/Transactions/schema";
 import DynamicTableForm from "./DynamicTableForm";
 import { useAuthStore } from "@/hooks/useAuthStore";
@@ -30,13 +30,16 @@ import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useBanksStore } from "@/hooks/useBanksStore";
 import { formatDate } from "@/lib/utils";
 import TemplatesManager from "@/managers/TemplatesManager";
-import { useTemplateType } from "../data";
+import { useEntryType } from "@/components/Entries/data";
 
 type TemplateFormProps = {
   type?: "view" | "edit" | "apply";
   template?: Template;
 };
 const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
+  const [rate, setRate] = useState<number | undefined>(
+    template?.rate ?? undefined
+  );
   const name = useAuthStore((state) => state.name);
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
@@ -56,7 +59,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { templateTypes } = useTemplateType();
+  const { entryTypes } = useEntryType();
 
   const { mutate: applyTemplateMutate, isPending } = useMutation({
     mutationFn: AccountingEntriesManager.addEntry,
@@ -123,7 +126,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
   } = form;
 
   const onSubmit = (data: NewTemplate) => {
-    if(type === "view") return;
+    if (type === "view") return;
     data.transactions = transactions;
 
     console.log(data);
@@ -134,6 +137,19 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
 
     applyTemplateMutate(data);
   };
+
+  useEffect(() => {
+    const value = form.getValues("rate");
+    if (value) {
+      setRate(value);
+    } else {
+      setRate(
+        currencies.find(
+          (currency) => currency.id === form.getValues("currency_id")
+        )?.default_rate
+      );
+    }
+  }, [form.watch("rate"), form.watch("currency_id"), currencies]);
 
   return (
     <div>
@@ -208,7 +224,10 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                           type="number"
                           value={field.value}
                           onChange={(e) => {
-                            form.setValue("rate", parseFloat(e.target.value));
+                            form.setValue(
+                              "rate",
+                              e.target.value ? parseFloat(e.target.value) : undefined
+                            );
                           }}
                           disabled={type === "view"}
                         />
@@ -240,11 +259,11 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     setValue("type", val!.value as TemplateType);
                     setIsCheckPayment(val!.value === "check");
                   }}
-                  defaultValue={templateTypes.find(
+                  defaultValue={entryTypes.find(
                     (templateType) => templateType.value === template?.type
                   )}
                   className="w-full"
-                  options={templateTypes}
+                  options={entryTypes}
                 />
                 {errors.type && (
                   <span className="error-text">{errors.type.message}</span>
@@ -360,12 +379,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
               }
               isDefaultCurrency={isDefaultCurrency}
               disabled={type === "view"}
-              rate={
-                form.getValues("rate") ??
-                currencies.find(
-                  (currency) => currency.id === form.getValues("currency_id")
-                )?.default_rate
-              }
+              rate={rate}
               type={type}
             />
           </div>
@@ -392,7 +406,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                 >
                   Close
                 </Button>
-                <Button type="button" disabled={isPending}
+                <Button
+                  type="button"
+                  disabled={isPending}
                   onClick={() => {
                     navigate(`/accounts/templates/${template!.id}/apply`);
                   }}

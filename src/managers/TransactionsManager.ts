@@ -8,7 +8,7 @@ type TransactionsResponse = {
   totalTransactions: number;
 };
 
-class TransactionsManager{
+class TransactionsManager {
   static async getPostTransactions(
     page: number = 1,
     size: number = 10
@@ -46,10 +46,12 @@ class TransactionsManager{
     }
   }
 
-  static async getTransactionsOfEntry(entryId: number): Promise<Transaction[] | undefined> {
+  static async getTransactionsOfEntry(
+    entryId: number
+  ): Promise<Transaction[] | undefined> {
     try {
       const response = await axios.get(`/api/entry/${entryId}`);
-      console.log(response.data.data)
+      console.log(response.data.data);
       return response.data.data.transactions;
     } catch (error) {
       handleAxiosError(error as AxiosError);

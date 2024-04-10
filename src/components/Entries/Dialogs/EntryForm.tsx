@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NewTransaction, Transaction } from "@/components/Transactions/schema";
 import DynamicTableForm from "./DynamicTableForm";
 import { useAuthStore } from "@/hooks/useAuthStore";
@@ -31,6 +31,9 @@ type EntryFormProps = {
   entry?: Entry;
 };
 const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
+  const [rate, setRate] = useState<number | undefined>(
+    entry?.rate ?? undefined
+  );
   const name = useAuthStore((state) => state.name);
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
@@ -125,6 +128,19 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     }
     addEntryMutate(data);
   };
+
+  useEffect(() => {
+    const value = form.getValues("rate");
+    if (value) {
+      setRate(value);
+    } else {
+      setRate(
+        currencies.find(
+          (currency) => currency.id === form.getValues("currency_id")
+        )?.default_rate
+      );
+    }
+  }, [form.watch("rate"), form.watch("currency_id"), currencies]);
 
   return (
     <div>
@@ -223,7 +239,12 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                           type="number"
                           value={field.value}
                           onChange={(e) => {
-                            form.setValue("rate", parseFloat(e.target.value));
+                            form.setValue(
+                              "rate",
+                              e.target.value
+                                ? parseFloat(e.target.value)
+                                : undefined
+                            );
                           }}
                           disabled={type === "view"}
                         />
@@ -375,12 +396,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               }
               isDefaultCurrency={isDefaultCurrency}
               disabled={type === "view"}
-              rate={
-                form.getValues("rate") ??
-                currencies.find(
-                  (currency) => currency.id === form.getValues("currency_id")
-                )?.default_rate
-              }
+              rate={rate}
             />
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">

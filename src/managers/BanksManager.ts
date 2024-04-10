@@ -10,12 +10,11 @@ export type Bank = {
   updated_at: string;
 };
 
-
 class BanksManager {
   static async getBanks(): Promise<Bank[] | undefined> {
     try {
       const response = await axios.get(`/api/bank`);
-      console.log(response)
+      console.log(response);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);

@@ -13,7 +13,7 @@ const TreasuryPaymentBond = () => {
         </div>
       </div>
       <div className="mt-7 ml-2">
-        <BondForm type="add" />
+        <BondForm type="add" bondType="payment" />
       </div>
     </div>
   );

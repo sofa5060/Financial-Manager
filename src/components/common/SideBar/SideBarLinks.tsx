@@ -4,7 +4,6 @@ import {
   Calculator,
   LucideIcon,
   MessagesSquare,
-  PenBox,
   Settings,
   Table,
   Table2,
@@ -52,24 +51,14 @@ const useSidebarLinks = () => {
       icon: Table,
     },
     {
-      label: "Treasury Receipts",
-      href: "/treasury-receipts",
+      label: "Treasury Receive",
+      href: "/treasury/receive",
       icon: Table2,
-    },
-    {
-      label: "Add Treasury Receipt",
-      href: "/treasury-receipts/new",
-      icon: PenBox,
     },
     {
       label: "Treasury Payments",
-      href: "/treasury-payments",
+      href: "/treasury/payment",
       icon: Table2,
-    },
-    {
-      label: "Add Treasury Payment",
-      href: "/treasury-payments/new",
-      icon: PenBox,
     },
     {
       label: "Account Templates",

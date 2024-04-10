@@ -1,8 +1,6 @@
 import { AxiosError } from "axios";
 import { type ClassValue, clsx } from "clsx";
-import { redirect } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -15,11 +13,11 @@ export function cn(...inputs: ClassValue[]) {
  * @returns {void}
  */
 export const handleAxiosError = (error: AxiosError) => {
+  console.log(error)
   if (error.response) {
     if (error.response.status === 401) {
-      console.error("Unauthorized");
-      redirect("/login");
-      return;
+      console.log("Unauthorized");
+      window.location.href = "/login";
     }
 
     console.log(error.response);

@@ -1,4 +1,8 @@
-import { CostCenter, NewCostCenter, SubCostCenter } from "@/components/CostCenters/schema";
+import {
+  CostCenter,
+  NewCostCenter,
+  SubCostCenter,
+} from "@/components/CostCenters/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
@@ -12,16 +16,23 @@ class CostCentersManager {
     }
   }
 
-  static async getSubCostCenters(page: number = 1, size: number = 1000): Promise<SubCostCenter[] | undefined> {
+  static async getSubCostCenters(
+    page: number = 1,
+    size: number = 1000
+  ): Promise<SubCostCenter[] | undefined> {
     try {
-      const response = await axios.get(`/api/cost-center/sub?size=${size}&page=${page}`);
+      const response = await axios.get(
+        `/api/cost-center/sub?size=${size}&page=${page}`
+      );
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
   }
 
-  static async getCostCenter(costCenterId: number): Promise<CostCenter | undefined> {
+  static async getCostCenter(
+    costCenterId: number
+  ): Promise<CostCenter | undefined> {
     try {
       const response = await axios.get(`/api/cost-center/${costCenterId}`);
       return response.data.data;
@@ -30,17 +41,21 @@ class CostCentersManager {
     }
   }
 
-  static async searchCostCenters(query: string): Promise<CostCenter[] | undefined> {
+  static async searchCostCenters(
+    query: string
+  ): Promise<CostCenter[] | undefined> {
     try {
       const response = await axios.get(`/api/cost-center?search=${query}`);
-      console.log(response.data.data)
+      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
   }
 
-  static async addCostCenter(costCenter: NewCostCenter): Promise<CostCenter | undefined> {
+  static async addCostCenter(
+    costCenter: NewCostCenter
+  ): Promise<CostCenter | undefined> {
     try {
       const response = await axios.post("/api/cost-center", costCenter);
       return response.data;
@@ -54,7 +69,10 @@ class CostCentersManager {
     costCenterId: number
   ): Promise<CostCenter | undefined> {
     try {
-      const response = await axios.put(`/api/cost-center/${costCenterId}`, costCenter);
+      const response = await axios.put(
+        `/api/cost-center/${costCenterId}`,
+        costCenter
+      );
       return response.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);

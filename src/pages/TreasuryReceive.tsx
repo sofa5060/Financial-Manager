@@ -1,5 +1,5 @@
 import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
-import { useTreasuryPaymentBondsColumns } from "@/components/Treasury/TableView/Columns";
+import { useTreasuryReceiptBondsColumns } from "@/components/Treasury/TableView/Columns";
 import { DataTable } from "@/components/Treasury/TableView/DataTable";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -10,15 +10,15 @@ import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useNavigate } from "react-router-dom";
 
-const TreasuryPayments = () => {
-  const columns = useTreasuryPaymentBondsColumns();
+const TreasuryReceipts = () => {
+  const columns = useTreasuryReceiptBondsColumns();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bonds", "payment", "page", page, "size", size],
-    queryFn: () => TreasuryManager.getPaymentTreasuryBonds(page, size),
+    queryKey: ["bonds", "receive", "page", page, "size", size],
+    queryFn: () => TreasuryManager.getReceiveTreasuryBonds(page, size),
   });
 
   if (isLoading)
@@ -36,17 +36,16 @@ const TreasuryPayments = () => {
     return <></>;
   }
 
-
   return (
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Treasury <span className="text-primary">Payment bonds</span>
+          Treasury <span className="text-primary">Receive bonds</span>
         </h1>
         <div className="flex gap-5">
           <Button className="btn-outline mr-4">Print Selected</Button>
           <Button className="btn-primary"
-            onClick={() => navigate("/treasury/payment/new")}
+            onClick={() => navigate("/treasury/receive/new")}
           >
             <Plus className="mr-2 w-4" />
             New Entry
@@ -64,4 +63,4 @@ const TreasuryPayments = () => {
     </div>
   );
 };
-export default TreasuryPayments;
+export default TreasuryReceipts;

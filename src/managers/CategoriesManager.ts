@@ -11,10 +11,15 @@ export type Category = {
 };
 
 class CategoriesManager {
-  static async getCategories(page: number = 1, size: number = 1000): Promise<Category[] | undefined> {
+  static async getCategories(
+    page: number = 1,
+    size: number = 1000
+  ): Promise<Category[] | undefined> {
     try {
-      const response = await axios.get(`/api/category?page=${page}&size=${size}`);
-      console.log(response)
+      const response = await axios.get(
+        `/api/category?page=${page}&size=${size}`
+      );
+      console.log(response);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);

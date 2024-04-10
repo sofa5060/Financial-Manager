@@ -4,6 +4,7 @@ import { Eye, Trash2 } from "lucide-react";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import DeleteModal from "../Dialogs/DeleteModal";
+import { formatDate } from "@/lib/utils";
 
 export const useTreasuryPaymentBondsColumns = () => {
   const columns: ColumnDef<TreasuryBond>[] = [
@@ -46,21 +47,15 @@ export const useTreasuryPaymentBondsColumns = () => {
       },
     },
     {
-      accessorKey: "created_at",
+      accessorKey: "date",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Document Date" />
       ),
+      cell: ({ row }) => {
+        return formatDate(row.original.date);
+      },
       meta: {
         header: "Document Date",
-      },
-    },
-    {
-      accessorKey: "posted_at",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Posting Date" />
-      ),
-      meta: {
-        header: "Posting Date",
       },
     },
     {
@@ -73,7 +68,7 @@ export const useTreasuryPaymentBondsColumns = () => {
       },
     },
     {
-      accessorKey: "posted_by",
+      accessorKey: "created_by_name",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="User" />
       ),
@@ -100,7 +95,7 @@ export const useTreasuryPaymentBondsColumns = () => {
     {
       id: "actions",
       header: "Actions",
-      cell: ({row}) => {
+      cell: ({ row }) => {
         const bondId = row.original.id;
         return (
           <div className="flex gap-2">

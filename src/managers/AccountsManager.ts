@@ -6,7 +6,7 @@ class AccountsManager {
   static async getAccounts(): Promise<Account[] | undefined> {
     try {
       const response = await axios.get("/api/account");
-      console.log(response.data.data)
+      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.log(error);
@@ -14,9 +14,14 @@ class AccountsManager {
     }
   }
 
-  static async getSubAccounts(page: number = 1, size: number = 1000): Promise<SubAccount[] | undefined> {
+  static async getSubAccounts(
+    page: number = 1,
+    size: number = 1000
+  ): Promise<SubAccount[] | undefined> {
     try {
-      const response = await axios.get(`/api/account/sub?page=${page}&size=${size}`);
+      const response = await axios.get(
+        `/api/account/sub?page=${page}&size=${size}`
+      );
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
@@ -35,7 +40,7 @@ class AccountsManager {
   static async searchAccounts(query: string): Promise<Account[] | undefined> {
     try {
       const response = await axios.get(`/api/account?search=${query}`);
-      console.log(response.data.data)
+      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
@@ -45,7 +50,7 @@ class AccountsManager {
   static async addAccount(account: NewAccount): Promise<Account | undefined> {
     try {
       const response = await axios.post("/api/account", account);
-      console.log(response)
+      console.log(response);
       return response.data;
     } catch (error) {
       console.log(error);

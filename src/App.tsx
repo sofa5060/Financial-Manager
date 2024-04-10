@@ -10,9 +10,9 @@ import ParkAccountingEntries from "./pages/ParkAccountingEntries";
 import PostAccountingEntries from "./pages/PostAccountingEntries";
 import LoginPage from "./pages/Login";
 import NewParkAccountEntry from "./pages/NewParkAccountingEntry";
-import TreasuryReceipts from "./pages/TreasuryReceipt";
+import TreasuryReceipts from "./pages/TreasuryReceive";
 import TreasuryPayments from "./pages/TreasuryPayment";
-import TreasuryReceiptBond from "./pages/TreasuryReceiptBond";
+import TreasuryReceiptBond from "./pages/TreasuryReceiveBond";
 import TreasuryPaymentBond from "./pages/TreasuryPaymentBond";
 import ParkAccountsTransactions from "./pages/ParkAccountsTransactions";
 import PostAccountsTransactions from "./pages/PostAccountsTransactions";
@@ -79,15 +79,15 @@ function App() {
                 element={<ViewPostAccountEntry />}
               />
               <Route
-                path="/treasury-receipts/new"
+                path="/treasury/receive/new"
                 element={<TreasuryReceiptBond />}
               />
-              <Route path="/treasury-receipts" element={<TreasuryReceipts />} />
+              <Route path="/treasury/receive" element={<TreasuryReceipts />} />
               <Route
-                path="/treasury-payments/new"
+                path="/treasury/payment/new"
                 element={<TreasuryPaymentBond />}
               />
-              <Route path="/treasury-payments" element={<TreasuryPayments />} />
+              <Route path="/treasury/payment" element={<TreasuryPayments />} />
               <Route
                 path="/transactions/park"
                 element={<ParkAccountsTransactions key="park" />}

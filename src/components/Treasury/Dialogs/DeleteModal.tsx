@@ -7,6 +7,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import TreasuryManager from "@/managers/TreasuryManager";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
 
@@ -15,7 +18,28 @@ type DeleteModalProps = {
   children?: React.ReactNode;
 };
 
-const DeleteModal = ({ children }: DeleteModalProps) => {
+const DeleteModal = ({ children, bondId }: DeleteModalProps) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteBondMutate, isPending } = useMutation({
+    mutationFn: TreasuryManager.deleteBond,
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to delete bond",
+        description: error.message,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["bonds"] });
+      toast({
+        title: "Bond deleted successfully",
+      });
+      closeDialog();
+    },
+  });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const closeDialog = () => {
@@ -38,14 +62,16 @@ const DeleteModal = ({ children }: DeleteModalProps) => {
             onClick={() => {
               closeDialog();
             }}
+            disabled={isPending}
             className="bg-white text-black ring-1 ring-gray-300"
           >
             Cancel
           </Button>
           <Button
-            onClick={() => {
-              closeDialog();
+             onClick={() => {
+              deleteBondMutate(bondId);
             }}
+            disabled={isPending}
             className="bg-red-500"
           >
             <Trash className="w-4 h-4 mr-2" />
