@@ -9,27 +9,36 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type FiltersProps = {
   title: string;
   options: {
     label: string;
-    value: string;
+    value: string | number;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
-  defaultSelected?: string[];
+  defaultSelected?: string[] | number[];
+  setOuterValue: (value: string[] | number[]) => void;
 };
 
-const Filter = ({ title, options, defaultSelected = [] }: FiltersProps) => {
+const Filter = ({
+  title,
+  options,
+  defaultSelected = [],
+  setOuterValue,
+}: FiltersProps) => {
   const [selectedValues, setSelectedValues] = useState(
-    new Set(defaultSelected)
+    new Set(defaultSelected as string[])
   );
 
+  useEffect(() => {
+    setSelectedValues(new Set(defaultSelected as string[]));
+  }, [defaultSelected]);
+
   return (
-    <DropdownMenu
-    >
+    <DropdownMenu>
       <DropdownMenuTrigger>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle className="me-2 h-4 w-4" />
@@ -53,7 +62,9 @@ const Filter = ({ title, options, defaultSelected = [] }: FiltersProps) => {
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
+                    .filter((option) =>
+                      selectedValues.has(option.value as string)
+                    )
                     .map((option) => (
                       <Badge
                         variant="secondary"
@@ -71,21 +82,26 @@ const Filter = ({ title, options, defaultSelected = [] }: FiltersProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[200px]">
         {options.map((option) => {
-          const isSelected = selectedValues.has(option.value);
+          const isSelected = selectedValues.has(option.value as string);
           return (
             <DropdownMenuItem
               key={option.value}
               onSelect={(e) => {
                 console.log("option.value", option.value);
                 if (isSelected) {
-                  selectedValues.delete(option.value);
+                  console.log(selectedValues);
+                  selectedValues.delete(option.value as string);
+                  console.log(selectedValues);
                 } else {
-                  selectedValues.add(option.value);
+                  selectedValues.add(option.value as string);
                 }
                 const filterValues = Array.from(selectedValues);
                 setSelectedValues(new Set(filterValues));
-                e.stopPropagation()
-                e.preventDefault()
+                setOuterValue([...new Set(filterValues)] as
+                  | string[]
+                  | number[]);
+                e.stopPropagation();
+                e.preventDefault();
               }}
             >
               <div

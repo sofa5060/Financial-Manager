@@ -13,7 +13,7 @@ export function cn(...inputs: ClassValue[]) {
  * @returns {void}
  */
 export const handleAxiosError = (error: AxiosError) => {
-  console.log(error)
+  console.log(error);
   if (error.response) {
     if (error.response.status === 401) {
       console.log("Unauthorized");
@@ -68,3 +68,71 @@ export const formatDate = (date: string) => {
   // return date only
   return formatDateTime(date).replace(/\//g, "-").split(",")[0];
 };
+
+export const createSearchQuery = (
+  params: Record<
+    string,
+    string | number | boolean | undefined | string[] | number[]
+  >
+) => {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (Array.isArray(value)) {
+      for (const v of value) {
+        query.append(key, v.toString());
+      }
+    } else if (value !== undefined) {
+      query.append(key, value.toString());
+    }
+  }
+  console.log(query.toString());
+  return query.toString();
+};
+
+export const serializeFormQuery = (
+  params: Record<
+    string,
+    string | number | boolean | undefined | string[] | number[]
+  >
+) => {
+  return Object.entries(params)
+    .map(([key, value]) => {
+      if (Array.isArray(value)) {
+        if (value.length === 0) return "";
+        console.log(value);
+        return `${key}=${value.join(",")}`;
+      }
+      if (value === undefined || value === "") return "";
+      return `${key}=${value}`;
+    })
+    .filter((val) => val !== "")
+    .join("&");
+};
+
+export const arrFromQuery = (query: string | null) =>
+  !query || query === null || query === ""
+    ? []
+    : query.split(",").map((val) => parseInt(val));
+
+// export const parseFormQuery = (query: string) => {
+//   const params = new URLSearchParams(query);
+//   const result: Record<string, string | number | boolean | string [] | number []> = {};
+//   for (const [key, value] of params.entries()) {
+//     if (key in result) {
+//       if (Array.isArray(result[key])) {
+//         (result[key] as string[]).push(value);
+//       } else {
+//         result[key] = [result[key], value];
+//       }
+//     } else {
+//       result[key] = value;
+//     }
+//   }
+//   return result;
+// }
+
+// export const parseQuery = (query: string) => {
+//   // convert search term query string to array
+
+//   return result;
+// }

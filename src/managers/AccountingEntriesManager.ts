@@ -14,11 +14,12 @@ type AccountingEntriesResponse = {
 class AccountingEntriesManager {
   static async getPostEntries(
     page: number = 1,
-    size: number = 10
+    size: number = 10,
+    searchQuery: string = ""
   ): Promise<AccountingEntriesResponse | undefined> {
     try {
       const response = await axios.get(
-        `/api/entry/post?page=${page}&size=${size}`
+        `/api/entry/post?page=${page}&size=${size}&${searchQuery}`
       );
 
       return {
@@ -33,12 +34,14 @@ class AccountingEntriesManager {
 
   static async getParkEntries(
     page: number = 1,
-    size: number = 10
+    size: number = 10,
+    searchQuery: string = ""
   ): Promise<AccountingEntriesResponse | undefined> {
     try {
       const response = await axios.get(
-        `/api/entry/park?page=${page}&size=${size}`
+        `/api/entry/park?page=${page}&size=${size}&${searchQuery}`
       );
+      console.log(response);
       return {
         entries: response.data.data,
         totalPages: response.data.total_pages,

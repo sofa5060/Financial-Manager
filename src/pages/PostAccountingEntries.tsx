@@ -7,15 +7,17 @@ import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useSearchParams } from "react-router-dom";
 
 const PostAccountingEntries = () => {
+  const [searchParams] = useSearchParams();
   const columns = usePostAccountingEntriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["entries", "post", "page", page, "size", size],
-    queryFn: () => AccountingEntriesManager.getPostEntries(page, size),
+    queryKey: ["entries", "post", "page", page, "size", size, "search", searchParams.toString()],
+    queryFn: () => AccountingEntriesManager.getPostEntries(page, size, searchParams.toString()),
   });
 
   if (isLoading)
@@ -33,7 +35,6 @@ const PostAccountingEntries = () => {
     return <></>;
   }
 
-  console.log(data)
 
   return (
     <div>

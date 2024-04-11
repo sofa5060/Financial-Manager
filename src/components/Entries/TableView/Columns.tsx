@@ -105,6 +105,9 @@ export const useParkAccountingEntriesColumns = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="User" />
       ),
+      getUniqueValues: (entry) => {
+        return [entry.created_by];
+      },
       meta: {
         header: "User",
       },
@@ -185,7 +188,7 @@ export const useParkAccountingEntriesColumns = () => {
                 "opacity-50": isPending,
               })}
               onClick={() => {
-                if(isPending) return;
+                if (isPending) return;
                 saveTemplateMutate(entry.id);
               }}
             />
@@ -224,7 +227,7 @@ export const usePostAccountingEntriesColumns = () => {
       });
     },
   });
-  
+
   const columns: ColumnDef<Entry>[] = [
     {
       id: "select",
@@ -333,7 +336,7 @@ export const usePostAccountingEntriesColumns = () => {
                 "opacity-50": isPending,
               })}
               onClick={() => {
-                if(isPending) return;
+                if (isPending) return;
                 saveTemplateMutate(entry.id);
               }}
             />

@@ -3,11 +3,13 @@ import { useCategoriesStore } from "@/hooks/useCategories";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
+import { useUsersStore } from "@/hooks/useUsersStore";
 import AccountsManager from "@/managers/AccountsManager";
 import BanksManager from "@/managers/BanksManager";
 import CategoriesManager from "@/managers/CategoriesManager";
 import CostCentersManager from "@/managers/CostCentersManager";
 import CurrenciesManager from "@/managers/CurrenciesManager";
+import UsersManager from "@/managers/UsersManager";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
@@ -22,6 +24,7 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
   );
   const setCategories = useCategoriesStore((state) => state.setCategories);
   const setBanks = useBanksStore((state) => state.setBanks);
+  const setUsers = useUsersStore((state) => state.setUsers);
 
   // fetch currencies
   const { data: currencies } = useQuery({
@@ -87,6 +90,19 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
       setBanks(banks);
     }
   }, [banks, setBanks]);
+
+  // fetch users
+  const { data: usersResponse } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => UsersManager.getUsers(1, 1000),
+  });
+
+  // store users
+  useEffect(() => {
+    if (usersResponse) {
+      setUsers(usersResponse.users);
+    }
+  }, [usersResponse, setUsers]);
 
   return <div>{children}</div>;
 };

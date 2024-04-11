@@ -32,6 +32,7 @@ export type Entry = {
   created_at: string;
   updated_at: string;
   posted_at: string | null;
+  created_by: number;
 } & NewEntry;
 
 export type NewEntry = z.infer<typeof NewEntrySchema>;

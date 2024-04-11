@@ -6,11 +6,13 @@ import { toast } from "@/components/ui/use-toast";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PackageCheck, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const ParkAccountingEntries = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const columns = useParkAccountingEntriesColumns();
   const [page, setPage] = useState(1);
@@ -38,9 +40,17 @@ const ParkAccountingEntries = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["entries", "park", "page", page, "size", size],
-    queryFn: () => AccountingEntriesManager.getParkEntries(page, size),
+    queryKey: ["entries", "park", "page", page, "size", size, "search", searchParams.toString()],
+    queryFn: () => AccountingEntriesManager.getParkEntries(page, size, searchParams.toString()),
   });
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page") || "1");
+    const size = parseInt(searchParams.get("size") || "10");
+
+    setPage(page);
+    setSize(size);
+  }, [searchParams]);
 
   if (isLoading)
     return (
