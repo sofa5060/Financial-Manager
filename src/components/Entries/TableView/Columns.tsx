@@ -73,6 +73,13 @@ export const useParkAccountingEntriesColumns = () => {
       enableHiding: false,
     },
     {
+      accessorKey: "id",
+      header: "Document No.",
+      meta: {
+        header: "Document No.",
+      },
+    },
+    {
       accessorKey: "code",
       header: "Serial",
       meta: {
@@ -252,6 +259,13 @@ export const usePostAccountingEntriesColumns = () => {
       ),
       enableSorting: false,
       enableHiding: false,
+    },
+    {
+      accessorKey: "id",
+      header: "Document No.",
+      meta: {
+        header: "Document No.",
+      },
     },
     {
       accessorKey: "code",

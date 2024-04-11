@@ -99,7 +99,6 @@ export const serializeFormQuery = (
     .map(([key, value]) => {
       if (Array.isArray(value)) {
         if (value.length === 0) return "";
-        console.log(value);
         return `${key}=${value.join(",")}`;
       }
       if (value === undefined || value === "") return "";
@@ -113,26 +112,3 @@ export const arrFromQuery = (query: string | null) =>
   !query || query === null || query === ""
     ? []
     : query.split(",").map((val) => parseInt(val));
-
-// export const parseFormQuery = (query: string) => {
-//   const params = new URLSearchParams(query);
-//   const result: Record<string, string | number | boolean | string [] | number []> = {};
-//   for (const [key, value] of params.entries()) {
-//     if (key in result) {
-//       if (Array.isArray(result[key])) {
-//         (result[key] as string[]).push(value);
-//       } else {
-//         result[key] = [result[key], value];
-//       }
-//     } else {
-//       result[key] = value;
-//     }
-//   }
-//   return result;
-// }
-
-// export const parseQuery = (query: string) => {
-//   // convert search term query string to array
-
-//   return result;
-// }

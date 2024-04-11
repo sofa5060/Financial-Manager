@@ -14,11 +14,12 @@ type TreasuryBondsResponse = {
 class TreasuryManager {
   static async getReceiveTreasuryBonds(
     page: number = 1,
-    size: number = 10
+    size: number = 10,
+    searchQuery: string = ""
   ): Promise<TreasuryBondsResponse | undefined> {
     try {
       const response = await axios.get(
-        `/api/safe/receive?page=${page}&size=${size}`
+        `/api/safe/receive?page=${page}&size=${size}&${searchQuery}`
       );
 
       return {
@@ -33,11 +34,12 @@ class TreasuryManager {
 
   static async getPaymentTreasuryBonds(
     page: number = 1,
-    size: number = 10
+    size: number = 10,
+    searchQuery: string = ""
   ): Promise<TreasuryBondsResponse | undefined> {
     try {
       const response = await axios.get(
-        `/api/safe/payment?page=${page}&size=${size}`
+        `/api/safe/payment?page=${page}&size=${size}&${searchQuery}`
       );
 
       return {

@@ -6,20 +6,29 @@ import { toast } from "@/components/ui/use-toast";
 import TreasuryManager from "@/managers/TreasuryManager";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const TreasuryPayments = () => {
+  const [searchParams] = useSearchParams();
   const columns = useTreasuryPaymentBondsColumns();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bonds", "payment", "page", page, "size", size],
-    queryFn: () => TreasuryManager.getPaymentTreasuryBonds(page, size),
+    queryKey: ["bonds", "payment", "page", page, "size", size, "search", searchParams.toString()],
+    queryFn: () => TreasuryManager.getPaymentTreasuryBonds(page, size, searchParams.toString()),
   });
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page") || "1");
+    const size = parseInt(searchParams.get("size") || "10");
+
+    setPage(page);
+    setSize(size);
+  }, [searchParams]);
 
   if (isLoading)
     return (
