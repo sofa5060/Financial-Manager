@@ -11,11 +11,12 @@ type TransactionsResponse = {
 class TransactionsManager {
   static async getPostTransactions(
     page: number = 1,
-    size: number = 10
+    size: number = 10,
+    searchQuery: string = ""
   ): Promise<TransactionsResponse | undefined> {
     try {
       const response = await axios.get(
-        `/api/transactions/post?page=${page}&size=${size}`
+        `/api/transactions/post?page=${page}&size=${size}&${searchQuery}`
       );
 
       return {
@@ -30,11 +31,12 @@ class TransactionsManager {
 
   static async getParkTransactions(
     page: number = 1,
-    size: number = 10
+    size: number = 10,
+    searchQuery: string = ""
   ): Promise<TransactionsResponse | undefined> {
     try {
       const response = await axios.get(
-        `/api/transactions/park?page=${page}&size=${size}`
+        `/api/transactions/park?page=${page}&size=${size}&${searchQuery}`
       );
       return {
         transactions: response.data.data,

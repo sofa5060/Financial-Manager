@@ -4,7 +4,7 @@ import { DataTable } from "@/components/Transactions/TableView/DataTable";
 import { toast } from "@/components/ui/use-toast";
 import TransactionsManager from "@/managers/TransactionsManager";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useSearchParams } from "react-router-dom";
 
@@ -21,9 +21,17 @@ const ParkAccountsTransactions = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["transactions", "park", "page", page, "size", size],
-    queryFn: () => TransactionsManager.getParkTransactions(page, size),
+    queryKey: ["transactions", "park", "page", page, "size", size, "search", searchParams.toString()],
+    queryFn: () => TransactionsManager.getParkTransactions(page, size, searchParams.toString()),
   });
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page") || "1");
+    const size = parseInt(searchParams.get("size") || "10");
+
+    setPage(page);
+    setSize(size);
+  }, [searchParams]);
 
   if (isLoading || isSearching)
     return (

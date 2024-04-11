@@ -1,10 +1,10 @@
 import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
 import { usePostAccountTransactionsColumns } from "@/components/Transactions/TableView/Columns";
-import { DataTable } from "@/components/Treasury/TableView/DataTable";
+import { DataTable } from "@/components/Transactions/TableView/DataTable";
 import { toast } from "@/components/ui/use-toast";
 import TransactionsManager from "@/managers/TransactionsManager";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useSearchParams } from "react-router-dom";
 
@@ -21,9 +21,17 @@ const PostAccountsTransactions = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["transactions", "post", "page", page, "size", size],
-    queryFn: () => TransactionsManager.getPostTransactions(page, size),
+    queryKey: ["transactions", "post", "page", page, "size", size, "search", searchParams.toString()],
+    queryFn: () => TransactionsManager.getPostTransactions(page, size, searchParams.toString()),
   });
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page") || "1");
+    const size = parseInt(searchParams.get("size") || "10");
+
+    setPage(page);
+    setSize(size);
+  }, [searchParams]);
 
   if (isLoading || isSearching)
     return (
