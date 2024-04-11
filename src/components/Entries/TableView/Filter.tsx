@@ -125,7 +125,10 @@ const Filter = ({
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onSelect={() => setSelectedValues(new Set())}
+              onSelect={() => {
+                setSelectedValues(new Set())
+                setOuterValue([])
+              }}
               className="justify-center text-center"
             >
               Clear filters

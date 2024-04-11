@@ -1,5 +1,3 @@
-"use client";
-
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
@@ -11,10 +9,6 @@ import { arrFromQuery, serializeFormQuery } from "@/lib/utils";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUsersStore } from "@/hooks/useUsersStore";
 import Filter from "./Filter";
-
-// import { RequestCreateDialog } from "../dialogs/request-create-dialog";
-// import { useDueStatuses, usePriorities, useRoles, useStatuses } from "./data";
-// import { DataTableFacetedFilter } from "./DataTableFactedFilter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -51,8 +45,10 @@ export function DataTableToolbar<TData>({
     };
 
     const serializedParams = serializeFormQuery(params);
-    if (serializedParams === "") return;
-    // setSearchParams(serializedParams);
+    if (serializedParams === "") {
+      clearFilters();
+      return;
+    }
     navigate(`?${serializedParams}`);
     setIsFiltered(true);
   };
@@ -63,7 +59,6 @@ export function DataTableToolbar<TData>({
     setPostedBySearchTerm([]);
     setUpdatedBySearchTerm([]);
     setIsFiltered(false);
-    // setSearchParams("");
     navigate("");
   };
 
