@@ -35,6 +35,7 @@ import EditTreasuryReceiveBond from "./pages/EditTreasuryReceiveBond";
 import BanksPage from "./components/settings/subpages/banks/BanksPage";
 import CurrenciesPage from "./components/settings/subpages/Currencies/CurrenciesPage";
 import CategoriesPage from "./components/settings/subpages/Categories/CategoriesPage";
+import GroupsPage from "./components/settings/subpages/Gropus/GroupsPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -146,6 +147,10 @@ function App() {
               <Route
                 path="settings/categories"
                 element={<CategoriesPage />}
+              />
+              <Route
+                path="settings/groups"
+                element={<GroupsPage />}
               />
               <Route
                 path="settings/tasksubcat"

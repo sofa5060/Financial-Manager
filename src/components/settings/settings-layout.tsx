@@ -25,6 +25,10 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings/categories",
     },
     {
+      title: "Groups",
+      href: "/settings/groups",
+    },
+    {
       title: t("settings.sidebar.subCategories"),
       href: "/settings/tasksubcat",
     },
