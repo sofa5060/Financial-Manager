@@ -13,6 +13,10 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings",
     },
     {
+      title: "Banks",
+      href: "/settings/banks",
+    },
+    {
       title: t("settings.sidebar.categories"),
       href: "/settings/taskcat",
     },

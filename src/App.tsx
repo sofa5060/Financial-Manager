@@ -33,6 +33,7 @@ import ViewTreasuryReceiveBond from "./pages/ViewTreasuryReceiveBond";
 import ViewTreasuryPaymentBond from "./pages/ViewTreasuryPaymentBond";
 import EditTreasuryPaymentBond from "./pages/EditTreasuryPaymentBond";
 import EditTreasuryReceiveBond from "./pages/EditTreasuryReceiveBond";
+import BanksPage from "./components/settings/subpages/banks/BanksPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -134,7 +135,11 @@ function App() {
               />
               <Route path="/settings" element={<GeneralSettingsPage />} />
               <Route
-                path="settings/taskcat"
+                path="settings/banks"
+                element={<BanksPage />}
+              />
+              <Route
+                path="settings/categories"
                 element={<TasksCategoriesPage />}
               />
               <Route

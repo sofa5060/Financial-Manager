@@ -16,7 +16,7 @@ const GeneralSettingsPage = () => {
         </div>
         <div>
           <Label htmlFor="version">{t("settings.general.lastUpdated")}</Label>
-          <Input id="version" value="29 January 2024" disabled />
+          <Input id="version" value="13 April 2024" disabled />
         </div>
         <div>
           <Label htmlFor="owner">{t("settings.general.softwareOwner")}</Label>
@@ -24,7 +24,7 @@ const GeneralSettingsPage = () => {
         </div>
         <div>
           <Label htmlFor="developer">{t("settings.general.developedBy")}</Label>
-          <Input id="developer" value="Ersaa IT" disabled />
+          <Input id="developer" value="Miraage IT" disabled />
         </div>
       </div>
     </SettingsLayout>

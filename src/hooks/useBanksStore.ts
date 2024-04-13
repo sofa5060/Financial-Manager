@@ -1,4 +1,4 @@
-import { Bank } from "@/managers/BanksManager";
+import { Bank } from "@/components/settings/subpages/banks/schema";
 import { create } from "zustand";
 
 type State = {
