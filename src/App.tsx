@@ -34,6 +34,7 @@ import ViewTreasuryPaymentBond from "./pages/ViewTreasuryPaymentBond";
 import EditTreasuryPaymentBond from "./pages/EditTreasuryPaymentBond";
 import EditTreasuryReceiveBond from "./pages/EditTreasuryReceiveBond";
 import BanksPage from "./components/settings/subpages/banks/BanksPage";
+import CurrenciesPage from "./components/settings/subpages/Currencies/CurrenciesPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -137,6 +138,10 @@ function App() {
               <Route
                 path="settings/banks"
                 element={<BanksPage />}
+              />
+              <Route
+                path="settings/currencies"
+                element={<CurrenciesPage />}
               />
               <Route
                 path="settings/categories"

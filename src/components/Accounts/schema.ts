@@ -4,7 +4,7 @@ import {
   AccountTypeSchema,
   ReportingTypeSchema,
 } from "./Hierarchical/data";
-import { Currency } from "@/managers/CurrenciesManager";
+import { Currency } from "../settings/subpages/Currencies/schema";
 
 export type SubAccount = {
   id: number;

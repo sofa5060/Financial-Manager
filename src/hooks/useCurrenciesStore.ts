@@ -1,4 +1,4 @@
-import { Currency } from "@/managers/CurrenciesManager";
+import { Currency } from "@/components/settings/subpages/Currencies/schema";
 import { create } from "zustand";
 
 type State = {

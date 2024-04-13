@@ -17,6 +17,10 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings/banks",
     },
     {
+      title: "Currencies",
+      href: "/settings/currencies",
+    },
+    {
       title: t("settings.sidebar.categories"),
       href: "/settings/taskcat",
     },
