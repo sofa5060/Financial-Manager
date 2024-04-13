@@ -1,4 +1,4 @@
-import { Category } from "@/managers/CategoriesManager";
+import { Category } from "@/components/settings/subpages/Categories/schema";
 import { create } from "zustand";
 
 type State = {

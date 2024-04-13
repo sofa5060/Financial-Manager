@@ -67,14 +67,14 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
 
   // fetch categories
   const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => CategoriesManager.getCategories(),
+    queryKey: ["categories", "page", 1, "size", 1000],
+    queryFn: () => CategoriesManager.getCategories(1, 1000),
   });
 
   // store categories
   useEffect(() => {
     if (categories) {
-      setCategories(categories);
+      setCategories(categories.categories);
     }
   }, [categories, setCategories]);
 

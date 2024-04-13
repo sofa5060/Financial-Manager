@@ -22,7 +22,7 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
     },
     {
       title: t("settings.sidebar.categories"),
-      href: "/settings/taskcat",
+      href: "/settings/categories",
     },
     {
       title: t("settings.sidebar.subCategories"),

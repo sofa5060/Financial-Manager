@@ -15,7 +15,6 @@ import TreasuryPayments from "./pages/TreasuryPayment";
 import ParkAccountsTransactions from "./pages/ParkAccountsTransactions";
 import PostAccountsTransactions from "./pages/PostAccountsTransactions";
 import GeneralSettingsPage from "./components/settings/subpages/general-settings";
-import TasksCategoriesPage from "./components/settings/subpages/tasks-categories/tasks-categories-settings";
 import TasksSubCategoriesPage from "./components/settings/subpages/tasks-subcategories/tasks-subcategories-settings";
 import OrgDepartmentsSettingsPage from "./components/settings/subpages/org-departments/org-departments-settings";
 import OrgTitlesSettingsPage from "./components/settings/subpages/org-titles/org-titles-settings";
@@ -35,6 +34,7 @@ import EditTreasuryPaymentBond from "./pages/EditTreasuryPaymentBond";
 import EditTreasuryReceiveBond from "./pages/EditTreasuryReceiveBond";
 import BanksPage from "./components/settings/subpages/banks/BanksPage";
 import CurrenciesPage from "./components/settings/subpages/Currencies/CurrenciesPage";
+import CategoriesPage from "./components/settings/subpages/Categories/CategoriesPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -145,7 +145,7 @@ function App() {
               />
               <Route
                 path="settings/categories"
-                element={<TasksCategoriesPage />}
+                element={<CategoriesPage />}
               />
               <Route
                 path="settings/tasksubcat"
