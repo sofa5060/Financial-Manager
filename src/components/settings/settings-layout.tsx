@@ -32,18 +32,18 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       title: "Permissions",
       href: "/settings/permissions",
     },
-    {
-      title: t("settings.sidebar.subCategories"),
-      href: "/settings/tasksubcat",
-    },
-    {
-      title: t("settings.sidebar.jobTitles"),
-      href: "/settings/orgtitles",
-    },
-    {
-      title: t("settings.sidebar.departments"),
-      href: "/settings/orgdep",
-    },
+    // {
+    //   title: t("settings.sidebar.subCategories"),
+    //   href: "/settings/tasksubcat",
+    // },
+    // {
+    //   title: t("settings.sidebar.jobTitles"),
+    //   href: "/settings/orgtitles",
+    // },
+    // {
+    //   title: t("settings.sidebar.departments"),
+    //   href: "/settings/orgdep",
+    // },
   ];
 
   return (
