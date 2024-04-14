@@ -29,6 +29,10 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings/groups",
     },
     {
+      title: "Permissions",
+      href: "/settings/permissions",
+    },
+    {
       title: t("settings.sidebar.subCategories"),
       href: "/settings/tasksubcat",
     },

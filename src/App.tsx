@@ -36,6 +36,7 @@ import BanksPage from "./components/settings/subpages/banks/BanksPage";
 import CurrenciesPage from "./components/settings/subpages/Currencies/CurrenciesPage";
 import CategoriesPage from "./components/settings/subpages/Categories/CategoriesPage";
 import GroupsPage from "./components/settings/subpages/Gropus/GroupsPage";
+import PermissionsPage from "./components/settings/subpages/Permissions/PermissionsPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -151,6 +152,10 @@ function App() {
               <Route
                 path="settings/groups"
                 element={<GroupsPage />}
+              />
+              <Route
+                path="settings/permissions"
+                element={<PermissionsPage />}
               />
               <Route
                 path="settings/tasksubcat"

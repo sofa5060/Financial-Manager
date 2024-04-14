@@ -1,6 +1,7 @@
 import { useBanksStore } from "@/hooks/useBanksStore";
 import { useCategoriesStore } from "@/hooks/useCategories";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
+import { useGroupsStore } from "@/hooks/useGroupsStore";
 import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
 import { useUsersStore } from "@/hooks/useUsersStore";
@@ -9,6 +10,7 @@ import BanksManager from "@/managers/BanksManager";
 import CategoriesManager from "@/managers/CategoriesManager";
 import CostCentersManager from "@/managers/CostCentersManager";
 import CurrenciesManager from "@/managers/CurrenciesManager";
+import GroupsManager from "@/managers/GroupsManager";
 import UsersManager from "@/managers/UsersManager";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -25,6 +27,7 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
   const setCategories = useCategoriesStore((state) => state.setCategories);
   const setBanks = useBanksStore((state) => state.setBanks);
   const setUsers = useUsersStore((state) => state.setUsers);
+  const setGroups = useGroupsStore((state) => state.setGroups);
 
   // fetch currencies
   const { data: currencies } = useQuery({
@@ -93,7 +96,7 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
 
   // fetch users
   const { data: usersResponse } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", "page", 1, "size", 1000],
     queryFn: () => UsersManager.getUsers(1, 1000),
   });
 
@@ -103,6 +106,19 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
       setUsers(usersResponse.users);
     }
   }, [usersResponse, setUsers]);
+
+  // fetch groups
+  const { data: groupsResponse } = useQuery({
+    queryKey: ["groups", "page", 1, "size", 1000],
+    queryFn: () => GroupsManager.getGroups(1, 1000),
+  });
+
+  // store groups
+  useEffect(() => {
+    if (groupsResponse) {
+      setGroups(groupsResponse.groups);
+    }
+  }, [groupsResponse]);
 
   return <div>{children}</div>;
 };

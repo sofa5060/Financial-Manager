@@ -112,3 +112,7 @@ export const arrFromQuery = (query: string | null) =>
   !query || query === null || query === ""
     ? []
     : query.split(",").map((val) => parseInt(val));
+
+export const capitalizeString = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
