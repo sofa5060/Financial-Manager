@@ -36,6 +36,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
   useEffect(() => {
     form.reset({
       ...group,
+      members: group?.users?.map((user) => user.id),
     });
   }, [group]);
 
