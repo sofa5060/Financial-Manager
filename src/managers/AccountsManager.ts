@@ -64,8 +64,10 @@ class AccountsManager {
   ): Promise<Account | undefined> {
     try {
       const response = await axios.put(`/api/account/${accountId}`, account);
+      console.log(response.data);
       return response.data;
     } catch (error) {
+      console.log(error)
       handleAxiosError(error as AxiosError);
     }
   }

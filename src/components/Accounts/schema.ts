@@ -27,6 +27,8 @@ export type Account = {
   id: number;
   code: string;
   children: Account[];
+  currencies_ids: {id: number}[];
+  categories_ids: {id: number}[];
 } & NewAccount;
 
 export const NewAccountSchema = z.object({

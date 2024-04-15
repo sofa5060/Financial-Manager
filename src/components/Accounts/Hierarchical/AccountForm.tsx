@@ -56,11 +56,15 @@ const AccountForm = ({
 
   useEffect(() => {
     form.reset({
-      currencies: [],
-      categories: [],
       cost_center: false,
       parent_id: parentAccount?.id ?? null,
       ...account,
+      currencies: account
+        ? account.currencies_ids?.map((currency) => currency.id)
+        : [],
+      categories: account
+        ? account.categories_ids?.map((category) => category.id)
+        : [],
     });
   }, [account]);
 
@@ -70,11 +74,15 @@ const AccountForm = ({
   const form = useForm<NewAccount>({
     resolver: zodResolver(NewAccountSchema),
     defaultValues: {
-      currencies: [],
-      categories: [],
       cost_center: false,
       parent_id: parentAccount?.id ?? null,
       ...account,
+      currencies: account
+        ? account.currencies_ids?.map((currency) => currency.id)
+        : [],
+      categories: account
+        ? account.categories_ids?.map((category) => category.id)
+        : [],
     },
   });
 
@@ -315,6 +323,12 @@ const AccountForm = ({
                       values!.map((val) => val.value)
                     );
                   }}
+                  defaultValue={account?.categories_ids?.map(
+                    (category) =>
+                      categoriesOptions.find(
+                        (option) => option.value === category.id
+                      )!
+                  )}
                   className="w-full"
                   options={categoriesOptions}
                 />
@@ -368,9 +382,9 @@ const AccountForm = ({
                   isSearchable={false}
                   isClearable={false}
                   isDisabled={type === "view"}
-                  defaultValue={account?.currencies?.map((currency) =>
+                  defaultValue={account?.currencies_ids?.map((currency) =>
                     currenciesOptions.find(
-                      (option) => option.value === currency
+                      (option) => option.value === currency.id
                     )
                   )}
                   onChange={(values) => {
