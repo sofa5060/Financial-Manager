@@ -8,10 +8,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PackageCheck, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
 const ParkAccountingEntries = () => {
+  const { t } = useTranslation("entries");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const columns = useParkAccountingEntriesColumns();
@@ -76,7 +78,7 @@ const ParkAccountingEntries = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch entries",
+      title: t("entries.failed"),
     });
     return <></>;
   }
@@ -85,10 +87,11 @@ const ParkAccountingEntries = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Accounting Entries / <span className="text-primary">Park</span>
+          {t("accountingEntries")} /{" "}
+          <span className="text-primary">{t("park")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline me-4">Print Selected</Button>
+          <Button className="btn-outline me-4">{t("printSelected")}</Button>
           {selectedEntries.length > 0 && (
             <Button
               className="me-4"
@@ -98,7 +101,7 @@ const ParkAccountingEntries = () => {
               }}
             >
               <PackageCheck className="me-2 w-4" />
-              Post Selected
+              {t("postSelected")}
             </Button>
           )}
           <Button
@@ -108,7 +111,7 @@ const ParkAccountingEntries = () => {
             }}
           >
             <Plus className="me-2 w-4" />
-            New Entry
+            {t("newEntry")}
           </Button>
         </div>
       </div>

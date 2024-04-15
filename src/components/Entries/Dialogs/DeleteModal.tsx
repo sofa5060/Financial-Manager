@@ -12,6 +12,7 @@ import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteModalProps = {
   entryId: number;
@@ -19,6 +20,7 @@ type DeleteModalProps = {
 };
 
 const DeleteModal = ({ children, entryId }: DeleteModalProps) => {
+  const { t } = useTranslation("entries");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,14 +29,14 @@ const DeleteModal = ({ children, entryId }: DeleteModalProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete entry",
+        title: t("delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["entries", "park"] });
       toast({
-        title: "Entry deleted successfully",
+        title: t("delete.success"),
       });
       closeDialog();
     },
@@ -51,11 +53,8 @@ const DeleteModal = ({ children, entryId }: DeleteModalProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Entry</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            entry and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{t("delete.title")}</DialogTitle>
+          <DialogDescription>{t("delete.message")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -65,7 +64,7 @@ const DeleteModal = ({ children, entryId }: DeleteModalProps) => {
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -75,7 +74,7 @@ const DeleteModal = ({ children, entryId }: DeleteModalProps) => {
             disabled={isPending}
           >
             <Trash className="w-4 h-4 me-2" />
-            Delete This Entry
+            {t("delete.confirm")}
           </Button>
         </div>
       </DialogContent>

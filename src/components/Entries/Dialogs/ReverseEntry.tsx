@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
+import { useTranslation } from "react-i18next";
 
 type ReverseEntryProps = {
   children: React.ReactNode;
@@ -37,6 +38,7 @@ const ReverseEntrySchema = z.object({
 });
 
 const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
+  const { t } = useTranslation("entries");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -50,16 +52,16 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to reverse entry",
+        title: t("reverse.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["entries", "park"] });
-      await queryClient.invalidateQueries({ queryKey: ["transactions", "park"] });
+      await queryClient.invalidateQueries({ queryKey: ["entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Entry reversed successfully",
+        title: t("reverse.success"),
       });
       closeDialog();
     },
@@ -86,8 +88,8 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Reverse Entry</DialogTitle>
-          <DialogDescription>Click Reverse when you're done.</DialogDescription>
+          <DialogTitle>{t("reverse.title")}</DialogTitle>
+          <DialogDescription>{t("reverse.message")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -97,7 +99,7 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
                   <FormLabel className="whitespace-nowrap">
-                    Document Code
+                    {t("documentCode")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -113,7 +115,9 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
-                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
+                  <FormLabel className="whitespace-nowrap">
+                    {t("date")}
+                  </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
                       <Input {...field} className="w-full" type="date" />
@@ -128,7 +132,9 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
               name="reason"
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
-                  <FormLabel className="whitespace-nowrap">Reason</FormLabel>
+                  <FormLabel className="whitespace-nowrap">
+                    {t("reason")}
+                  </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
                       <Input {...field} className="w-full" />
@@ -145,10 +151,10 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
                 onClick={closeDialog}
                 disabled={isPending}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" disabled={isPending}>
-                Reverse
+                {t("reverse")}
               </Button>
             </div>
           </form>

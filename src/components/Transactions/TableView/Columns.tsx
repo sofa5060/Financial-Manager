@@ -2,90 +2,93 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Transaction } from "../schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { formatDateTime } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export const usePostAccountTransactionsColumns = () => {
+  const { t } = useTranslation("transactions");
+
   const columns: ColumnDef<Transaction>[] = [
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
       meta: {
-        header: "Serial",
+        header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: "Document No.",
+      header: t("documentNo"),
       meta: {
-        header: "Document No.",
+        header: t("documentNo"),
       },
     },
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Document Date" />
+        <DataTableColumnHeader column={column} title={t("date")} />
       ),
       cell: ({ row }) => {
         return formatDateTime(row.original.date);
       },
       meta: {
-        header: "Document Date",
+        header: t("date"),
       },
     },
     {
       accessorKey: "posted_at",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Posting Date" />
+        <DataTableColumnHeader column={column} title={t("posted_at")} />
       ),
       cell: ({ row }) => {
         return formatDateTime(row.original.posted_at!);
       },
       meta: {
-        header: "Posting Date",
+        header: t("posted_at"),
       },
     },
     {
       accessorKey: "created_by_name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="User" />
+        <DataTableColumnHeader column={column} title={t("user")} />
       ),
       meta: {
-        header: "User",
+        header: t("user"),
       },
     },
     {
       accessorKey: "account_code",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Account Code" />
+        <DataTableColumnHeader column={column} title={t("accountCode")} />
       ),
       meta: {
-        header: "Account Code",
+        header: t("accountCode"),
       },
     },
     {
       accessorKey: "account_name_en",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Account Name" />
+        <DataTableColumnHeader column={column} title={t("accountName")} />
       ),
       meta: {
-        header: "Account Name",
+        header: t("accountName"),
       },
     },
     {
       accessorKey: "description",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Description" />
+        <DataTableColumnHeader column={column} title={t("description")} />
       ),
       meta: {
-        header: "Description",
+        header: t("description"),
       },
     },
     {
       accessorKey: "cost_center",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Cost Center" />
+        <DataTableColumnHeader column={column} title={t("costCenter")} />
       ),
       meta: {
-        header: "Cost Center",
+        header: t("costCenter"),
       },
       cell: ({ row }) => {
         return <span>{row.original.cost_center ? "Yes" : "No"}</span>;
@@ -94,26 +97,26 @@ export const usePostAccountTransactionsColumns = () => {
     {
       accessorKey: "debit",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Debit" />
+        <DataTableColumnHeader column={column} title={t("debit")} />
       ),
       meta: {
-        header: "Debit",
+        header: t("debit"),
       },
     },
     {
       accessorKey: "credit",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Credit" />
+        <DataTableColumnHeader column={column} title={t("credit")} />
       ),
       meta: {
-        header: "Credit",
+        header: t("credit"),
       },
     },
     {
       accessorKey: "currency",
-      header: "Currency",
+      header: t("currency"),
       meta: {
-        header: "Currency",
+        header: t("currency"),
       },
     },
   ];

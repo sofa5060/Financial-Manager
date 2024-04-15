@@ -25,8 +25,10 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import TemplatesManager from "@/managers/TemplatesManager";
 import { toast } from "@/components/ui/use-toast";
+import { useTranslation } from "react-i18next";
 
 export const useParkAccountingEntriesColumns = () => {
+  const { t } = useTranslation("entries");
   const queryClient = useQueryClient();
 
   const { mutate: saveTemplateMutate, isPending } = useMutation({
@@ -41,7 +43,7 @@ export const useParkAccountingEntriesColumns = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["templates"] });
       toast({
-        title: "Entry saved successfully",
+        title: "Template saved successfully",
       });
     },
   });
@@ -60,6 +62,7 @@ export const useParkAccountingEntriesColumns = () => {
             table.toggleAllPageRowsSelected(!!value)
           }
           aria-label="Select all"
+          className="rtl:float-right mx-8"
         />
       ),
       cell: ({ row }) => (
@@ -67,6 +70,7 @@ export const useParkAccountingEntriesColumns = () => {
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
           aria-label="Select row"
+          className="cursor-pointer mx-8"
         />
       ),
       enableSorting: false,
@@ -74,14 +78,14 @@ export const useParkAccountingEntriesColumns = () => {
     },
     {
       accessorKey: "id",
-      header: "Document No.",
+      header: t("documentNo"),
       meta: {
         header: "Document No.",
       },
     },
     {
       accessorKey: "code",
-      header: "Serial",
+      header: t("serial"),
       meta: {
         header: "Serial",
       },
@@ -89,55 +93,55 @@ export const useParkAccountingEntriesColumns = () => {
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Document Date" />
+        <DataTableColumnHeader column={column} title={t("documentDate")} />
       ),
       cell({ row }) {
         return formatDateTime(row.original.date);
       },
       meta: {
-        header: "Document Date",
+        header: t("documentDate"),
       },
     },
     {
       accessorKey: "title",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="title" />
+        <DataTableColumnHeader column={column} title={t("title")} />
       ),
       meta: {
-        header: "Title",
+        header: t("title"),
       },
     },
     {
       accessorKey: "created_by_name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="User" />
+        <DataTableColumnHeader column={column} title={t("user")} />
       ),
       getUniqueValues: (entry) => {
         return [entry.created_by];
       },
       meta: {
-        header: "User",
+        header: t("user"),
       },
     },
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Amount" />
+        <DataTableColumnHeader column={column} title={t("amount")} />
       ),
       meta: {
-        header: "Amount",
+        header: t("amount"),
       },
     },
     {
       accessorKey: "currency",
-      header: "Currency",
+      header: t("currency"),
       meta: {
-        header: "Currency",
+        header: t("currency"),
       },
     },
     {
       id: "actions",
-      header: "Actions",
+      header: t("actions"),
       cell: ({ row }) => {
         const entry = row.original;
         return (
@@ -153,7 +157,7 @@ export const useParkAccountingEntriesColumns = () => {
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>View Entry</p>
+                  <p>{t("viewEntry")}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -174,7 +178,7 @@ export const useParkAccountingEntriesColumns = () => {
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>View Transactions</p>
+                  <p>{t("viewTransactions")}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -186,7 +190,7 @@ export const useParkAccountingEntriesColumns = () => {
                   </PostModal>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Post Entry</p>
+                  <p>{t("postEntry")}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -206,7 +210,7 @@ export const useParkAccountingEntriesColumns = () => {
         );
       },
       meta: {
-        header: "Actions",
+        header: t("actions"),
       },
     },
   ];
@@ -215,6 +219,7 @@ export const useParkAccountingEntriesColumns = () => {
 };
 
 export const usePostAccountingEntriesColumns = () => {
+  const { t } = useTranslation("entries");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -248,6 +253,7 @@ export const usePostAccountingEntriesColumns = () => {
             table.toggleAllPageRowsSelected(!!value)
           }
           aria-label="Select all"
+          className="rtl:float-right mx-8"
         />
       ),
       cell: ({ row }) => (
@@ -255,6 +261,7 @@ export const usePostAccountingEntriesColumns = () => {
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
           aria-label="Select row"
+          className="cursor-pointer mx-8"
         />
       ),
       enableSorting: false,
@@ -262,14 +269,14 @@ export const usePostAccountingEntriesColumns = () => {
     },
     {
       accessorKey: "id",
-      header: "Document No.",
+      header: t("documentNo"),
       meta: {
         header: "Document No.",
       },
     },
     {
       accessorKey: "code",
-      header: "Serial",
+      header: t("serial"),
       meta: {
         header: "Serial",
       },
@@ -277,64 +284,67 @@ export const usePostAccountingEntriesColumns = () => {
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Document Date" />
+        <DataTableColumnHeader column={column} title={t("documentDate")} />
       ),
       cell({ row }) {
         return formatDateTime(row.original.date);
       },
       meta: {
-        header: "Document Date",
+        header: t("documentDate"),
       },
     },
     {
       accessorKey: "posted_at",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Posting Date" />
+        <DataTableColumnHeader column={column} title={t("postingDate")} />
       ),
       cell({ row }) {
         return formatDateTime(row.original.posted_at!);
       },
       meta: {
-        header: "Document Date",
+        header: t("postingDate"),
       },
     },
     {
       accessorKey: "title",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="title" />
+        <DataTableColumnHeader column={column} title={t("title")} />
       ),
       meta: {
-        header: "Title",
+        header: t("title"),
       },
     },
     {
       accessorKey: "created_by_name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="User" />
+        <DataTableColumnHeader column={column} title={t("user")} />
       ),
+      getUniqueValues: (entry) => {
+        return [entry.created_by];
+      },
       meta: {
-        header: "User",
+        header: t("user"),
       },
     },
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Amount" />
+        <DataTableColumnHeader column={column} title={t("amount")} />
       ),
       meta: {
-        header: "Amount",
+        header: t("amount"),
       },
     },
     {
       accessorKey: "currency",
-      header: "Currency",
+      header: t("currency"),
       meta: {
-        header: "Currency",
+        header: t("currency"),
       },
     },
     {
       id: "actions",
-      header: "Actions",
+      header: t("actions"),
       cell: ({ row }) => {
         const entry = row.original;
         return (
@@ -361,7 +371,7 @@ export const usePostAccountingEntriesColumns = () => {
         );
       },
       meta: {
-        header: "Actions",
+        header: t("actions"),
       },
     },
   ];

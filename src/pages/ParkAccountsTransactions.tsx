@@ -6,9 +6,11 @@ import TransactionsManager from "@/managers/TransactionsManager";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
 const ParkAccountsTransactions = () => {
+  const { t } = useTranslation("transactions");
   const [searchParams] = useSearchParams();
   const columns = useParkAccountTransactionsColumns();
   const [page, setPage] = useState(1);
@@ -52,7 +54,7 @@ const ParkAccountsTransactions = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Accounting Transactions<span className="text-primary"> / Park</span>
+          {t("accountingTransactions")}<span className="text-primary"> / {t("park")}</span>
         </h1>
       </div>
       <DataTable data={EntryTransactions ?? data!.transactions} columns={columns} />

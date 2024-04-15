@@ -22,6 +22,7 @@ import {
 import { useEffect, useState } from "react";
 import { DataTableToolbar } from "./DataTableToolbar";
 import { Entry } from "../schema";
+import { useTranslation } from "react-i18next";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +35,7 @@ export function DataTable<TData, TValue>({
   data,
   setSelectedEntries,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation("entries");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -75,7 +77,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-start">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -119,8 +121,10 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        {t("selected", {
+          count: table.getFilteredSelectedRowModel().rows.length,
+          total: table.getFilteredRowModel().rows.length,
+        })}
       </div>
     </div>
   );

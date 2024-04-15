@@ -7,17 +7,33 @@ import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
 const PostAccountingEntries = () => {
+  const { t } = useTranslation("entries");
   const [searchParams] = useSearchParams();
   const columns = usePostAccountingEntriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["entries", "post", "page", page, "size", size, "search", searchParams.toString()],
-    queryFn: () => AccountingEntriesManager.getPostEntries(page, size, searchParams.toString()),
+    queryKey: [
+      "entries",
+      "post",
+      "page",
+      page,
+      "size",
+      size,
+      "search",
+      searchParams.toString(),
+    ],
+    queryFn: () =>
+      AccountingEntriesManager.getPostEntries(
+        page,
+        size,
+        searchParams.toString()
+      ),
   });
 
   if (isLoading)
@@ -30,20 +46,20 @@ const PostAccountingEntries = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch entries",
+      title: t("entries.failed"),
     });
     return <></>;
   }
-
 
   return (
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Accounting Entries / <span className="text-primary">Post</span>
+          {t("accountingEntries")} /{" "}
+          <span className="text-primary">{t("post")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline">Print Selected</Button>
+          <Button className="btn-outline">{t("printSelected")}</Button>
         </div>
       </div>
       <DataTable data={data!.entries} columns={columns} />

@@ -12,6 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "react-i18next";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -20,6 +21,7 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  const { t } = useTranslation("transactions");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +31,7 @@ export function DataTableViewOptions<TData>({
           className="ms-auto hidden h-8 lg:flex"
         >
           <MixerHorizontalIcon className="me-2 h-4 w-4" />
-          View
+          {t("view")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">

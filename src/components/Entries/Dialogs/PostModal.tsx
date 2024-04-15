@@ -12,6 +12,7 @@ import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BadgePlus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type PostModalProps = {
   entryId: number;
@@ -19,6 +20,7 @@ type PostModalProps = {
 };
 
 const PostModal = ({ children, entryId }: PostModalProps) => {
+  const { t } = useTranslation("entries");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,7 +29,7 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to post entry",
+        title: t("post.failed"),
         description: error.message,
       });
     },
@@ -36,7 +38,7 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Entry posted successfully",
+        title: t("post.success"),
       });
       closeDialog();
     },
@@ -53,8 +55,8 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Post This Entry</DialogTitle>
-          <DialogDescription>This action cannot be undone.</DialogDescription>
+          <DialogTitle>{t("post.title")}</DialogTitle>
+          <DialogDescription>{t("post.message")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -64,7 +66,7 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -74,7 +76,7 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
             disabled={isPending}
           >
             <BadgePlus className="me-2 w-4" />
-            Post This Entry
+            {t("post.confirm")}
           </Button>
         </div>
       </DialogContent>

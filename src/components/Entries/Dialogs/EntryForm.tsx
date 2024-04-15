@@ -25,12 +25,14 @@ import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useEntryType } from "../data";
 import { useBanksStore } from "@/hooks/useBanksStore";
 import { formatDate } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 type EntryFormProps = {
   type?: "view" | "edit" | "add";
   entry?: Entry;
 };
 const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
+  const { t } = useTranslation("entries");
   const [rate, setRate] = useState<number | undefined>(
     entry?.rate ?? undefined
   );
@@ -60,7 +62,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to add entry",
+        title: t("add.failed"),
         description: error.message,
       });
     },
@@ -69,7 +71,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Entry added successfully",
+        title: t("add.success"),
       });
 
       navigate("/accounting-entries/park");
@@ -82,7 +84,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to edit entry",
+        title: t("edit.failed"),
         description: error.message,
       });
     },
@@ -92,7 +94,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Entry edited successfully",
+        title: t("edit.success"),
       });
 
       navigate("/accounting-entries/park");
@@ -100,9 +102,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
   });
 
   const HEADERS = {
-    view: "View Entry",
-    edit: "Edit Entry",
-    add: "Add New Entry",
+    view: t("entry.view"),
+    edit: t("entry.edit"),
+    add: t("entry.add"),
   };
 
   const form = useForm<NewEntry>({
@@ -156,7 +158,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                 render={({ field }) => (
                   <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
                     <FormLabel className="whitespace-nowrap">
-                      Document Number
+                      {t("documentNo")}
                     </FormLabel>
                     <div className="flex-col w-full">
                       <FormControl>
@@ -178,7 +180,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
+                  <FormLabel className="whitespace-nowrap">
+                    {t("date")}
+                  </FormLabel>
                   <div className="flex-col w-full">
                     <FormControl>
                       <Input
@@ -197,7 +201,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
             />
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="currency_id" className="font-medium text-sm">
-                Currency
+                {t("currency")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -229,7 +233,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                 name="rate"
                 render={({ field }) => (
                   <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
-                    <FormLabel className="whitespace-nowrap">rate</FormLabel>
+                    <FormLabel className="whitespace-nowrap">
+                      {t("rate")}
+                    </FormLabel>
                     <div className="flex-col w-full">
                       <FormControl>
                         <Input
@@ -263,7 +269,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
           <div className="flex items-center max-w-[50%] gap-4">
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="type" className="font-medium text-sm">
-                Type
+                {t("type")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -295,7 +301,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                   render={({ field }) => (
                     <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
                       <FormLabel className="whitespace-nowrap">
-                        Check No
+                        {t("checkNo")}
                       </FormLabel>
                       <div className="flex-col w-full">
                         <FormControl>
@@ -315,7 +321,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                 />
                 <div className="flex justify-end flex-1 flex-col items-start gap-1">
                   <label htmlFor="bank_id" className="font-medium text-sm">
-                    Bank
+                    {t("bank")}
                   </label>
                   <div className="flex-col w-full">
                     <Select
@@ -353,7 +359,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
             name="title"
             render={({ field }) => (
               <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
-                <FormLabel className="whitespace-nowrap">Title</FormLabel>
+                <FormLabel className="whitespace-nowrap">
+                  {t("title")}
+                </FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
                     <Input
@@ -373,7 +381,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
-                <FormLabel className="whitespace-nowrap">Description</FormLabel>
+                <FormLabel className="whitespace-nowrap">
+                  {t("description")}
+                </FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
                     <Input
@@ -401,7 +411,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">
             <p className="whitespace-nowrap font-normal text-sm">
-              Signature (Created by):
+              {t("signature")}
             </p>
             <Input
               className="w-full"
@@ -419,14 +429,14 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     navigate(-1);
                   }}
                 >
-                  Close
+                  {t("close")}
                 </Button>
                 <Button
                   type="button"
                   className="bg-gray-200 text-black"
                   disabled={isPending}
                 >
-                  Save As Template
+                  {t("saveAsTemplate")}
                 </Button>
               </>
             ) : (
@@ -439,10 +449,10 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     navigate(-1);
                   }}
                 >
-                  Cancel
+                  {t("cancel")}
                 </Button>
                 <Button type="submit" disabled={isPending || isUpdating}>
-                  Save
+                  {t("save")}
                 </Button>
               </>
             )}

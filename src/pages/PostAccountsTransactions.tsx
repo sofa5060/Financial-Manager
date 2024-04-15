@@ -6,9 +6,11 @@ import TransactionsManager from "@/managers/TransactionsManager";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
 const PostAccountsTransactions = () => {
+  const { t } = useTranslation("transactions");
   const [searchParams] = useSearchParams();
   const columns = usePostAccountTransactionsColumns();
   const [page, setPage] = useState(1);
@@ -54,7 +56,7 @@ const PostAccountsTransactions = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Accounting Transactions<span className="text-primary"> / Post</span>
+          {t("accountingTransactions")}<span className="text-primary"> / {t("post")}</span>
         </h1>
       </div>
       <DataTable data={EntryTransactions ?? data!.transactions} columns={columns} />

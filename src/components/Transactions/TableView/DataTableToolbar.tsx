@@ -12,6 +12,7 @@ import { arrFromQuery, serializeFormQuery } from "@/lib/utils";
 import { useUsersStore } from "@/hooks/useUsersStore";
 import Filter from "./Filter";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
+import { useTranslation } from "react-i18next";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -20,6 +21,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const { t } = useTranslation("transactions");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(
@@ -81,12 +83,12 @@ export function DataTableToolbar<TData>({
       >
         <div className="flex gap-2 items-center">
           <Input
-            placeholder="Search by title"
+            placeholder={t("searchPlaceholder")}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
             className="h-10 w-[150px] lg:w-[350px]"
           />
-          <Button type="submit">Search</Button>
+          <Button type="submit">{t("search")}</Button>
         </div>
         <div className="flex gap-2 items-center">
           {isFiltered && (
@@ -95,7 +97,7 @@ export function DataTableToolbar<TData>({
               onClick={clearFilters}
               className="h-8 px-2 lg:px-3"
             >
-              Reset filters
+              {t("resetFilters")}
               <Cross2Icon className="ms-2 h-4 w-4" />
             </Button>
           )}
@@ -105,7 +107,7 @@ export function DataTableToolbar<TData>({
               setOuterValue={
                 setCreatedBySearchTerm as (value: string[] | number[]) => void
               }
-              title={"Created By"}
+              title={t("createdBy")}
               options={usersOptions}
             />
           )}
@@ -115,7 +117,7 @@ export function DataTableToolbar<TData>({
               setOuterValue={
                 setPostedBySearchTerm as (value: string[] | number[]) => void
               }
-              title={"Posted By"}
+              title={t("postedBy")}
               options={usersOptions}
             />
           )}
@@ -125,7 +127,7 @@ export function DataTableToolbar<TData>({
               setOuterValue={
                 setUpdatedBySearchTerm as (value: string[] | number[]) => void
               }
-              title={"Updated By"}
+              title={t("updatedBy")}
               options={usersOptions}
             />
           )}
@@ -135,7 +137,7 @@ export function DataTableToolbar<TData>({
               setOuterValue={
                 setCurrencySearchTerm as (value: string[] | number[]) => void
               }
-              title={"Currency"}
+              title={t("currency")}
               options={currenciesOptions}
             />
           )}

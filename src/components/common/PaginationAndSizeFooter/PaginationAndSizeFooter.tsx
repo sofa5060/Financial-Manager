@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 type PaginationAndSizeFooterProps = {
   page: number;
@@ -31,10 +32,12 @@ const PaginationAndSizeFooter = ({
   setSize,
   sizeOptions = [10, 20, 30, 40, 50],
 }: PaginationAndSizeFooterProps) => {
+  const { t } = useTranslation("transactions");
+
   return (
     <div className="flex items-center justify-between px-2 w-full mt-4">
-      <div className="flex items-center space-x-2">
-        <p className="text-sm font-medium">Rows per page</p>
+      <div className="flex items-center gap-2">
+        <p className="text-sm font-medium">{t("rowsPerPage")}</p>
         <Select
           value={`${size}`}
           onValueChange={(value) => {
@@ -55,9 +58,9 @@ const PaginationAndSizeFooter = ({
         </Select>
       </div>
       <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-        Page {page} of {totalPages}
+        {t("pageOf", { page, totalPages })}
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2" dir="ltr">
         <Button
           variant="outline"
           className="hidden h-8 w-8 p-0 lg:flex"
