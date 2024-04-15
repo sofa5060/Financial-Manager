@@ -6,8 +6,10 @@ import TemplatesManager from "@/managers/TemplatesManager";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 
 const AccountsTemplates = () => {
+  const { t } = useTranslation("templates");
   const columns = useTemplatesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -27,7 +29,7 @@ const AccountsTemplates = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch templates",
+      title: t("templates.failed"),
     });
     return <></>;
   }
@@ -36,7 +38,7 @@ const AccountsTemplates = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Accounting <span className="text-primary">Templates</span>
+          {t("accounting")} <span className="text-primary">{t("templates")}</span>
         </h1>
       </div>
       <DataTable data={data!.templates} columns={columns} />

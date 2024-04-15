@@ -5,42 +5,44 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import DeleteModal from "../Dialogs/DeleteModal";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export const useTemplatesColumns = () => {
+  const { t } = useTranslation("templates");
   const navigate = useNavigate();
 
   const columns: ColumnDef<Template>[] = [
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
       meta: {
-        header: "Serial",
+        header: t("serial"),
       },
     },
     {
       accessorKey: "created_at",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Created At" />
+        <DataTableColumnHeader column={column} title={t("createdAt")} />
       ),
       cell({ row }) {
         return formatDateTime(row.original.created_at);
       },
       meta: {
-        header: "Created At",
+        header: t("createdAt"),
       },
     },
     {
       accessorKey: "title",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Title" />
+        <DataTableColumnHeader column={column} title={t("title")} />
       ),
       meta: {
-        header: "Title",
+        header: t("title"),
       },
     },
     {
       id: "actions",
-      header: "Actions",
+      header: t("actions"),
       cell: ({ row }) => {
         const templateId = row.original.id;
         return (
@@ -70,7 +72,7 @@ export const useTemplatesColumns = () => {
         );
       },
       meta: {
-        header: "Actions",
+        header: t("actions"),
       },
     },
   ];

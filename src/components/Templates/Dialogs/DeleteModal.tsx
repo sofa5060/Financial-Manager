@@ -12,6 +12,7 @@ import TemplatesManager from "@/managers/TemplatesManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteModalProps = {
   templateId: number;
@@ -19,6 +20,7 @@ type DeleteModalProps = {
 };
 
 const DeleteModal = ({ children, templateId }: DeleteModalProps) => {
+  const { t } = useTranslation("templates");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,14 +29,14 @@ const DeleteModal = ({ children, templateId }: DeleteModalProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete template",
+        title: t("delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["templates"] });
       toast({
-        title: "Template deleted successfully",
+        title: t("delete.success"),
       });
       closeDialog();
     },
@@ -50,11 +52,8 @@ const DeleteModal = ({ children, templateId }: DeleteModalProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Template</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{t("delete.title")}</DialogTitle>
+          <DialogDescription>{t("delete.description")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -64,7 +63,7 @@ const DeleteModal = ({ children, templateId }: DeleteModalProps) => {
             disabled={isPending}
             className="bg-white text-black ring-1 ring-gray-300"
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -74,7 +73,7 @@ const DeleteModal = ({ children, templateId }: DeleteModalProps) => {
             className="bg-red-500"
           >
             <Trash className="w-4 h-4 me-2" />
-            Delete This Template
+            {t("delete.confirm")}
           </Button>
         </div>
       </DialogContent>

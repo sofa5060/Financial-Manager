@@ -6,6 +6,7 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
+import { useTranslation } from "react-i18next";
 
 // import { RequestCreateDialog } from "../dialogs/request-create-dialog";
 // import { useDueStatuses, usePriorities, useRoles, useStatuses } from "./data";
@@ -18,6 +19,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const { t } = useTranslation("templates");
   const isFiltered = table.getState().columnFilters.length > 0;
 
   // const { statuses } = useStatuses();
@@ -29,7 +31,7 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between max-lg:justify-start gap-4 flex-wrap">
       <div className="flex flex-1 items-center gap-2 gap-y-4 flex-wrap">
         <Input
-          placeholder="Search by title"
+          placeholder={t("search.placeholder")}
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)

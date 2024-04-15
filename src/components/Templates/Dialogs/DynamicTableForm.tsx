@@ -5,6 +5,7 @@ import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
 import { PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Select from "react-select";
 
 type DynamicTableFormProps = {
@@ -24,6 +25,7 @@ const DynamicTableForm = ({
   rate,
   type,
 }: DynamicTableFormProps) => {
+  const { t } = useTranslation("templates");
   const subAccountOptions = useSubAccountsStore(
     (state) => state.subAccountOptions
   );
@@ -107,61 +109,61 @@ const DynamicTableForm = ({
           <tr>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Account Category
+              {t("accountCategory")}
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Account Code
+              {t("accountCode")}
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Account Name
+              {t("accountName")}
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Description
+              {t("description")}
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Cost Center
+              {t("costCenter")}
             </th>
             {type === "apply" && (
               <>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Debit
+                  {t("debit")}
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Credit
+                  {t("credit")}
                 </th>
                 {type === "apply" && !isDefaultCurrency && (
                   <>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Debit in Foreign Currency
+                      {t("debitInForeignCurrency")}
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Credit in Foreign Currency
+                      {t("creditInForeignCurrency")}
                     </th>
                   </>
                 )}
@@ -170,9 +172,9 @@ const DynamicTableForm = ({
             {!disabled && (
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Actions
+                {t("actions")}
               </th>
             )}
           </tr>

@@ -31,12 +31,14 @@ import { useBanksStore } from "@/hooks/useBanksStore";
 import { formatDate } from "@/lib/utils";
 import TemplatesManager from "@/managers/TemplatesManager";
 import { useEntryType } from "@/components/Entries/data";
+import { useTranslation } from "react-i18next";
 
 type TemplateFormProps = {
   type?: "view" | "edit" | "apply";
   template?: Template;
 };
 const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
+  const { t } = useTranslation("templates");
   const [rate, setRate] = useState<number | undefined>(
     template?.rate ?? undefined
   );
@@ -66,7 +68,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to apply template",
+        title: t("apply.failed"),
         description: error.message,
       });
     },
@@ -75,7 +77,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Template applied successfully",
+        title: t("apply.success"),
       });
 
       navigate("/accounting-entries/park");
@@ -88,7 +90,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to edit template",
+        title: t("edit.failed"),
         description: error.message,
       });
     },
@@ -99,7 +101,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
       });
 
       toast({
-        title: "Template edited successfully",
+        title: t("edit.success"),
       });
 
       navigate("/accounts/templates");
@@ -107,9 +109,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
   });
 
   const HEADERS = {
-    view: "View Template",
-    edit: "Edit Template",
-    apply: "Apply Template",
+    view: t("template.view"),
+    edit: t("template.edit"),
+    apply: t("template.apply"),
   };
 
   const form = useForm<NewTemplate>({
@@ -163,7 +165,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
+                  <FormLabel className="whitespace-nowrap">
+                    {t("date")}
+                  </FormLabel>
                   <div className="flex-col w-full">
                     <FormControl>
                       <Input
@@ -182,7 +186,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
             />
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="currency_id" className="font-medium text-sm">
-                Currency
+                {t("currency")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -214,7 +218,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                 name="rate"
                 render={({ field }) => (
                   <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
-                    <FormLabel className="whitespace-nowrap">rate</FormLabel>
+                    <FormLabel className="whitespace-nowrap">
+                      {t("rate")}
+                    </FormLabel>
                     <div className="flex-col w-full">
                       <FormControl>
                         <Input
@@ -226,7 +232,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                           onChange={(e) => {
                             form.setValue(
                               "rate",
-                              e.target.value ? parseFloat(e.target.value) : undefined
+                              e.target.value
+                                ? parseFloat(e.target.value)
+                                : undefined
                             );
                           }}
                           disabled={type === "view"}
@@ -246,7 +254,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
           <div className="flex items-center max-w-[50%] gap-4">
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="type" className="font-medium text-sm">
-                Type
+                {t("type")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -278,7 +286,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                   render={({ field }) => (
                     <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
                       <FormLabel className="whitespace-nowrap">
-                        Check No
+                        {t("checkNo")}
                       </FormLabel>
                       <div className="flex-col w-full">
                         <FormControl>
@@ -298,7 +306,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                 />
                 <div className="flex justify-end flex-1 flex-col items-start gap-1">
                   <label htmlFor="bank_id" className="font-medium text-sm">
-                    Bank
+                    {t("bank")}
                   </label>
                   <div className="flex-col w-full">
                     <Select
@@ -336,7 +344,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
             name="title"
             render={({ field }) => (
               <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
-                <FormLabel className="whitespace-nowrap">Title</FormLabel>
+                <FormLabel className="whitespace-nowrap">
+                  {t("title")}
+                </FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
                     <Input
@@ -356,7 +366,9 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
-                <FormLabel className="whitespace-nowrap">Description</FormLabel>
+                <FormLabel className="whitespace-nowrap">
+                  {t("description")}
+                </FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
                     <Input
@@ -385,7 +397,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">
             <p className="whitespace-nowrap font-normal text-sm">
-              Signature (Created by):
+              {t("signature")}
             </p>
             <Input
               className="w-full"
@@ -404,7 +416,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     navigate(-1);
                   }}
                 >
-                  Close
+                  {t("close")}
                 </Button>
                 <Button
                   type="button"
@@ -413,7 +425,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     navigate(`/accounts/templates/${template!.id}/apply`);
                   }}
                 >
-                  Apply Template
+                  {t("applyTemplate")}
                 </Button>
               </>
             ) : (
@@ -426,10 +438,10 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     navigate(-1);
                   }}
                 >
-                  Cancel
+                  {t("cancel")}
                 </Button>
                 <Button type="submit" disabled={isPending || isUpdating}>
-                  {type === "apply" ? "Apply" : "Save"}
+                  {type === "apply" ? t("apply") : t("save")}
                 </Button>
               </>
             )}
