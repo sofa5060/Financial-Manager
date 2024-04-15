@@ -36,7 +36,7 @@ const EditTemplateForm = () => {
           Edit Account <span className="text-primary">Template</span>
         </h1>
       </div>
-      <div className="mt-7 ml-2">
+      <div className="mt-7 ms-2">
         <TemplateForm type="edit" template={data!} />
       </div>
     </div>

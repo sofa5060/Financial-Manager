@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import z from "zod";
 
 export const AccountPropertiesSchema = z.enum(["main", "sub"]);
@@ -6,54 +7,48 @@ export const AccountTypeSchema = z.enum(["debit", "credit"]);
 
 export const ReportingTypeSchema = z.enum(["balance_sheet", "profit_and_loss"]);
 
+export const useData = () => {
+  const { t } = useTranslation("accounts");
 
-export const ACCOUNT_PROPERTIES = [
-  {
-    label : "Main",
-    value : AccountPropertiesSchema.Enum.main
-  },
-  {
-    label : "Sub",
-    value : AccountPropertiesSchema.Enum.sub
-  }
-];
+  const ACCOUNT_PROPERTIES = [
+    {
+      label : t("mainAccount"),
+      value : AccountPropertiesSchema.Enum.main
+    },
+    {
+      label : t("subAccount"),
+      value : AccountPropertiesSchema.Enum.sub
+    }
+  ];
+  
+  const ACCOUNT_TYPES = [
+    {
+      label : t("debit"),
+      value : AccountTypeSchema.Enum.debit
+    },
+    {
+      label : t("credit"),
+      value : AccountTypeSchema.Enum.credit
+    }
+  ] as const;
+  
+  const REPORTING_TYPES = [
+    {
+      label : t("balance"),
+      value : ReportingTypeSchema.Enum.balance_sheet
+    },
+    {
+      label : t("profit"),
+      value : ReportingTypeSchema.Enum.profit_and_loss
+    }
+  ] as const;
 
-export const ACCOUNT_TYPES = [
-  {
-    label : "Debit",
-    value : AccountTypeSchema.Enum.debit
-  },
-  {
-    label : "Credit",
-    value : AccountTypeSchema.Enum.credit
+  return {
+    ACCOUNT_PROPERTIES,
+    ACCOUNT_TYPES,
+    REPORTING_TYPES
   }
-] as const;
-
-export const REPORTING_TYPES = [
-  {
-    label : "Balance Sheet",
-    value : ReportingTypeSchema.Enum.balance_sheet
-  },
-  {
-    label : "Profit & Loss",
-    value : ReportingTypeSchema.Enum.profit_and_loss
-  }
-] as const;
-
-export const CURRENCIES = [
-  {
-    label : "USD",
-    value : "usd"
-  },
-  {
-    label : "EUR",
-    value : "eur"
-  },
-  {
-    label : "GBP",
-    value : "gbp"
-  }
-] as const;
+}
 
 
 

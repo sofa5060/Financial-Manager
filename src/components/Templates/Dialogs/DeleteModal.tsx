@@ -73,7 +73,7 @@ const DeleteModal = ({ children, templateId }: DeleteModalProps) => {
             disabled={isPending}
             className="bg-red-500"
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Template
           </Button>
         </div>

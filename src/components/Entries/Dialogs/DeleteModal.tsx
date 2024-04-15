@@ -74,7 +74,7 @@ const DeleteModal = ({ children, entryId }: DeleteModalProps) => {
             className="bg-red-500"
             disabled={isPending}
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Entry
           </Button>
         </div>

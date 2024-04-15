@@ -18,7 +18,10 @@ type DeleteCurrencyDialogProps = {
   children?: React.ReactNode;
 };
 
-const DeleteCurrencyDialog = ({ children, currencyId }: DeleteCurrencyDialogProps) => {
+const DeleteCurrencyDialog = ({
+  children,
+  currencyId,
+}: DeleteCurrencyDialogProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -74,7 +77,7 @@ const DeleteCurrencyDialog = ({ children, currencyId }: DeleteCurrencyDialogProp
             className="bg-red-500"
             disabled={isPending}
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Currency
           </Button>
         </div>

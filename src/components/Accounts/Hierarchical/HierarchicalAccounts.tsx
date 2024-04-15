@@ -13,7 +13,7 @@ const HierarchicalAccounts = ({
   parentAccount,
 }: HierarchicalAccountsProps) => {
   return (
-    <div className={cn("flex items-stretch", { "ml-12": level > 1 })}>
+    <div className={cn("flex items-stretch", { "ms-12": level > 1 })}>
       <div>
         {accounts.map((account, index) => (
           <HierarchicalAccount

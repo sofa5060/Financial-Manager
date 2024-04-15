@@ -12,7 +12,7 @@ const NewTreasuryPaymentBond = () => {
           <Button className="btn-outline">Print Entry</Button>
         </div>
       </div>
-      <div className="mt-7 ml-2">
+      <div className="mt-7 ms-2">
         <BondForm type="add" bondType="payment" />
       </div>
     </div>

@@ -18,8 +18,22 @@ const TreasuryPayments = () => {
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bonds", "payment", "page", page, "size", size, "search", searchParams.toString()],
-    queryFn: () => TreasuryManager.getPaymentTreasuryBonds(page, size, searchParams.toString()),
+    queryKey: [
+      "bonds",
+      "payment",
+      "page",
+      page,
+      "size",
+      size,
+      "search",
+      searchParams.toString(),
+    ],
+    queryFn: () =>
+      TreasuryManager.getPaymentTreasuryBonds(
+        page,
+        size,
+        searchParams.toString()
+      ),
   });
 
   useEffect(() => {
@@ -45,7 +59,6 @@ const TreasuryPayments = () => {
     return <></>;
   }
 
-
   return (
     <div>
       <div className="flex gap-5 justify-between">
@@ -53,11 +66,12 @@ const TreasuryPayments = () => {
           Treasury <span className="text-primary">Payment bonds</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline mr-4">Print Selected</Button>
-          <Button className="btn-primary"
+          <Button className="btn-outline me-4">Print Selected</Button>
+          <Button
+            className="btn-primary"
             onClick={() => navigate("/treasury/payment/new")}
           >
-            <Plus className="mr-2 w-4" />
+            <Plus className="me-2 w-4" />
             New Entry
           </Button>
         </div>

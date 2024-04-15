@@ -54,9 +54,7 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>You Are About To Post This Entry</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone.
-          </DialogDescription>
+          <DialogDescription>This action cannot be undone.</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -75,7 +73,7 @@ const PostModal = ({ children, entryId }: PostModalProps) => {
             className="bg-primary"
             disabled={isPending}
           >
-            <BadgePlus className="mr-2 w-4" />
+            <BadgePlus className="me-2 w-4" />
             Post This Entry
           </Button>
         </div>

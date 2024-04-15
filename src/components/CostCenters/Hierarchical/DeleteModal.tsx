@@ -12,6 +12,7 @@ import CostCentersManager from "@/managers/CostCentersManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteModalProps = {
   costCenterId: number;
@@ -19,6 +20,7 @@ type DeleteModalProps = {
 };
 
 const DeleteModal = ({ children, costCenterId }: DeleteModalProps) => {
+  const { t } = useTranslation("costCenters");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,14 +29,14 @@ const DeleteModal = ({ children, costCenterId }: DeleteModalProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete cost center",
+        title: t("delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["costCenters"] });
       toast({
-        title: "Cost Center deleted successfully",
+        title: t("delete.success"),
       });
       closeDialog();
     },
@@ -51,10 +53,9 @@ const DeleteModal = ({ children, costCenterId }: DeleteModalProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Cost Center</DialogTitle>
+          <DialogTitle>{t("delete.title")}</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            cost center and remove your data from our servers.
+            {t("delete.message")}
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
@@ -65,7 +66,7 @@ const DeleteModal = ({ children, costCenterId }: DeleteModalProps) => {
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -74,8 +75,8 @@ const DeleteModal = ({ children, costCenterId }: DeleteModalProps) => {
             className="bg-red-500"
             disabled={isPending}
           >
-            <Trash className="w-4 h-4 mr-2" />
-            Delete This Cost Center
+            <Trash className="w-4 h-4 me-2" />
+            {t("delete.confirm")}
           </Button>
         </div>
       </DialogContent>

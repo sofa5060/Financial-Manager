@@ -33,7 +33,7 @@ const ViewTreasuryReceiveBond = () => {
             : transaction.f_credit!,
       })),
     };
-    
+
     // drop last element
     fixed.transactions.pop();
 
@@ -65,7 +65,7 @@ const ViewTreasuryReceiveBond = () => {
           <Button className="btn-outline">Print Entry</Button>
         </div>
       </div>
-      <div className="mt-7 ml-2">
+      <div className="mt-7 ms-2">
         <BondForm type="view" bondType="receive" bond={fixedData!} />
       </div>
     </div>

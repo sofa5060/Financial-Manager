@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Select from "react-select";
-import { COST_CENTER_PROPERTIES } from "./data";
+import { useData } from "./data";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CostCentersManager from "@/managers/CostCentersManager";
+import { useTranslation } from "react-i18next";
 
 type CostCenterFormProps = {
   level: number;
@@ -41,6 +42,9 @@ const CostCenterForm = ({
   costCenter,
   type = "add",
 }: CostCenterFormProps) => {
+  const { t } = useTranslation("costCenters");
+
+  const { COST_CENTER_PROPERTIES } = useData();
   useEffect(() => {
     form.reset({
       parent_id: parentCostCenter?.id ?? null,
@@ -64,15 +68,15 @@ const CostCenterForm = ({
   } = form;
 
   const TITLES = {
-    add: `Add New Cost Center in Level ${level}`,
-    edit: "Edit Cost Center",
-    view: "View Cost Center",
+    add: t("add.level", { level: level }),
+    edit: t("edit"),
+    view: t("view"),
   };
 
   const DESCRIPTIONS = {
-    add: "Click save when you're done",
-    edit: "Click save when you're done",
-    view: "The Record is View Only",
+    add: t("clickSave"),
+    edit: t("clickSave"),
+    view: t("viewOnly"),
   };
 
   const { mutate: addCostCenterMutate, isPending } = useMutation({
@@ -142,7 +146,7 @@ const CostCenterForm = ({
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
                   <FormLabel className="whitespace-nowrap">
-                    Name (English)
+                    {t("name.english")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -164,7 +168,7 @@ const CostCenterForm = ({
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Name (Arabic)
+                    {t("name.arabic")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -183,7 +187,7 @@ const CostCenterForm = ({
             {parentCostCenter && (
               <FormItem className="flex gap-4 items-center justify-end w-full">
                 <FormLabel className="whitespace-nowrap">
-                  Parent Account
+                  {t("parentCostCenter")}
                 </FormLabel>
                 <div className="flex-col w-full max-w-[65%]">
                   <Input
@@ -196,7 +200,7 @@ const CostCenterForm = ({
             )}
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="properties" className="font-medium text-sm">
-                Properties
+                {t("properties")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -229,7 +233,7 @@ const CostCenterForm = ({
                     className="ms-auto"
                     onClick={closeDialog}
                   >
-                    Close
+                    {t("close")}
                   </Button>
                 </>
               ) : (
@@ -240,10 +244,10 @@ const CostCenterForm = ({
                     onClick={closeDialog}
                     disabled={isPending || isPendingUpdate}
                   >
-                    Cancel
+                    {t("cancel")}
                   </Button>
                   <Button type="submit" disabled={isPending || isPendingUpdate}>
-                    Save changes
+                    {t("save")}
                   </Button>
                 </>
               )}

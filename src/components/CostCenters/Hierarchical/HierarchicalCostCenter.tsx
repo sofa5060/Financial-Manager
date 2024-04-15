@@ -1,5 +1,6 @@
 import {
   ArrowDownFromLine,
+  ArrowLeftFromLine,
   ArrowRightFromLine,
   Eye,
   Pen,
@@ -13,6 +14,7 @@ import { cn } from "@/lib/utils";
 import DeleteModal from "./DeleteModal";
 import CostCenterForm from "./CostCenterForm";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type HierarchicalCostCenterProps = {
   costCenter: CostCenter;
@@ -29,6 +31,7 @@ const HierarchicalCostCenter = ({
   parentCostCenter,
 }: HierarchicalCostCenterProps) => {
   const [hideChildren, setHideChildren] = useState(level !== 1);
+  const { i18n, t } = useTranslation("costCenters");
 
   return (
     <div className="flex items-stretch">
@@ -46,7 +49,7 @@ const HierarchicalCostCenter = ({
               {lastElement && (
                 <div
                   className={cn(
-                    "border-l-2 border-dashed border-[#E4E4E7] h-1/2 -ml-0.5 mt-0.5"
+                    "border-s-2 border-dashed border-[#E4E4E7] h-1/2 -ms-0.5 mt-0.5"
                   )}
                 ></div>
               )}
@@ -55,17 +58,21 @@ const HierarchicalCostCenter = ({
           )}
           <div className="flex items-center gap-4 mt-4">
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
-              <div className="border-l-4 border-primary pl-2 flex items-center gap-12">
+              <div className="border-s-4 border-primary ps-2 flex items-center gap-12">
                 <div className="flex flex-col gap-2">
-                  <h4 className="text-sm">{costCenter.name_en}</h4>
+                  <h4 className="text-sm">
+                    {i18n.language === "ar"
+                      ? costCenter.name_ar
+                      : costCenter.name_en}
+                  </h4>
                   <div className="flex items-center gap-2">
                     <h5 className="text-xs bg-primary text-white px-2">
                       {costCenter.code}
                     </h5>
                     <h4 className="text-sm">
                       {costCenter.properties === "main"
-                        ? "Main Account"
-                        : "Sub Account"}
+                        ? t("mainCostCenter")
+                        : t("subCostCenter")}
                     </h4>
                   </div>
                 </div>
@@ -90,12 +97,19 @@ const HierarchicalCostCenter = ({
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
                   {costCenter.children && costCenter.children.length > 0 && (
-                    <div className="w-5 text-primary cursor-pointer ml-4">
+                    <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (
-                        <ArrowRightFromLine
-                          className="w-full"
-                          onClick={() => setHideChildren(false)}
-                        />
+                        i18n.language === "ar" ? (
+                          <ArrowLeftFromLine
+                            className="w-full"
+                            onClick={() => setHideChildren(false)}
+                          />
+                        ) : (
+                          <ArrowRightFromLine
+                            className="w-full"
+                            onClick={() => setHideChildren(false)}
+                          />
+                        )
                       ) : (
                         <ArrowDownFromLine
                           className="w-full"
@@ -109,14 +123,14 @@ const HierarchicalCostCenter = ({
             </div>
             <CostCenterForm level={level + 1} parentCostCenter={costCenter}>
               <Button className="btn-outline">
-                <Plus className="w-4 mr-1" />
-                Add New Sub CostCenter
+                <Plus className="w-4 me-1" />
+                {t("subCostCenter.add")}
               </Button>
             </CostCenterForm>
           </div>
         </div>
         {costCenter.children && costCenter.children.length > 0 && (
-          <div className={cn("ml-12", { hidden: hideChildren })}>
+          <div className={cn("ms-12", { hidden: hideChildren })}>
             <HierarchicalCostCenters
               costCenters={costCenter.children}
               level={level + 1}

@@ -40,8 +40,22 @@ const ParkAccountingEntries = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["entries", "park", "page", page, "size", size, "search", searchParams.toString()],
-    queryFn: () => AccountingEntriesManager.getParkEntries(page, size, searchParams.toString()),
+    queryKey: [
+      "entries",
+      "park",
+      "page",
+      page,
+      "size",
+      size,
+      "search",
+      searchParams.toString(),
+    ],
+    queryFn: () =>
+      AccountingEntriesManager.getParkEntries(
+        page,
+        size,
+        searchParams.toString()
+      ),
   });
 
   useEffect(() => {
@@ -74,16 +88,16 @@ const ParkAccountingEntries = () => {
           Accounting Entries / <span className="text-primary">Park</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline mr-4">Print Selected</Button>
+          <Button className="btn-outline me-4">Print Selected</Button>
           {selectedEntries.length > 0 && (
             <Button
-              className="mr-4"
+              className="me-4"
               disabled={isPending}
               onClick={() => {
                 postEntriesMutate(selectedEntries);
               }}
             >
-              <PackageCheck className="mr-2 w-4" />
+              <PackageCheck className="me-2 w-4" />
               Post Selected
             </Button>
           )}
@@ -93,7 +107,7 @@ const ParkAccountingEntries = () => {
               navigate("/accounting-entries/park/new");
             }}
           >
-            <Plus className="mr-2 w-4" />
+            <Plus className="me-2 w-4" />
             New Entry
           </Button>
         </div>

@@ -1,5 +1,6 @@
 import {
   ArrowDownFromLine,
+  ArrowLeftFromLine,
   ArrowRightFromLine,
   Eye,
   Pen,
@@ -13,6 +14,7 @@ import { cn } from "@/lib/utils";
 import AccountForm from "./AccountForm";
 import DeleteModal from "./DeleteModal";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type HierarchicalAccountProps = {
   account: Account;
@@ -28,6 +30,7 @@ const HierarchicalAccount = ({
   lastElement = false,
   parentAccount,
 }: HierarchicalAccountProps) => {
+  const { t, i18n } = useTranslation("accounts");
   const [hideChildren, setHideChildren] = useState(level !== 1);
 
   if (!account) return <></>;
@@ -36,7 +39,7 @@ const HierarchicalAccount = ({
     <div className="flex items-stretch">
       <div
         className={cn(
-          "border-l-2 border-dashed border-[#E4E4E7]",
+          "border-s-2 border-dashed border-[#E4E4E7]",
           lastElement && "h-0",
           level === 1 && "hidden"
         )}
@@ -48,7 +51,7 @@ const HierarchicalAccount = ({
               {lastElement && (
                 <div
                   className={cn(
-                    "border-l-2 border-dashed border-[#E4E4E7] h-1/2 -ml-0.5 mt-0.5"
+                    "border-s-2 border-dashed border-[#E4E4E7] h-1/2 -ms-0.5 mt-0.5"
                   )}
                 ></div>
               )}
@@ -57,17 +60,19 @@ const HierarchicalAccount = ({
           )}
           <div className="flex items-center gap-4 mt-4">
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
-              <div className="border-l-4 border-primary pl-2 flex items-center gap-12">
+              <div className="border-s-4 border-primary ps-2 flex items-center gap-12">
                 <div className="flex flex-col gap-2">
-                  <h4 className="text-sm">{account.name_en}</h4>
+                  <h4 className="text-sm">
+                    {i18n.language === "ar" ? account.name_ar : account.name_en}
+                  </h4>
                   <div className="flex items-center gap-2">
                     <h5 className="text-xs bg-primary text-white px-2">
                       {account.code}
                     </h5>
                     <h4 className="text-sm">
                       {account.properties === "main"
-                        ? "Main Account"
-                        : "Sub Account"}
+                        ? t("mainAccount")
+                        : t("subAccount")}
                     </h4>
                   </div>
                 </div>
@@ -94,12 +99,19 @@ const HierarchicalAccount = ({
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
                   {account.children && account.children.length > 0 && (
-                    <div className="w-5 text-primary cursor-pointer ml-4">
+                    <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (
-                        <ArrowRightFromLine
-                          className="w-full"
-                          onClick={() => setHideChildren(false)}
-                        />
+                        i18n.language === "ar" ? (
+                          <ArrowLeftFromLine
+                            className="w-full"
+                            onClick={() => setHideChildren(false)}
+                          />
+                        ) : (
+                          <ArrowRightFromLine
+                            className="w-full"
+                            onClick={() => setHideChildren(false)}
+                          />
+                        )
                       ) : (
                         <ArrowDownFromLine
                           className="w-full"
@@ -113,14 +125,14 @@ const HierarchicalAccount = ({
             </div>
             <AccountForm level={level + 1} parentAccount={account}>
               <Button className="btn-outline">
-                <Plus className="w-4 mr-1" />
-                Add New Sub Account
+                <Plus className="w-4 me-1" />
+                {t("subAccount.add")}
               </Button>
             </AccountForm>
           </div>
         </div>
         {account.children && account.children.length > 0 && (
-          <div className={cn("ml-12", { hidden: hideChildren })}>
+          <div className={cn("ms-12", { hidden: hideChildren })}>
             <HierarchicalAccounts
               accounts={account.children}
               level={level + 1}

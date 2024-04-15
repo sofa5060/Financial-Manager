@@ -68,13 +68,13 @@ const DeleteModal = ({ children, bondId }: DeleteModalProps) => {
             Cancel
           </Button>
           <Button
-             onClick={() => {
+            onClick={() => {
               deleteBondMutate(bondId);
             }}
             disabled={isPending}
             className="bg-red-500"
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Bond
           </Button>
         </div>

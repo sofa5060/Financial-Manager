@@ -18,7 +18,10 @@ type DeleteCategoryDialogProps = {
   children?: React.ReactNode;
 };
 
-const DeleteCategoryDialog = ({ children, categoryId }: DeleteCategoryDialogProps) => {
+const DeleteCategoryDialog = ({
+  children,
+  categoryId,
+}: DeleteCategoryDialogProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -74,7 +77,7 @@ const DeleteCategoryDialog = ({ children, categoryId }: DeleteCategoryDialogProp
             className="bg-red-500"
             disabled={isPending}
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Category
           </Button>
         </div>

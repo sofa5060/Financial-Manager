@@ -18,8 +18,22 @@ const TreasuryReceipts = () => {
   const [size, setSize] = useState(10);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bonds", "receive", "page", page, "size", size, "search", searchParams.toString()],
-    queryFn: () => TreasuryManager.getReceiveTreasuryBonds(page, size, searchParams.toString()),
+    queryKey: [
+      "bonds",
+      "receive",
+      "page",
+      page,
+      "size",
+      size,
+      "search",
+      searchParams.toString(),
+    ],
+    queryFn: () =>
+      TreasuryManager.getReceiveTreasuryBonds(
+        page,
+        size,
+        searchParams.toString()
+      ),
   });
 
   useEffect(() => {
@@ -52,11 +66,12 @@ const TreasuryReceipts = () => {
           Treasury <span className="text-primary">Receive bonds</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline mr-4">Print Selected</Button>
-          <Button className="btn-primary"
+          <Button className="btn-outline me-4">Print Selected</Button>
+          <Button
+            className="btn-primary"
             onClick={() => navigate("/treasury/receive/new")}
           >
-            <Plus className="mr-2 w-4" />
+            <Plus className="me-2 w-4" />
             New Entry
           </Button>
         </div>

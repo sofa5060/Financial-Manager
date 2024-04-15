@@ -12,9 +12,8 @@ const HierarchicalCostCenters = ({
   level = 1,
   parentCostCenter,
 }: HierarchicalCostCentersProps) => {
-
   return (
-    <div className={cn("flex items-stretch", { "ml-12": level > 1 })}>
+    <div className={cn("flex items-stretch", { "ms-12": level > 1 })}>
       <div>
         {costCenters.map((costCenter, index) => (
           <HierarchicalCostCenter

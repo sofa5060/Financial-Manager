@@ -6,7 +6,7 @@ import TemplatesManager from "@/managers/TemplatesManager";
 import { useQuery } from "@tanstack/react-query";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useParams } from "react-router-dom";
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
 const ApplyTemplateForm = () => {
   const { id } = useParams();
@@ -57,7 +57,7 @@ const ApplyTemplateForm = () => {
           Apply Account <span className="text-primary">Template</span>
         </h1>
       </div>
-      <div className="mt-7 ml-2">
+      <div className="mt-7 ms-2">
         <TemplateForm type="apply" template={cachedData!} />
       </div>
     </div>

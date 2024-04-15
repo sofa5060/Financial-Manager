@@ -19,7 +19,7 @@ const EditTreasuryReceiveBond = () => {
 
   const fixedData = useMemo(() => {
     if (!data) return null;
-    console.log(data)
+    console.log(data);
     const fixed: TreasuryBond = {
       ...data,
       transactions: data.transactions.map((transaction) => ({
@@ -34,7 +34,7 @@ const EditTreasuryReceiveBond = () => {
             : transaction.f_credit!,
       })),
     };
-    
+
     // drop last element
     fixed.transactions.pop();
 
@@ -56,7 +56,7 @@ const EditTreasuryReceiveBond = () => {
     return <></>;
   }
 
-  console.log(fixedData)
+  console.log(fixedData);
 
   return (
     <div>
@@ -68,7 +68,7 @@ const EditTreasuryReceiveBond = () => {
           <Button className="btn-outline">Print Entry</Button>
         </div>
       </div>
-      <div className="mt-7 ml-2">
+      <div className="mt-7 ms-2">
         <BondForm type="edit" bondType="receive" bond={fixedData!} />
       </div>
     </div>

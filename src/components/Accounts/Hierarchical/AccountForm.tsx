@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Select from "react-select";
-import { ACCOUNT_PROPERTIES, ACCOUNT_TYPES, REPORTING_TYPES } from "./data";
+import { useData } from "./data";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -27,6 +27,7 @@ import AccountsManager from "@/managers/AccountsManager";
 import { useToast } from "@/components/ui/use-toast";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useCategoriesStore } from "@/hooks/useCategories";
+import { useTranslation } from "react-i18next";
 
 type AccountFormProps = {
   level: number;
@@ -43,10 +44,15 @@ const AccountForm = ({
   account,
   type = "add",
 }: AccountFormProps) => {
+  const { t } = useTranslation("accounts");
+  const { ACCOUNT_PROPERTIES, ACCOUNT_TYPES, REPORTING_TYPES } = useData();
+
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
   );
-  const categoriesOptions = useCategoriesStore((state) => state.categoriesOptions);
+  const categoriesOptions = useCategoriesStore(
+    (state) => state.categoriesOptions
+  );
 
   useEffect(() => {
     form.reset({
@@ -78,15 +84,15 @@ const AccountForm = ({
   } = form;
 
   const TITLES = {
-    add: `Add New Account in Level ${level}`,
-    edit: "Edit Account",
-    view: "View Account",
+    add: t("add.level", { level: level }),
+    edit: t("edit"),
+    view: t("view"),
   };
 
   const DESCRIPTIONS = {
-    add: "Click save when you're done",
-    edit: "Click save when you're done",
-    view: "The Record is View Only",
+    add: t("clickSave"),
+    edit: t("clickSave"),
+    view: t("viewOnly"),
   };
 
   const { mutate: addAccountMutate, isPending } = useMutation({
@@ -101,7 +107,7 @@ const AccountForm = ({
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to add account",
+        title: t("add.failed"),
         description: error.message,
       });
     },
@@ -120,7 +126,7 @@ const AccountForm = ({
         console.log(error.message);
         toast({
           variant: "destructive",
-          title: "Failed to update account",
+          title: t("update.failed"),
           description: error.message,
         });
       },
@@ -159,7 +165,7 @@ const AccountForm = ({
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
                   <FormLabel className="whitespace-nowrap">
-                    Name (English)
+                    {t("name.english")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -181,7 +187,7 @@ const AccountForm = ({
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Name (Arabic)
+                    {t("name.arabic")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -200,7 +206,7 @@ const AccountForm = ({
             {parentAccount && (
               <FormItem className="flex gap-4 items-center justify-end w-full">
                 <FormLabel className="whitespace-nowrap">
-                  Parent Account
+                  {t("parentAccount")}
                 </FormLabel>
                 <div className="flex-col w-full max-w-[65%]">
                   <Input
@@ -213,7 +219,7 @@ const AccountForm = ({
             )}
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="properties" className="font-medium text-sm">
-                Properties
+                {t("properties")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -240,7 +246,7 @@ const AccountForm = ({
             </div>
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="type" className="font-medium text-sm">
-                Type
+                {t("type")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -265,7 +271,7 @@ const AccountForm = ({
             </div>
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="reporting_type" className="font-medium text-sm">
-                Reporting Type
+                {t("reportingType")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -293,7 +299,7 @@ const AccountForm = ({
             </div>
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="categories" className="font-medium text-sm">
-                Category
+                {t("categories")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -321,7 +327,7 @@ const AccountForm = ({
             </div>
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="cost_center" className="font-medium text-sm">
-                Cost Center
+                {t("costCenter")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -335,13 +341,13 @@ const AccountForm = ({
                   }}
                   className="w-full"
                   options={[
-                    { label: "Yes", value: true },
-                    { label: "No", value: false },
+                    { label: t("yes"), value: true },
+                    { label: t("no"), value: false },
                   ]}
                   defaultValue={
                     account?.cost_center
-                      ? { label: "Yes", value: true }
-                      : { label: "No", value: false }
+                      ? { label: t("yes"), value: true }
+                      : { label: t("no"), value: false }
                   }
                 />
                 {errors.cost_center && (
@@ -353,7 +359,7 @@ const AccountForm = ({
             </div>
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="currencies" className="font-medium text-sm">
-                Currencies
+                {t("currencies")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -392,7 +398,7 @@ const AccountForm = ({
                     className="ms-auto"
                     onClick={closeDialog}
                   >
-                    Close
+                    {t("close")}
                   </Button>
                 </>
               ) : (
@@ -403,10 +409,10 @@ const AccountForm = ({
                     onClick={closeDialog}
                     disabled={isPending || isPendingUpdate}
                   >
-                    Cancel
+                    {t("cancel")}
                   </Button>
                   <Button type="submit" disabled={isPending || isPendingUpdate}>
-                    Save changes
+                    {t("save")}
                   </Button>
                 </>
               )}

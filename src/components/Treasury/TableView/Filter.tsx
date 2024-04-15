@@ -52,7 +52,7 @@ const Filter = ({
               >
                 {selectedValues.size}
               </Badge>
-              <div className="hidden space-x-1 lg:flex">
+              <div className="hidden gap-1 lg:flex">
                 {selectedValues.size > 2 ? (
                   <Badge
                     variant="secondary"
@@ -126,8 +126,8 @@ const Filter = ({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onSelect={() => {
-                setSelectedValues(new Set())
-                setOuterValue([])
+                setSelectedValues(new Set());
+                setOuterValue([]);
               }}
               className="justify-center text-center"
             >

@@ -74,7 +74,7 @@ const DeleteGroupDialog = ({ children, groupId }: DeleteGroupDialogProps) => {
             className="bg-red-500"
             disabled={isPending}
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Group
           </Button>
         </div>

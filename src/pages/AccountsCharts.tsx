@@ -1,5 +1,5 @@
 import AccountForm from "@/components/Accounts/Hierarchical/AccountForm";
-import Filter from "@/components/Accounts/Hierarchical/Filter";
+// import Filter from "@/components/Accounts/Hierarchical/Filter";
 import HierarchicalAccounts from "@/components/Accounts/Hierarchical/HierarchicalAccounts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,15 +11,14 @@ import { Plus } from "lucide-react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const AccountsCharts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
+  const { t } = useTranslation("accounts");
 
-  const {
-    data: searchResults,
-    isError: searchError,
-  } = useQuery({
+  const { data: searchResults, isError: searchError } = useQuery({
     queryKey: ["searchAccounts", debouncedSearchTerm],
     queryFn: () => AccountsManager.searchAccounts(debouncedSearchTerm),
     enabled: debouncedSearchTerm.length > 0,
@@ -44,7 +43,7 @@ const AccountsCharts = () => {
   if (isError || searchError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch accounts",
+      title: t("error"),
     });
     return <></>;
   }
@@ -52,19 +51,17 @@ const AccountsCharts = () => {
   return (
     <div className="pb-12">
       <div className="flex justify-between">
-        <h1 className="text-primary text-3xl font-semibold">
-          Chart Of Accounts
-        </h1>
-        <Button className="btn-outline">Download Excel File</Button>
+        <h1 className="text-primary text-3xl font-semibold">{t("charts")}</h1>
+        <Button className="btn-outline">{t("download")}</Button>
       </div>
       <div className="flex mb-4 mt-8 justify-between gap-16">
         <Input
-          placeholder="Search by code or name"
+          placeholder={t("search")}
           className="max-w-2xl"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <div className="flex gap-4">
+        {/* <div className="flex gap-4">
           <Filter
             title="Filter 1"
             options={[
@@ -91,15 +88,15 @@ const AccountsCharts = () => {
             ]}
             defaultSelected={["1", "2"]}
           />
-        </div>
+        </div> */}
       </div>
       <Separator />
       <HierarchicalAccounts accounts={searchResults! ?? accounts!} />
       <div className="fixed bottom-16 right-32">
         <AccountForm level={1}>
           <Button className="btn btn-primary">
-            <Plus className="w-6 h-6 mr-2" />
-            Create New Account in Level 1
+            <Plus className="w-6 h-6 me-2" />
+            {t("create.level1")}
           </Button>
         </AccountForm>
       </div>

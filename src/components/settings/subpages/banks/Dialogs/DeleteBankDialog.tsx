@@ -53,8 +53,8 @@ const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
         <DialogHeader>
           <DialogTitle>You Are About To Delete This Bank</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            bank and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your bank
+            and remove your data from our servers.
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
@@ -74,7 +74,7 @@ const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
             className="bg-red-500"
             disabled={isPending}
           >
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4 me-2" />
             Delete This Bank
           </Button>
         </div>

@@ -120,7 +120,7 @@ export function OrganizationDepartmentUpdateDialog({
       <DialogContent className="sm:max-w-[425px] max-w-[90%]">
         {managersOptions.length <= 0 && (
           <div className="flex items-center justify-center w-full h-full">
-            <div className="flex justify-center items-center space-x-1 text-sm text-gray-700">
+            <div className="flex justify-center items-center gap-1 text-sm text-gray-700">
               <svg
                 fill="none"
                 className="w-6 h-6 animate-spin"

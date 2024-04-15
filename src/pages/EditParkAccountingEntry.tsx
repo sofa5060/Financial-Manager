@@ -30,8 +30,7 @@ const EditParkAccountEntry = () => {
     return <></>;
   }
 
-  console.log(data)
-
+  console.log(data);
 
   return (
     <div>
@@ -43,7 +42,7 @@ const EditParkAccountEntry = () => {
           <Button className="btn-outline">Print Entry</Button>
         </div>
       </div>
-      <div className="mt-7 ml-2">
+      <div className="mt-7 ms-2">
         <EntryForm type="edit" entry={data!} />
       </div>
     </div>
