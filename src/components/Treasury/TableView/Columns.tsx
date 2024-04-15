@@ -6,8 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import DeleteModal from "../Dialogs/DeleteModal";
 import { formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const useTreasuryPaymentBondsColumns = () => {
+  const { t } = useTranslation("treasury");
   const navigate = useNavigate();
 
   const columns: ColumnDef<TreasuryBond>[] = [
@@ -23,6 +25,7 @@ export const useTreasuryPaymentBondsColumns = () => {
             table.toggleAllPageRowsSelected(!!value)
           }
           aria-label="Select all"
+          className="rtl:float-right mx-8"
         />
       ),
       cell: ({ row }) => (
@@ -30,6 +33,7 @@ export const useTreasuryPaymentBondsColumns = () => {
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
           aria-label="Select row"
+          className="cursor-pointer mx-8"
         />
       ),
       enableSorting: false,
@@ -37,67 +41,67 @@ export const useTreasuryPaymentBondsColumns = () => {
     },
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
       meta: {
-        header: "Serial",
+        header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: "Document No.",
+      header: t("documentNo"),
       meta: {
-        header: "Document No.",
+        header: t("documentNo"),
       },
     },
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Document Date" />
+        <DataTableColumnHeader column={column} title={t("documentDate")} />
       ),
       cell: ({ row }) => {
         return formatDate(row.original.date);
       },
       meta: {
-        header: "Document Date",
+        header: t("documentDate"),
       },
     },
     {
       accessorKey: "title",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Title" />
+        <DataTableColumnHeader column={column} title={t("title")} />
       ),
       meta: {
-        header: "Title",
+        header: t("title"),
       },
     },
     {
       accessorKey: "created_by_name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="User" />
+        <DataTableColumnHeader column={column} title={t("user")} />
       ),
       meta: {
-        header: "User",
+        header: t("user"),
       },
     },
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Amount" />
+        <DataTableColumnHeader column={column} title={t("amount")} />
       ),
       meta: {
-        header: "Amount",
+        header: t("amount"),
       },
     },
     {
       accessorKey: "currency",
-      header: "Currency",
+      header: t("currency"),
       meta: {
-        header: "Currency",
+        header: t("currency"),
       },
     },
     {
       id: "actions",
-      header: "Actions",
+      header: t("actions"),
       cell: ({ row }) => {
         const bondId = row.original.id;
         return (
@@ -117,7 +121,7 @@ export const useTreasuryPaymentBondsColumns = () => {
         );
       },
       meta: {
-        header: "Actions",
+        header: t("actions"),
       },
     },
   ];
@@ -126,6 +130,7 @@ export const useTreasuryPaymentBondsColumns = () => {
 };
 
 export const useTreasuryReceiptBondsColumns = () => {
+  const { t } = useTranslation("treasury");
   const navigate = useNavigate();
 
   const columns: ColumnDef<TreasuryBond>[] = [
@@ -141,6 +146,7 @@ export const useTreasuryReceiptBondsColumns = () => {
             table.toggleAllPageRowsSelected(!!value)
           }
           aria-label="Select all"
+          className="rtl:float-right mx-8"
         />
       ),
       cell: ({ row }) => (
@@ -148,6 +154,7 @@ export const useTreasuryReceiptBondsColumns = () => {
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
           aria-label="Select row"
+          className="cursor-pointer mx-8"
         />
       ),
       enableSorting: false,
@@ -155,67 +162,67 @@ export const useTreasuryReceiptBondsColumns = () => {
     },
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
       meta: {
-        header: "Serial",
+        header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: "Document No.",
+      header: t("documentNo"),
       meta: {
-        header: "Document No.",
+        header: t("documentNo"),
       },
     },
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Document Date" />
+        <DataTableColumnHeader column={column} title={t("documentDate")} />
       ),
       cell: ({ row }) => {
         return formatDate(row.original.date);
       },
       meta: {
-        header: "Document Date",
+        header: t("documentDate"),
       },
     },
     {
       accessorKey: "title",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Title" />
+        <DataTableColumnHeader column={column} title={t("title")} />
       ),
       meta: {
-        header: "Title",
+        header: t("title"),
       },
     },
     {
       accessorKey: "created_by_name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="User" />
+        <DataTableColumnHeader column={column} title={t("user")} />
       ),
       meta: {
-        header: "User",
+        header: t("user"),
       },
     },
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Amount" />
+        <DataTableColumnHeader column={column} title={t("amount")} />
       ),
       meta: {
-        header: "Amount",
+        header: t("amount"),
       },
     },
     {
       accessorKey: "currency",
-      header: "Currency",
+      header: t("currency"),
       meta: {
-        header: "Currency",
+        header: t("currency"),
       },
     },
     {
       id: "actions",
-      header: "Actions",
+      header: t("actions"),
       cell: ({ row }) => {
         const bondId = row.original.id;
         return (
@@ -235,7 +242,7 @@ export const useTreasuryReceiptBondsColumns = () => {
         );
       },
       meta: {
-        header: "Actions",
+        header: t("actions"),
       },
     },
   ];

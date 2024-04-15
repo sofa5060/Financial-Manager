@@ -6,9 +6,11 @@ import TreasuryManager from "@/managers/TreasuryManager";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 const EditTreasuryReceiveBond = () => {
+  const { t } = useTranslation("treasury");
   const { id } = useParams();
 
   const { data, isLoading, isError } = useQuery({
@@ -62,10 +64,11 @@ const EditTreasuryReceiveBond = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Edit Treasury / <span className="text-primary">Receive Bond</span>
+          {t("editTreasury")} /{" "}
+          <span className="text-primary">{t("receiveBond")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline">Print Entry</Button>
+          <Button className="btn-outline">{t("printBond")}</Button>
         </div>
       </div>
       <div className="mt-7 ms-2">

@@ -5,6 +5,7 @@ import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
 import { PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Select from "react-select";
 
 type DynamicTableFormProps = {
@@ -22,6 +23,7 @@ const DynamicTableForm = ({
   disabled,
   rate,
 }: DynamicTableFormProps) => {
+  const { t } = useTranslation("treasury");
   const subAccountOptions = useSubAccountsStore(
     (state) => state.subAccountOptions
   );
@@ -103,37 +105,37 @@ const DynamicTableForm = ({
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Account Category
+              {t("accountCategory")}
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Account Code
+              {t("accountCode")}
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Account Name
+              {t("accountName")}
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Description
+              {t("description")}
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Cost Center
+              {t("costCenter")}
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Amount
+              {t("amount")}
             </th>
             {!isDefaultCurrency && (
               <>
@@ -141,7 +143,7 @@ const DynamicTableForm = ({
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Amount in Foreign Currency
+                  {t("amountInForeignCurrency")}
                 </th>
               </>
             )}
@@ -150,7 +152,7 @@ const DynamicTableForm = ({
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Actions
+                {t("actions")}
               </th>
             )}
           </tr>

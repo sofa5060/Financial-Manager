@@ -6,9 +6,11 @@ import TreasuryManager from "@/managers/TreasuryManager";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 const ViewTreasuryPaymentBond = () => {
+  const { t } = useTranslation("treasury");
   const { id } = useParams();
 
   const { data, isLoading, isError } = useQuery({
@@ -50,7 +52,7 @@ const ViewTreasuryPaymentBond = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch template",
+      title: t("bond.failed"),
     });
     return <></>;
   }
@@ -61,10 +63,11 @@ const ViewTreasuryPaymentBond = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          View Treasury / <span className="text-primary">Payment Bond</span>
+          {t("viewTreasury")} /{" "}
+          <span className="text-primary">{t("paymentBond")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline">Print Entry</Button>
+          <Button className="btn-outline">{t("printBond")}</Button>
         </div>
       </div>
       <div className="mt-7 ms-2">

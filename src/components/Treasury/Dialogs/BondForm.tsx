@@ -30,6 +30,7 @@ import TreasuryManager from "@/managers/TreasuryManager";
 import { useEntryType } from "@/components/Entries/data";
 // import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
 import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
+import { useTranslation } from "react-i18next";
 
 type BondFormProps = {
   type?: "view" | "edit" | "add";
@@ -38,6 +39,7 @@ type BondFormProps = {
 };
 
 const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
+  const { t } = useTranslation("treasury");
   const name = useAuthStore((state) => state.name);
   const [rate, setRate] = useState<number | undefined>(bond?.rate ?? undefined);
   const currenciesOptions = useCurrenciesStore(
@@ -74,7 +76,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to add bond",
+        title: t("add.failed"),
         description: error.message,
       });
     },
@@ -83,7 +85,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Bond added successfully",
+        title: t("add.success"),
       });
 
       if (bondType === "receive") {
@@ -102,7 +104,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to edit bond",
+        title: t("edit.failed"),
         description: error.message,
       });
     },
@@ -112,7 +114,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
       toast({
-        title: "Bond edited successfully",
+        title: t("edit.success"),
       });
 
       if (bondType === "receive") {
@@ -124,9 +126,9 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
   });
 
   const HEADERS = {
-    view: "View Bond",
-    edit: "Edit Bond",
-    add: "Add New Bond",
+    view: t("bond.view"),
+    edit: t("bond.edit"),
+    add: t("bond.add"),
   };
 
   const form = useForm<NewBond>({
@@ -166,7 +168,6 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
     }
   }, [form.watch("rate"), form.watch("currency_id"), currencies]);
 
-
   return (
     <div>
       <h2 className="font-medium text-lg">{HEADERS[type]}</h2>
@@ -181,7 +182,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                 render={({ field }) => (
                   <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
                     <FormLabel className="whitespace-nowrap">
-                      Document Number
+                      {t("documentNo")}
                     </FormLabel>
                     <div className="flex-col w-full">
                       <FormControl>
@@ -203,7 +204,9 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">Date</FormLabel>
+                  <FormLabel className="whitespace-nowrap">
+                    {t("date")}
+                  </FormLabel>
                   <div className="flex-col w-full">
                     <FormControl>
                       <Input
@@ -222,7 +225,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
             />
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="currency_id" className="font-medium text-sm">
-                Currency
+                {t("currency")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -254,7 +257,9 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                 name="rate"
                 render={({ field }) => (
                   <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
-                    <FormLabel className="whitespace-nowrap">rate</FormLabel>
+                    <FormLabel className="whitespace-nowrap">
+                      {t("rate")}
+                    </FormLabel>
                     <div className="flex-col w-full">
                       <FormControl>
                         <Input
@@ -266,9 +271,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                           onChange={(e) => {
                             form.setValue(
                               "rate",
-                              e.target.value
-                                ? parseFloat(e.target.value)
-                                : null
+                              e.target.value ? parseFloat(e.target.value) : null
                             );
                           }}
                           disabled={type === "view"}
@@ -288,7 +291,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
           <div className="flex items-center max-w-[50%] gap-4">
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="type" className="font-medium text-sm">
-                Type
+                {t("type")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -320,7 +323,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                   render={({ field }) => (
                     <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
                       <FormLabel className="whitespace-nowrap">
-                        Check No
+                        {t("checkNo")}
                       </FormLabel>
                       <div className="flex-col w-full">
                         <FormControl>
@@ -340,7 +343,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                 />
                 <div className="flex justify-end flex-1 flex-col items-start gap-1">
                   <label htmlFor="bank_id" className="font-medium text-sm">
-                    Bank
+                    {t("bank")}
                   </label>
                   <div className="flex-col w-full">
                     <Select
@@ -378,7 +381,9 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
             name="title"
             render={({ field }) => (
               <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
-                <FormLabel className="whitespace-nowrap">Title</FormLabel>
+                <FormLabel className="whitespace-nowrap">
+                  {t("title")}
+                </FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
                     <Input
@@ -398,7 +403,9 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
-                <FormLabel className="whitespace-nowrap">Description</FormLabel>
+                <FormLabel className="whitespace-nowrap">
+                  {t("description")}
+                </FormLabel>
                 <div className="flex-col w-full">
                   <FormControl>
                     <Input
@@ -416,7 +423,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
           <div className="flex items-center max-w-[50%] gap-4">
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="safe_account_id" className="font-medium text-sm">
-                Safe Account
+                {t("safeAccount")}
               </label>
               <div className="flex-col w-full">
                 <Select
@@ -435,7 +442,9 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                   options={subAccountOptions}
                 />
                 {errors.safe_account_id && (
-                  <span className="error-text">{errors.safe_account_id.message}</span>
+                  <span className="error-text">
+                    {errors.safe_account_id.message}
+                  </span>
                 )}
               </div>
             </div>
@@ -455,7 +464,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">
             <p className="whitespace-nowrap font-normal text-sm">
-              Signature (Created by):
+              {t("signature")}
             </p>
             <Input
               className="w-full"
@@ -473,7 +482,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                     navigate(-1);
                   }}
                 >
-                  Close
+                  {t("close")}
                 </Button>
               </>
             ) : (
@@ -486,10 +495,10 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                     navigate(-1);
                   }}
                 >
-                  Cancel
+                  {t("cancel")}
                 </Button>
                 <Button type="submit" disabled={isPending || isUpdating}>
-                  Save
+                  {t("save")}
                 </Button>
               </>
             )}

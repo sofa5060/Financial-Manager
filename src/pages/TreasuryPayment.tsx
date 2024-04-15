@@ -8,9 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const TreasuryPayments = () => {
+  const { t } = useTranslation("treasury");
   const [searchParams] = useSearchParams();
   const columns = useTreasuryPaymentBondsColumns();
   const navigate = useNavigate();
@@ -54,7 +56,7 @@ const TreasuryPayments = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch entries",
+      title: t("bonds.failed"),
     });
     return <></>;
   }
@@ -63,16 +65,16 @@ const TreasuryPayments = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Treasury <span className="text-primary">Payment bonds</span>
+          {t("treasury")} <span className="text-primary">{t("paymentBonds")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline me-4">Print Selected</Button>
+          <Button className="btn-outline me-4">{t("printSelected")}</Button>
           <Button
             className="btn-primary"
             onClick={() => navigate("/treasury/payment/new")}
           >
             <Plus className="me-2 w-4" />
-            New Entry
+            {t("newBond")}
           </Button>
         </div>
       </div>
