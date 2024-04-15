@@ -1,8 +1,13 @@
 {
-  "sidebar.home": "Statistics",
-  "sidebar.tasks": "Tasks",
-  "sidebar.archive": "Archive",
-  "sidebar.requests": "Requests",
+  "chartsOfAccounts": "Charts of Accounts",
+  "costCenters": "Cost Centers",
+  "parkAccountingEntries": "Accounting Entries (Park)",
+  "parkAccountingTransactions": "Accounting Transactions (Park)",
+  "postAccountingEntries": "Accounting Entries (Post)",
+  "postAccountingTransactions": "Accounting Transactions (Post)",
+  "receiveTreasury": "Treasury Receives",
+  "paymentTreasury": "Treasury Payments",
+  "templates": "Account Templates",
   "sidebar.chat": "Chat",
   "sidebar.settings": "Settings"
 }

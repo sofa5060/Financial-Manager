@@ -1,8 +1,13 @@
 {
-  "sidebar.home": "الاحصائيات",
-  "sidebar.tasks": "المهام",
-  "sidebar.archive": "الأرشيف",
-  "sidebar.requests": "الطلبات",
-  "sidebar.chat": "المحادثات",
+  "chartsOfAccounts": "جداول الحسابات",
+  "costCenters": "مراكز التكلفة",
+  "parkAccountingEntries": "قيود المحاسبة (تعليق)",
+  "parkAccountingTransactions": "المعاملات المحاسبية (تعليق)",
+  "postAccountingEntries": "قيود المحاسبة (نشر)",
+  "postAccountingTransactions": "المعاملات المحاسبية (نشر)",
+  "receiveTreasury": "خزينة الاستلامات",
+  "paymentTreasury": "خزينة المدفوعات",
+  "templates": "قوالب الحسابات",
+  "sidebar.chat": "الدردشة",
   "sidebar.settings": "الإعدادات"
 }

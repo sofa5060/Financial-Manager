@@ -13,11 +13,11 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings",
     },
     {
-      title: "Banks",
+      title: t("settings.sidebar.banks"),
       href: "/settings/banks",
     },
     {
-      title: "Currencies",
+      title: t("settings.sidebar.currencies"),
       href: "/settings/currencies",
     },
     {
@@ -25,11 +25,11 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings/categories",
     },
     {
-      title: "Groups",
+      title: t("settings.sidebar.groups"),
       href: "/settings/groups",
     },
     {
-      title: "Permissions",
+      title: t("settings.sidebar.permissions"),
       href: "/settings/permissions",
     },
     // {

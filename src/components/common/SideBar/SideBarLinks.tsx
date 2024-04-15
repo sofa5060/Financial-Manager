@@ -21,47 +21,47 @@ const useSidebarLinks = () => {
 
   const sidebarLinks: SidebarLink[] = [
     {
-      label: "Charts of accounts",
+      label: t("chartsOfAccounts"),
       href: "/",
       icon: BarChartHorizontalBig,
     },
     {
-      label: "Cost centers",
+      label: t("costCenters"),
       href: "/cost-centers",
       icon: Calculator,
     },
     {
-      label: "Accounting Entries (Park)",
+      label: t("parkAccountingEntries"),
       href: "/accounting-entries/park",
       icon: Table2,
     },
     {
-      label: "Accounting Transactions (Park)",
+      label: t("parkAccountingTransactions"),
       href: "/transactions/park",
       icon: Table,
     },
     {
-      label: "Accounting Entries (Post)",
+      label: t("postAccountingEntries"),
       href: "/accounting-entries/post",
       icon: Table2,
     },
     {
-      label: "Accounting Transactions (Post)",
+      label: t("postAccountingTransactions"),
       href: "/transactions/post",
       icon: Table,
     },
     {
-      label: "Treasury Receive",
+      label: t("receiveTreasury"),
       href: "/treasury/receive",
       icon: Table2,
     },
     {
-      label: "Treasury Payments",
+      label: t("paymentTreasury"),
       href: "/treasury/payment",
       icon: Table2,
     },
     {
-      label: "Account Templates",
+      label: t("templates"),
       href: "/accounts/templates",
       icon: Table2,
     },
