@@ -53,27 +53,22 @@ const HierarchicalCostCenter = ({
                   )}
                 ></div>
               )}
-              <div className="border-b-2 border-dashed border-[#E4E4E7] w-12 h-1 self-center"></div>
+              <div className="border-b-2 border-dashed border-[#E4E4E7] w-6 h-1 self-center"></div>
             </div>
           )}
           <div className="flex items-center gap-4 mt-4">
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
-              <div className="border-s-4 border-primary ps-2 flex items-center gap-12">
-                <div className="flex flex-col gap-2">
+              <div className="border-s-4 border-primary ps-2 flex items-center gap-4">
+                <div className="flex gap-2">
                   <h4 className="text-sm">
                     {i18n.language === "ar"
                       ? costCenter.name_ar
                       : costCenter.name_en}
                   </h4>
                   <div className="flex items-center gap-2">
-                    <h5 className="text-xs bg-primary text-white px-2">
+                    <h5 className="text-xs bg-primary text-white px-2 rounded-sm">
                       {costCenter.code}
                     </h5>
-                    <h4 className="text-sm">
-                      {costCenter.properties === "main"
-                        ? t("mainCostCenter")
-                        : t("subCostCenter")}
-                    </h4>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -130,7 +125,7 @@ const HierarchicalCostCenter = ({
           </div>
         </div>
         {costCenter.children && costCenter.children.length > 0 && (
-          <div className={cn("ms-12", { hidden: hideChildren })}>
+          <div className={cn("ms-6", { hidden: hideChildren })}>
             <HierarchicalCostCenters
               costCenters={costCenter.children}
               level={level + 1}
