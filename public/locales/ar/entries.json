@@ -38,12 +38,12 @@
   "confirm": "تأكيد",
   "reverse.success": "تمت عملية إلغاء القيد بنجاح",
   "reverse.failed": "فشل إلغاء القيد",
-  "reverse.title": "إلغاء القيد",
-  "reverse.message": "هل أنت متأكد أنك تريد إلغاء هذا القيد؟",
+  "reverse.title": "عكس القيد",
+  "reverse.message": "هل أنت متأكد أنك تريد عكس هذا القيد؟",
   "documentCode": "كود المستند",
   "date": "التاريخ",
   "reason": "السبب",
-  "reverse": "إلغاء",
+  "reverse": "عكس القيد",
   "post.success": "تم نشر القيد بنجاح",
   "post.failed": "فشل نشر القيد",
   "post.title": "أنت على وشك نشر هذا القيد",
@@ -69,5 +69,9 @@
   "debit": "مدين",
   "credit": "دائن",
   "debitInForeignCurrency": "مدين بالعملة الأجنبية",
-  "creditInForeignCurrency": "دائن بالعملة الأجنبية"
+  "creditInForeignCurrency": "دائن بالعملة الأجنبية",
+  "viewAccountingEntry": "عرض القيد المحاسبي",
+  "editAccountingEntry": "تحرير القيد المحاسبي",
+  "printEntry": "طباعة القيد",
+  "entry.failed": "فشل جلب القيد"
 }

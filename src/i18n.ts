@@ -1,6 +1,7 @@
 import i18n from "i18next";
-import Backend from "i18next-http-backend";
-import LanguageDetector from 'i18next-browser-languagedetector';
+import ChainedBackend from "i18next-chained-backend";
+import HttpBackend from "i18next-http-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 const i18nConfig = {
@@ -9,15 +10,20 @@ const i18nConfig = {
 };
 
 i18n
-  .use(Backend)
+  .use(ChainedBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    backend: {
-      loadPath: "./locales/{{lng}}/{{ns}}.json",
-    },
     fallbackLng: i18nConfig.defaultLocale,
     supportedLngs: i18nConfig.locales,
+    backend: {
+      backends: [HttpBackend],
+      backendOptions: [
+        {
+          loadPath: "/locales/{{lng}}/{{ns}}.json",
+        },
+      ],
+    },
     debug: true,
   });
 

@@ -4,9 +4,11 @@ import { toast } from "@/components/ui/use-toast";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useQuery } from "@tanstack/react-query";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 const ViewPostAccountEntry = () => {
+  const { t } = useTranslation("entries");
   const { id } = useParams();
 
   const { data, isLoading, isError } = useQuery({
@@ -25,7 +27,7 @@ const ViewPostAccountEntry = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch entry",
+      title: t("entry.failed"),
     });
     return <></>;
   }
@@ -36,10 +38,11 @@ const ViewPostAccountEntry = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          View Accounting Entry / <span className="text-primary">Post</span>
+          {t("viewAccountingEntry")} /{" "}
+          <span className="text-primary">{t("post")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline">Print Entry</Button>
+          <Button className="btn-outline">{t("printEntry")}</Button>
         </div>
       </div>
       <div className="mt-7 ms-2">

@@ -69,5 +69,9 @@
   "debit": "Debit",
   "credit": "Credit",
   "debitInForeignCurrency": "Debit in Foreign Currency",
-  "creditInForeignCurrency": "Credit in Foreign Currency"
+  "creditInForeignCurrency": "Credit in Foreign Currency",
+  "viewAccountingEntry": "View Accounting Entry",
+  "editAccountingEntry": "Edit Accounting Entry",
+  "printEntry": "Print Entry",
+  "entry.failed": "Failed to fetch entry"
 }
