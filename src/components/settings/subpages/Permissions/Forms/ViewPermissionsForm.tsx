@@ -13,11 +13,11 @@ import {
 } from "../schema";
 import PermissionsManager from "@/managers/PermissionsManager";
 import { useState } from "react";
-import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useGroupsStore } from "@/hooks/useGroupsStore";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { CircleCheck, CircleX } from "lucide-react";
 import { capitalizeString, cn } from "@/lib/utils";
+import { useUsersStore } from "@/hooks/useUsersStore";
 
 const ViewPermissionsForm = () => {
   const [isGroup, setIsGroup] = useState(false);
@@ -34,8 +34,8 @@ const ViewPermissionsForm = () => {
     setValue,
   } = form;
 
-  const subAccountOptions = useSubAccountsStore(
-    (state) => state.subAccountOptions
+  const usersOptions = useUsersStore(
+    (state) => state.usersOptions
   );
 
   const groupsOptions = useGroupsStore((state) => state.groupsOptions);
@@ -49,14 +49,13 @@ const ViewPermissionsForm = () => {
       ),
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["permissions"] });
-      form.reset();
       setSearchResult(data!);
       setSearchResultName(
         isGroup
           ? groupsOptions!.find(
               (option) => option.value === form.getValues("group_id")
             )!.label!
-          : subAccountOptions!.find(
+          : usersOptions!.find(
               (option) => option.value === form.getValues("user_id")
             )!.label!
       );
@@ -123,12 +122,12 @@ const ViewPermissionsForm = () => {
                     ? groupsOptions.find(
                         (option) => option.value === form.getValues("group_id")
                       )
-                    : subAccountOptions.find(
+                    : usersOptions.find(
                         (option) => option.value === form.getValues("user_id")
                       )
                 }
                 className="min-w-48"
-                options={isGroup ? groupsOptions : subAccountOptions}
+                options={isGroup ? groupsOptions : usersOptions}
               />
               {errors.user_id && (
                 <span className="error-text">{errors.user_id.message}</span>

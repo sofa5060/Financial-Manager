@@ -13,8 +13,8 @@ import {
 } from "../schema";
 import PermissionsManager from "@/managers/PermissionsManager";
 import { useState } from "react";
-import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useGroupsStore } from "@/hooks/useGroupsStore";
+import { useUsersStore } from "@/hooks/useUsersStore";
 
 const ModifyPermissionsForm = () => {
   const [isGroup, setIsGroup] = useState(false);
@@ -32,9 +32,7 @@ const ModifyPermissionsForm = () => {
     setValue,
   } = form;
 
-  const subAccountOptions = useSubAccountsStore(
-    (state) => state.subAccountOptions
-  );
+  const usersOptions = useUsersStore((state) => state.usersOptions);
 
   const groupsOptions = useGroupsStore((state) => state.groupsOptions);
 
@@ -55,6 +53,9 @@ const ModifyPermissionsForm = () => {
       ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["permissions"] });
+      toast({
+        title: "Permissions modified successfully",
+      });
       form.reset();
     },
     onError: (error) => {
@@ -118,8 +119,16 @@ const ModifyPermissionsForm = () => {
                     values!.map((val) => val!.value)
                   );
                 }}
+                value={
+                  form.getValues(isGroup ? "groups" : "users")?.map((val) => {
+                    console.log(val);
+                    return isGroup
+                      ? groupsOptions.find((option) => option.value === val)
+                      : usersOptions.find((option) => option.value === val);
+                  }) || []
+                }
                 className="min-w-48"
-                options={isGroup ? groupsOptions : subAccountOptions}
+                options={isGroup ? groupsOptions : usersOptions}
               />
               {errors.users && (
                 <span className="error-text">{errors.users.message}</span>
@@ -142,6 +151,14 @@ const ModifyPermissionsForm = () => {
                   form.clearErrors("feature");
                   setValue("feature", val!.value);
                 }}
+                value={
+                  form.getValues("feature")
+                    ? {
+                        value: form.getValues("feature"),
+                        label: form.getValues("feature"),
+                      }
+                    : null
+                }
                 className="min-w-48"
                 options={FeaturesArr.map((feature) => ({
                   label: feature,
@@ -170,6 +187,14 @@ const ModifyPermissionsForm = () => {
                     values!.map((val) => val!.value)
                   );
                 }}
+                value={
+                  form.getValues("actions")?.map((val) => {
+                    return {
+                      value: val,
+                      label: val,
+                    };
+                  }) || []
+                }
                 className="min-w-48"
                 options={ActionsArr.map((action) => ({
                   label: action,

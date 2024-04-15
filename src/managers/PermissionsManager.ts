@@ -1,4 +1,8 @@
-import { ActionsEnum, FeaturesEnum, FeaturesList } from "@/components/settings/subpages/Permissions/schema";
+import {
+  ActionsEnum,
+  FeaturesEnum,
+  FeaturesList,
+} from "@/components/settings/subpages/Permissions/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
@@ -9,14 +13,12 @@ class PermissionsManager {
     type: "group" | "user"
   ): Promise<FeaturesList | undefined> {
     try {
-      const response = await axios.get("/api/permission", {
-        params: {
-          feature,
-          user_id: type === "user" ? id : undefined,
-          group_id: type === "group" ? id : undefined,
-        },
-      });
-      console.log(response.data.data);
+      const response = await axios.get(
+        `/api/permission?feature=${feature}&${
+          type === "user" ? `user_id=${id}` : `group_id=${id}`
+        }`
+      );
+      console.log(response);
       return response.data.data;
     } catch (error) {
       console.log(error);
