@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
+import { useStateCallback } from "@/hooks/useStateCallBack";
 import CostCentersManager from "@/managers/CostCentersManager";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -14,6 +15,8 @@ import { FlowerSpinner } from "react-epic-spinners";
 import { useTranslation } from "react-i18next";
 
 const CostCentersCharts = () => {
+  const [collapseAll, setCollapseAll] = useStateCallback(false);
+  const [expandAll, setExpandAll] = useStateCallback(false);
   const { t } = useTranslation("costCenters");
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
@@ -33,6 +36,18 @@ const CostCentersCharts = () => {
     queryKey: ["costCenters"],
     queryFn: CostCentersManager.getCostCenters,
   });
+
+  const collapseAllCostCenters = () => {
+    setCollapseAll(true, () => {
+      setCollapseAll(false);
+    });
+  };
+
+  const expandAllCostCenters = () => {
+    setExpandAll(true, () => {
+      setExpandAll(false);
+    });
+  };
 
   if (isLoading)
     return (
@@ -64,6 +79,14 @@ const CostCentersCharts = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        <div className="flex gap-4">
+          <Button className="btn-outline" onClick={collapseAllCostCenters}>
+            {t("collapseAll")}
+          </Button>
+          <Button className="btn-outline" onClick={expandAllCostCenters}>
+            {t("expandAll")}
+          </Button>
+        </div>
         {/* <div className="flex gap-4">
           <Filter
             title="Filter 1"
@@ -93,7 +116,11 @@ const CostCentersCharts = () => {
         </div> */}
       </div>
       <Separator />
-      <HierarchicalCostCenters costCenters={searchResults! ?? costCenters!} />
+      <HierarchicalCostCenters
+        costCenters={searchResults! ?? costCenters!}
+        collapseAll={collapseAll}
+        expandAll={expandAll}
+      />
       <div className="fixed bottom-16 right-32">
         <CostCenterForm level={1}>
           <Button className="btn btn-primary">

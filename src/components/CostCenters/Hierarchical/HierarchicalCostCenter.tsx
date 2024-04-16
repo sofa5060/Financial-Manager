@@ -13,7 +13,7 @@ import HierarchicalCostCenters from "./HierarchicalCostCenters";
 import { cn } from "@/lib/utils";
 import DeleteModal from "./DeleteModal";
 import CostCenterForm from "./CostCenterForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type HierarchicalCostCenterProps = {
@@ -22,6 +22,8 @@ type HierarchicalCostCenterProps = {
   lastElement?: boolean;
   addChild: () => void;
   parentCostCenter?: CostCenter;
+  collapseAll: boolean;
+  expandAll: boolean;
 };
 
 const HierarchicalCostCenter = ({
@@ -29,9 +31,19 @@ const HierarchicalCostCenter = ({
   level = 1,
   lastElement = false,
   parentCostCenter,
+  collapseAll,
+  expandAll,
 }: HierarchicalCostCenterProps) => {
   const [hideChildren, setHideChildren] = useState(level !== 1);
   const { i18n, t } = useTranslation("costCenters");
+
+  useEffect(() => {
+    if (collapseAll) {
+      setHideChildren(true);
+    } else if (expandAll) {
+      setHideChildren(false);
+    }
+  }, [collapseAll, expandAll]);
 
   return (
     <div className="flex items-stretch">
@@ -130,6 +142,8 @@ const HierarchicalCostCenter = ({
               costCenters={costCenter.children}
               level={level + 1}
               parentCostCenter={costCenter}
+              collapseAll={collapseAll}
+              expandAll={expandAll}
             />
           </div>
         )}

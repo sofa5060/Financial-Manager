@@ -13,7 +13,7 @@ import HierarchicalAccounts from "./HierarchicalAccounts";
 import { cn } from "@/lib/utils";
 import AccountForm from "./AccountForm";
 import DeleteModal from "./DeleteModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type HierarchicalAccountProps = {
@@ -22,6 +22,8 @@ type HierarchicalAccountProps = {
   lastElement?: boolean;
   addChild: () => void;
   parentAccount?: Account;
+  collapseAll: boolean;
+  expandAll: boolean;
 };
 
 const HierarchicalAccount = ({
@@ -29,9 +31,19 @@ const HierarchicalAccount = ({
   level = 1,
   lastElement = false,
   parentAccount,
+  collapseAll,
+  expandAll,
 }: HierarchicalAccountProps) => {
   const { t, i18n } = useTranslation("accounts");
   const [hideChildren, setHideChildren] = useState(level !== 1);
+
+  useEffect(() => {
+    if (collapseAll) {
+      setHideChildren(true);
+    } else if (expandAll) {
+      setHideChildren(false);
+    }
+  }, [collapseAll, expandAll]);
 
   if (!account) return <></>;
 
@@ -132,6 +144,8 @@ const HierarchicalAccount = ({
               accounts={account.children}
               level={level + 1}
               parentAccount={account}
+              collapseAll={collapseAll}
+              expandAll={expandAll}
             />
           </div>
         )}

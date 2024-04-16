@@ -36,5 +36,7 @@
   "balance": "Balance Sheet",
   "profit": "Profit & Loss",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "expandAll": "Expand All",
+  "collapseAll": "Collapse All"
 }

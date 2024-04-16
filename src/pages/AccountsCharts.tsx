@@ -12,8 +12,11 @@ import { FlowerSpinner } from "react-epic-spinners";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useStateCallback } from "@/hooks/useStateCallBack";
 
 const AccountsCharts = () => {
+  const [collapseAll, setCollapseAll] = useStateCallback(false);
+  const [expandAll, setExpandAll] = useStateCallback(false);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
   const { t } = useTranslation("accounts");
@@ -32,6 +35,18 @@ const AccountsCharts = () => {
     queryKey: ["accounts"],
     queryFn: AccountsManager.getAccounts,
   });
+
+  const collapseAllAccounts = () => {
+    setCollapseAll(true, () => {
+      setCollapseAll(false);
+    });
+  };
+
+  const expandAllAccounts = () => {
+    setExpandAll(true, () => {
+      setExpandAll(false);
+    });
+  };
 
   if (isLoading)
     return (
@@ -61,6 +76,14 @@ const AccountsCharts = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        <div className="flex gap-4">
+          <Button className="btn-outline" onClick={collapseAllAccounts}>
+            {t("collapseAll")}
+          </Button>
+          <Button className="btn-outline" onClick={expandAllAccounts}>
+            {t("expandAll")}
+          </Button>
+        </div>
         {/* <div className="flex gap-4">
           <Filter
             title="Filter 1"
@@ -91,7 +114,11 @@ const AccountsCharts = () => {
         </div> */}
       </div>
       <Separator />
-      <HierarchicalAccounts accounts={searchResults! ?? accounts!} />
+      <HierarchicalAccounts
+        accounts={searchResults! ?? accounts!}
+        collapseAll={collapseAll}
+        expandAll={expandAll}
+      />
       <div className="fixed bottom-16 right-32">
         <AccountForm level={1}>
           <Button className="btn btn-primary">

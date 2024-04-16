@@ -6,11 +6,15 @@ type HierarchicalAccountsProps = {
   accounts: Account[];
   level?: number;
   parentAccount?: Account;
+  collapseAll: boolean;
+  expandAll: boolean;
 };
 const HierarchicalAccounts = ({
   accounts,
   level = 1,
   parentAccount,
+  collapseAll,
+  expandAll,
 }: HierarchicalAccountsProps) => {
   return (
     <div className={cn("flex items-stretch", { "ms-6": level > 1 })}>
@@ -23,6 +27,8 @@ const HierarchicalAccounts = ({
             lastElement={index === accounts.length - 1}
             addChild={() => {}}
             parentAccount={parentAccount}
+            collapseAll={collapseAll}
+            expandAll={expandAll}
           />
         ))}
       </div>
