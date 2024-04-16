@@ -238,6 +238,11 @@ const AccountForm = ({
                   onChange={(val) => {
                     form.clearErrors("properties");
                     setValue("properties", val!.value);
+                    if(val!.value === "main") {
+                      setValue("categories", []);
+                      setValue("cost_center", false);
+                      setValue("currencies", []);
+                    }
                   }}
                   defaultValue={ACCOUNT_PROPERTIES.find(
                     (property) => property.value === account?.properties
@@ -305,105 +310,110 @@ const AccountForm = ({
                 )}
               </div>
             </div>
-            <div className="flex gap-4 items-center justify-end">
-              <label htmlFor="categories" className="font-medium text-sm">
-                {t("categories")}
-              </label>
-              <div className="flex-col w-full max-w-[65%]">
-                <Select
-                  id="categories"
-                  isMulti
-                  isSearchable={false}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  onChange={(values) => {
-                    form.clearErrors("categories");
-                    setValue(
-                      "categories",
-                      values!.map((val) => val.value)
-                    );
-                  }}
-                  defaultValue={account?.categories_ids?.map(
-                    (category) =>
-                      categoriesOptions.find(
-                        (option) => option.value === category.id
-                      )!
-                  )}
-                  className="w-full"
-                  options={categoriesOptions}
-                />
-                {errors.categories && (
-                  <span className="error-text">
-                    {errors.categories.message}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-4 items-center justify-end">
-              <label htmlFor="cost_center" className="font-medium text-sm">
-                {t("costCenter")}
-              </label>
-              <div className="flex-col w-full max-w-[65%]">
-                <Select
-                  id="cost_center"
-                  isSearchable={false}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  onChange={(val) => {
-                    form.clearErrors("cost_center");
-                    setValue("cost_center", val!.value);
-                  }}
-                  className="w-full"
-                  options={[
-                    { label: t("yes"), value: true },
-                    { label: t("no"), value: false },
-                  ]}
-                  defaultValue={
-                    account?.cost_center
-                      ? { label: t("yes"), value: true }
-                      : { label: t("no"), value: false }
-                  }
-                />
-                {errors.cost_center && (
-                  <span className="error-text">
-                    {errors.cost_center.message}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-4 items-center justify-end">
-              <label htmlFor="currencies" className="font-medium text-sm">
-                {t("currencies")}
-              </label>
-              <div className="flex-col w-full max-w-[65%]">
-                <Select
-                  id="currencies"
-                  isMulti
-                  isSearchable={false}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  defaultValue={account?.currencies_ids?.map((currency) =>
-                    currenciesOptions.find(
-                      (option) => option.value === currency.id
-                    )
-                  )}
-                  onChange={(values) => {
-                    form.clearErrors("currencies");
-                    setValue(
-                      "currencies",
-                      values!.map((val) => val!.value)
-                    );
-                  }}
-                  className="w-full"
-                  options={currenciesOptions}
-                />
-                {errors.currencies && (
-                  <span className="error-text">
-                    {errors.currencies.message}
-                  </span>
-                )}
-              </div>
-            </div>
+            {form.getValues("properties") === "sub" && (
+              <>
+                <div className="flex gap-4 items-center justify-end">
+                  <label htmlFor="categories" className="font-medium text-sm">
+                    {t("categories")}
+                  </label>
+                  <div className="flex-col w-full max-w-[65%]">
+                    <Select
+                      id="categories"
+                      isMulti
+                      isSearchable={false}
+                      isClearable={false}
+                      isDisabled={type === "view"}
+                      onChange={(values) => {
+                        form.clearErrors("categories");
+                        setValue(
+                          "categories",
+                          values!.map((val) => val.value)
+                        );
+                      }}
+                      defaultValue={account?.categories_ids?.map(
+                        (category) =>
+                          categoriesOptions.find(
+                            (option) => option.value === category.id
+                          )!
+                      )}
+                      className="w-full"
+                      options={categoriesOptions}
+                    />
+                    {errors.categories && (
+                      <span className="error-text">
+                        {errors.categories.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-4 items-center justify-end">
+                  <label htmlFor="cost_center" className="font-medium text-sm">
+                    {t("costCenter")}
+                  </label>
+                  <div className="flex-col w-full max-w-[65%]">
+                    <Select
+                      id="cost_center"
+                      isSearchable={false}
+                      isClearable={false}
+                      isDisabled={type === "view"}
+                      onChange={(val) => {
+                        form.clearErrors("cost_center");
+                        setValue("cost_center", val!.value);
+                      }}
+                      className="w-full"
+                      options={[
+                        { label: t("yes"), value: true },
+                        { label: t("no"), value: false },
+                      ]}
+                      defaultValue={
+                        account?.cost_center
+                          ? { label: t("yes"), value: true }
+                          : { label: t("no"), value: false }
+                      }
+                    />
+                    {errors.cost_center && (
+                      <span className="error-text">
+                        {errors.cost_center.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-4 items-center justify-end">
+                  <label htmlFor="currencies" className="font-medium text-sm">
+                    {t("currencies")}
+                  </label>
+                  <div className="flex-col w-full max-w-[65%]">
+                    <Select
+                      id="currencies"
+                      isMulti
+                      isSearchable={false}
+                      isClearable={false}
+                      isDisabled={type === "view"}
+                      defaultValue={account?.currencies_ids?.map((currency) =>
+                        currenciesOptions.find(
+                          (option) => option.value === currency.id
+                        )
+                      )}
+                      onChange={(values) => {
+                        form.clearErrors("currencies");
+                        setValue(
+                          "currencies",
+                          values!.map((val) => val!.value)
+                        );
+                      }}
+                      className="w-full"
+                      options={currenciesOptions}
+                    />
+                    {errors.currencies && (
+                      <span className="error-text">
+                        {errors.currencies.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+
             <div className="flex items-center justify-between mt-2">
               {type === "view" ? (
                 <>

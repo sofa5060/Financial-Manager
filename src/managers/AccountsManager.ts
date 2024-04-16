@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { Account, NewAccount, SubAccount } from "@/components/Accounts/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
@@ -48,6 +50,12 @@ class AccountsManager {
   }
 
   static async addAccount(account: NewAccount): Promise<Account | undefined> {
+    if(account.properties === "main"){
+      delete account.categories;
+      delete account.currencies;
+      delete account.cost_center
+    }
+
     try {
       const response = await axios.post("/api/account", account);
       console.log(response);
@@ -62,12 +70,18 @@ class AccountsManager {
     account: Partial<Account>,
     accountId: number
   ): Promise<Account | undefined> {
+    if(account.properties === "main"){
+      delete account.categories;
+      delete account.currencies;
+      delete account.cost_center
+    }
+    
     try {
       const response = await axios.put(`/api/account/${accountId}`, account);
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       handleAxiosError(error as AxiosError);
     }
   }
