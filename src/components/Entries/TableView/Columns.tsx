@@ -62,7 +62,7 @@ export const useParkAccountingEntriesColumns = () => {
             table.toggleAllPageRowsSelected(!!value)
           }
           aria-label="Select all"
-          className="rtl:float-right mx-8"
+          className="rtl:float-right mx-4"
         />
       ),
       cell: ({ row }) => (
@@ -70,7 +70,7 @@ export const useParkAccountingEntriesColumns = () => {
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
           aria-label="Select row"
-          className="cursor-pointer mx-8"
+          className="cursor-pointer mx-4"
         />
       ),
       enableSorting: false,
@@ -263,7 +263,7 @@ export const usePostAccountingEntriesColumns = () => {
             table.toggleAllPageRowsSelected(!!value)
           }
           aria-label="Select all"
-          className="rtl:float-right mx-8"
+          className="rtl:float-right mx-4"
         />
       ),
       cell: ({ row }) => (
@@ -271,7 +271,7 @@ export const usePostAccountingEntriesColumns = () => {
           checked={row.getIsSelected()}
           onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
           aria-label="Select row"
-          className="cursor-pointer mx-8"
+          className="cursor-pointer mx-4"
         />
       ),
       enableSorting: false,

@@ -90,8 +90,8 @@ const ParkAccountingEntries = () => {
           {t("accountingEntries")} /{" "}
           <span className="text-primary">{t("park")}</span>
         </h1>
-        <div className="flex gap-5">
-          <Button className="btn-outline me-4">{t("printSelected")}</Button>
+        <div className="flex gap-4 flex-wrap">
+          <Button className="btn-outline">{t("printSelected")}</Button>
           {selectedEntries.length > 0 && (
             <Button
               className="me-4"
