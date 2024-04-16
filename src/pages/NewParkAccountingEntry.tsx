@@ -1,16 +1,15 @@
 import EntryForm from "@/components/Entries/Dialogs/EntryForm";
-import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const NewParkAccountEntry = () => {
+  const { t } = useTranslation("entries");
   return (
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          New Accounting Entry / <span className="text-primary">Park</span>
+          {t("newAccountingEntry")} /{" "}
+          <span className="text-primary">{t("park")}</span>
         </h1>
-        <div className="flex gap-5">
-          <Button className="btn-outline">Print Entry</Button>
-        </div>
       </div>
       <div className="mt-7 ms-2">
         <EntryForm type="add" />

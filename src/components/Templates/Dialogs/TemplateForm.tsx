@@ -159,7 +159,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
       <Separator className="my-6" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="flex max-w-[50%] gap-4">
+          <div className="flex max-w-[70%] gap-4 max-md:flex-col max-sm:max-w-full">
             <FormField
               control={form.control}
               name="date"
@@ -251,8 +251,8 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
               </div>
             )}
           </div>
-          <div className="flex items-center max-w-[50%] gap-4">
-            <div className="flex justify-end flex-1 flex-col items-start gap-1">
+          <div className="flex items-center max-w-[50%] gap-4 max-sm:max-w-full max-md:flex-col max-md:items-start">
+            <div className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
               <label htmlFor="type" className="font-medium text-sm">
                 {t("type")}
               </label>
@@ -284,7 +284,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                   control={form.control}
                   name="check_no"
                   render={({ field }) => (
-                    <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
+                    <FormItem className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
                       <FormLabel className="whitespace-nowrap">
                         {t("checkNo")}
                       </FormLabel>
@@ -304,7 +304,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                <div className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
                   <label htmlFor="bank_id" className="font-medium text-sm">
                     {t("bank")}
                   </label>
@@ -343,7 +343,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
+              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
                 <FormLabel className="whitespace-nowrap">
                   {t("title")}
                 </FormLabel>
@@ -365,7 +365,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem className="flex gap-1 items-start flex-col max-w-[50%]">
+              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
                 <FormLabel className="whitespace-nowrap">
                   {t("description")}
                 </FormLabel>

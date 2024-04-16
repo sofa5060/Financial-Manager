@@ -352,9 +352,24 @@ export const usePostAccountingEntriesColumns = () => {
             <Eye
               className="cursor-pointer text-primary w-5"
               onClick={() => {
-                navigate(`/transactions/post?entry=${entry.id}`);
+                navigate(`/accounting-entries/park/${entry.id}/view`);
               }}
             />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <TableProperties
+                    className="cursor-pointer text-primary w-5"
+                    onClick={() => {
+                      navigate(`/transactions/park?entry=${entry.id}`);
+                    }}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("viewTransactions")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <SaveAll
               className={cn("cursor-pointer text-primary w-5", {
                 "opacity-50": isPending,

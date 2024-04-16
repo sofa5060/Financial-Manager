@@ -73,5 +73,6 @@
   "viewAccountingEntry": "View Accounting Entry",
   "editAccountingEntry": "Edit Accounting Entry",
   "printEntry": "Print Entry",
-  "entry.failed": "Failed to fetch entry"
+  "entry.failed": "Failed to fetch entry",
+  "newAccountingEntry": "New Accounting Entry"
 }

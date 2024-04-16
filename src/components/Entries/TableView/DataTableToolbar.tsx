@@ -79,7 +79,7 @@ export function DataTableToolbar<TData>({
           />
           <Button type="submit">{t("search")}</Button>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center flex-wrap">
           {isFiltered && (
             <Button
               variant="ghost"

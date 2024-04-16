@@ -66,13 +66,13 @@ const CostCentersCharts = () => {
 
   return (
     <div className="pb-12">
-      <div className="flex justify-between">
+      <div className="flex justify-between max-sm:flex-col gap-4">
         <h1 className="text-primary text-3xl font-semibold">
           {t("costCenters")}
         </h1>
         <Button className="btn-outline">{t("download")}</Button>
       </div>
-      <div className="flex mb-4 mt-8 justify-between gap-16">
+      <div className="flex mb-4 mt-8 justify-between gap-16 max-sm:flex-col max-sm:gap-4">
         <Input
           placeholder={t("search")}
           className="max-w-2xl"
@@ -116,11 +116,13 @@ const CostCentersCharts = () => {
         </div> */}
       </div>
       <Separator />
-      <HierarchicalCostCenters
-        costCenters={searchResults! ?? costCenters!}
-        collapseAll={collapseAll}
-        expandAll={expandAll}
-      />
+      <div className="max-w-full overflow-x-auto pb-4">
+        <HierarchicalCostCenters
+          costCenters={searchResults! ?? costCenters!}
+          collapseAll={collapseAll}
+          expandAll={expandAll}
+        />
+      </div>
       <div className="fixed bottom-16 right-32">
         <CostCenterForm level={1}>
           <Button className="btn btn-primary">

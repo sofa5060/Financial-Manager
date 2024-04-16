@@ -63,7 +63,7 @@ const TreasuryPayments = () => {
 
   return (
     <div>
-      <div className="flex gap-5 justify-between">
+      <div className="flex gap-5 justify-between max-sm:flex-col">
         <h1 className="font-semibold text-2xl">
           {t("treasury")} <span className="text-primary">{t("paymentBonds")}</span>
         </h1>

@@ -73,5 +73,6 @@
   "viewAccountingEntry": "عرض القيد المحاسبي",
   "editAccountingEntry": "تحرير القيد المحاسبي",
   "printEntry": "طباعة القيد",
-  "entry.failed": "فشل جلب القيد"
+  "entry.failed": "فشل جلب القيد",
+  "newAccountingEntry": "قيد محاسبي جديد"
 }

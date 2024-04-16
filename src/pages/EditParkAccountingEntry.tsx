@@ -36,7 +36,7 @@ const EditParkAccountEntry = () => {
 
   return (
     <div>
-      <div className="flex gap-5 justify-between">
+      <div className="flex gap-5 justify-between max-sm:flex-col">
         <h1 className="font-semibold text-2xl">
           {t("editAccountingEntry")} /{" "}
           <span className="text-primary">{t("park")}</span>

@@ -74,11 +74,11 @@ const HierarchicalAccount = ({
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
               <div className="border-s-4 border-primary ps-2 flex items-center gap-4">
                 <div className="flex gap-2">
-                  <h4 className="text-sm">
+                  <h4 className="text-sm whitespace-nowrap">
                     {i18n.language === "ar" ? account.name_ar : account.name_en}
                   </h4>
                   <div className="flex items-center gap-2">
-                    <h5 className="text-xs bg-primary text-white px-2 rounded-sm">
+                    <h5 className="text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap">
                       {account.code}
                     </h5>
                   </div>
