@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import useSidebarLinks from "./SideBarLinks";
@@ -8,6 +8,22 @@ import { UserNav } from "../UserNav/UserNav";
 import { useAuthStore } from "@/hooks/useAuthStore";
 
 const SideBar = () => {
+  const [isOpen, setIsOpen] = useState(window.innerWidth < 600);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+      setIsOpen(window.innerWidth < 600);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const location = useLocation();
   const name = useAuthStore((state) => state.name);
   const clearUserData = useAuthStore((state) => state.clearUserData);
@@ -18,15 +34,15 @@ const SideBar = () => {
     navigate("/login", { replace: true });
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const { sidebarLinks } = useSidebarLinks();
 
   if (isOpen) {
     return (
       <div
         className="flex flex-col items-center w-[270px] h-[100vh] overflow-hidden text-green-700  bg-white rounded"
-        onMouseLeave={() => setIsOpen(false)}
+        onMouseLeave={() => {
+          if (width > 600) setIsOpen(false);
+        }}
       >
         <Link className="flex items-center justify-center mt-3" to="/">
           <img src="/images/ayaat_logo.png" className="h-16" alt="logo" />
@@ -84,7 +100,9 @@ const SideBar = () => {
   return (
     <div
       className="flex flex-col items-center w-16 h-[100vh] overflow-hidden text-green-700 bg-white rounded"
-      onMouseEnter={() => setIsOpen(true)}
+      onMouseEnter={() => {
+        if (width > 600) setIsOpen(true);
+      }}
     >
       <Link className="flex items-center justify-center mt-3" to="/">
         <img src="/images/logo-mini.webp" className="h-16" alt="logo" />
