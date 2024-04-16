@@ -61,6 +61,7 @@ class TemplatesManager {
       delete transaction.entry_templete_id;
       delete transaction.id;
       delete transaction.updated_at;
+      delete transaction.date;
     });
     delete template.date;
     template.transactions = tempTransactions;

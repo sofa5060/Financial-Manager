@@ -105,6 +105,7 @@ class TreasuryManager {
       delete transaction.posted_at;
       delete transaction.currency;
       delete transaction.entry_created_at;
+      delete transaction.date;
     });
 
     bond.transactions = transactions;
@@ -147,6 +148,7 @@ class TreasuryManager {
       delete transaction.posted_at;
       delete transaction.currency;
       delete transaction.entry_created_at;
+      delete transaction.date;
     });
 
     bond.transactions = transactions;
