@@ -79,7 +79,9 @@ const ModifyPermissionsForm = () => {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <h2 className="text-lg font-semibold">Modify Permissions</h2>
+          <h2 className="text-lg font-semibold">
+            {t("modifyPermissions")}
+          </h2>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="isGroup" className="font-medium text-sm">
               {t("group")} / {t("user")}
