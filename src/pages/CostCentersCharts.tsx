@@ -66,7 +66,7 @@ const CostCentersCharts = () => {
 
   return (
     <div className="pb-12">
-      <div className="lg:sticky lg:top-16 lg:pt-2 lg:bg-white">
+      <div className="sticky top-16 pt-2 bg-white">
         <div className="flex justify-between max-sm:flex-col gap-4">
           <h1 className="text-primary text-3xl font-semibold">
             {t("costCenters")}
@@ -101,7 +101,7 @@ const CostCentersCharts = () => {
           expandAll={expandAll}
         />
       </div>
-      <div className="fixed bottom-16 ltr:right-32 rtl:left-32">
+      <div className="fixed md:bottom-16 md:ltr:right-32 md:rtl:left-32 w-[90vw] bottom-8">
         <CostCenterForm level={1}>
           <Button className="btn btn-primary">
             <Plus className="w-5 h-5 me-2" />

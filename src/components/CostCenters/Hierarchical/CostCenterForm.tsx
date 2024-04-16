@@ -132,7 +132,7 @@ const CostCenterForm = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={isOpen ? closeDialog : openDialog}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger className="w-full">{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{TITLES[type]}</DialogTitle>

@@ -42,7 +42,7 @@ const SideBar = () => {
                 <Link
                   key={link.href}
                   className={cn(
-                    "hover:text-green-700 hover:no-underline",
+                    "hover:text-green-700 hover:no-underline text-start",
                     isActive
                       ? "flex items-center w-full h-12 px-3 mt-2 bg-green-100 rounded"
                       : "flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-green-50"

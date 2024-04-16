@@ -91,7 +91,7 @@ export const usePostAccountTransactionsColumns = () => {
         header: t("costCenter"),
       },
       cell: ({ row }) => {
-        return <span>{i18n.language === "ar" ? row.original.cost_center_ar : row.original.cost_center_en}</span>;
+        return <span>{row.original.cost_center_id ? (i18n.language === "ar" ? row.original.cost_center_ar : row.original.cost_center_en) : "-"}</span>;
       },
     },
     {
