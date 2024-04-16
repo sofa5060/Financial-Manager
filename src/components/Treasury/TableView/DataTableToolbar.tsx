@@ -81,7 +81,7 @@ export function DataTableToolbar<TData>({
             placeholder={t("search.placeholder")}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            className="h-10 w-[150px] lg:w-[350px]"
+            className="h-10 w-[250px] lg:w-[350px]"
           />
           <Button type="submit">
             {t("search")}
