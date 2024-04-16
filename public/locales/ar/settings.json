@@ -76,5 +76,22 @@
   "category.add.success": "تمت إضافة الفئة بنجاح",
   "category.add.failed": "فشل إضافة الفئة",
   "category.edit.success": "تم تحديث الفئة بنجاح",
-  "category.edit.failed": "فشل تحديث الفئة"
+  "category.edit.failed": "فشل تحديث الفئة",
+  "group": "المجموعة",
+  "user": "المستخدم",
+  "name": "الاسم",
+  "feature": "الميزة",
+  "status": "الحالة",
+  "viewPermissions": "عرض الصلاحيات",
+  "modifyPermissions": "تعديل الصلاحيات",
+  "apply": "تطبيق",
+  "search": "بحث",
+  "searchResult": "نتائج البحث",
+  "create": "إنشاء",
+  "update": "تحديث",
+  "delete": "حذف",
+  "show": "عرض",
+  "permissions.failed": "فشل جلب الصلاحيات",
+  "permissions.modify.success": "تم تحديث الصلاحيات بنجاح",
+  "permissions.modify.failed": "فشل تحديث الصلاحيات"
 }

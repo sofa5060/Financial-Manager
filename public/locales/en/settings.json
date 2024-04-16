@@ -76,5 +76,22 @@
   "category.add.success": "Category has been added successfully",
   "category.add.failed": "Failed to add category",
   "category.edit.success": "Category has been updated successfully",
-  "category.edit.failed": "Failed to update category"
+  "category.edit.failed": "Failed to update category",
+  "group": "Group",
+  "user": "User",
+  "name": "Name",
+  "feature": "Feature",
+  "status": "Status",
+  "viewPermissions": "View Permissions",
+  "modifyPermissions": "Modify Permissions",
+  "apply": "Apply",
+  "search": "Search",
+  "searchResult": "Search Result",
+  "create": "Create",
+  "update": "Update",
+  "delete": "Delete",
+  "show": "Show",
+  "permissions.failed": "Failed to fetch permissions",
+  "permissions.modify.success": "Permissions have been updated successfully",
+  "permissions.modify.failed": "Failed to update permissions"
 }

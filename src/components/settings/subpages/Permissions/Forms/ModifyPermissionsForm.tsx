@@ -15,8 +15,10 @@ import PermissionsManager from "@/managers/PermissionsManager";
 import { useState } from "react";
 import { useGroupsStore } from "@/hooks/useGroupsStore";
 import { useUsersStore } from "@/hooks/useUsersStore";
+import { useTranslation } from "react-i18next";
 
 const ModifyPermissionsForm = () => {
+  const { t } = useTranslation("settings");
   const [isGroup, setIsGroup] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -54,7 +56,7 @@ const ModifyPermissionsForm = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["permissions"] });
       toast({
-        title: "Permissions modified successfully",
+        title: t("permissions.modify.success"),
       });
       form.reset();
     },
@@ -62,7 +64,7 @@ const ModifyPermissionsForm = () => {
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to fetch permissions",
+        title: t("permissions.modify.failed"),
         description: error.message,
       });
     },
@@ -80,7 +82,7 @@ const ModifyPermissionsForm = () => {
           <h2 className="text-lg font-semibold">Modify Permissions</h2>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="isGroup" className="font-medium text-sm">
-              Group / User
+              {t("group")} / {t("user")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -103,7 +105,7 @@ const ModifyPermissionsForm = () => {
           </div>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="id" className="font-medium text-sm">
-              Name
+              {t("name")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -140,7 +142,7 @@ const ModifyPermissionsForm = () => {
           </div>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="feature" className="font-medium text-sm">
-              Feature
+              {t("feature")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -172,7 +174,7 @@ const ModifyPermissionsForm = () => {
           </div>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="status" className="font-medium text-sm">
-              Actions
+              {t("actions")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -208,7 +210,7 @@ const ModifyPermissionsForm = () => {
           </div>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="status" className="font-medium text-sm">
-              Status
+              {t("status")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -233,7 +235,7 @@ const ModifyPermissionsForm = () => {
           </div>
           <div className="flex items-center justify-end mt-2">
             <Button type="submit" disabled={isPending}>
-              Apply
+              {t("apply")}
             </Button>
           </div>
         </form>

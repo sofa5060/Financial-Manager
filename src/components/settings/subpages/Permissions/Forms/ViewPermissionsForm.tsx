@@ -18,8 +18,10 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { CircleCheck, CircleX } from "lucide-react";
 import { capitalizeString, cn } from "@/lib/utils";
 import { useUsersStore } from "@/hooks/useUsersStore";
+import { useTranslation } from "react-i18next";
 
 const ViewPermissionsForm = () => {
+  const { t } = useTranslation("settings");
   const [isGroup, setIsGroup] = useState(false);
   const [searchResult, setSearchResult] = useState<FeaturesList | null>();
   const [searchResultName, setSearchResultName] = useState<string>("");
@@ -34,9 +36,7 @@ const ViewPermissionsForm = () => {
     setValue,
   } = form;
 
-  const usersOptions = useUsersStore(
-    (state) => state.usersOptions
-  );
+  const usersOptions = useUsersStore((state) => state.usersOptions);
 
   const groupsOptions = useGroupsStore((state) => state.groupsOptions);
 
@@ -65,7 +65,7 @@ const ViewPermissionsForm = () => {
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to fetch permissions",
+        title: t("permissions.failed"),
         description: error.message,
       });
     },
@@ -83,7 +83,7 @@ const ViewPermissionsForm = () => {
           <h2 className="text-lg font-semibold">View Permissions</h2>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="isGroup" className="font-medium text-sm">
-              Group / User
+              {t("group")} / {t("user")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -105,7 +105,7 @@ const ViewPermissionsForm = () => {
           </div>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="id" className="font-medium text-sm">
-              Name
+              {t("name")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -139,7 +139,7 @@ const ViewPermissionsForm = () => {
           </div>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="feature" className="font-medium text-sm">
-              Feature
+              {t("feature")}
             </label>
             <div className="flex-col w-full max-w-[65%]">
               <Select
@@ -163,7 +163,7 @@ const ViewPermissionsForm = () => {
           </div>
           <div className="flex items-center justify-end mt-2">
             <Button type="submit" disabled={isPending}>
-              search
+              {t("search")}
             </Button>
           </div>
         </form>
@@ -171,14 +171,14 @@ const ViewPermissionsForm = () => {
       {searchResult && (
         <div className="space-y-4">
           <Separator />
-          <h2 className="text-lg font-semibold">Search Result:</h2>
+          <h2 className="text-lg font-semibold">{t("searchResult")}:</h2>
           <div className="flex justify-between">
             <div className="flex flex-col items-start">
-              <h3 className="font-semibold mb-2">Name</h3>
+              <h3 className="font-semibold mb-2">{t("name")}</h3>
               <p>{searchResultName}</p>
             </div>
             <div className="flex-flex-col">
-              <h3 className="font-semibold mb-2">Actions</h3>
+              <h3 className="font-semibold mb-2">{t("actions")}</h3>
               {Object.keys(searchResult).map((key: string) => (
                 <div
                   key={key as string}
