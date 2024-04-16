@@ -65,7 +65,7 @@ const AccountsCharts = () => {
 
   return (
     <div className="pb-12">
-      <div className="sticky top-16 pt-2 bg-white">
+      <div className="lg:sticky lg:top-16 lg:pt-2 lg:bg-white">
         <div className="flex justify-between max-sm:flex-col gap-4">
           <h1 className="text-primary text-3xl font-semibold">{t("charts")}</h1>
           <div className="flex">
@@ -88,7 +88,7 @@ const AccountsCharts = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-      <Separator />
+        <Separator />
       </div>
       <div className="max-w-full overflow-x-auto pb-4 px-1">
         <HierarchicalAccounts
@@ -97,7 +97,7 @@ const AccountsCharts = () => {
           expandAll={expandAll}
         />
       </div>
-      <div className="fixed md:bottom-16 md:ltr:right-32 md:rtl:left-32 w-[90vw] bottom-8">
+      <div className="fixed bottom-16 md:ltr:right-32 md:rtl:left-32 max-sm:w-[90vw] max-sm:bottom-8">
         <AccountForm level={1}>
           <Button className="btn btn-primary w-full">
             <Plus className="w-6 h-6 me-2" />
