@@ -8,13 +8,13 @@ import { UserNav } from "../UserNav/UserNav";
 import { useAuthStore } from "@/hooks/useAuthStore";
 
 const SideBar = () => {
-  const [isOpen, setIsOpen] = useState(window.innerWidth < 600);
+  const [isOpen, setIsOpen] = useState(window.innerWidth < 768);
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
-      setIsOpen(window.innerWidth < 600);
+      setIsOpen(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
@@ -41,7 +41,7 @@ const SideBar = () => {
       <div
         className="flex flex-col items-center w-[270px] h-[100vh] overflow-hidden text-green-700  bg-white rounded"
         onMouseLeave={() => {
-          if (width > 600) setIsOpen(false);
+          if (width > 768) setIsOpen(false);
         }}
       >
         <Link className="flex items-center justify-center mt-3" to="/">
@@ -101,7 +101,7 @@ const SideBar = () => {
     <div
       className="flex flex-col items-center w-16 h-[100vh] overflow-hidden text-green-700 bg-white rounded"
       onMouseEnter={() => {
-        if (width > 600) setIsOpen(true);
+        if (width > 768) setIsOpen(true);
       }}
     >
       <Link className="flex items-center justify-center mt-3" to="/">
