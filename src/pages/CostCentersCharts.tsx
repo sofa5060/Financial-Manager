@@ -70,7 +70,17 @@ const CostCentersCharts = () => {
         <h1 className="text-primary text-3xl font-semibold">
           {t("costCenters")}
         </h1>
-        <Button className="btn-outline">{t("download")}</Button>
+        <div className="flex">
+          <div className="flex gap-4 flex-wrap">
+            <Button className="btn-outline">{t("download")}</Button>
+            <Button className="btn-outline" onClick={collapseAllCostCenters}>
+              {t("collapseAll")}
+            </Button>
+            <Button className="btn-outline" onClick={expandAllCostCenters}>
+              {t("expandAll")}
+            </Button>
+          </div>
+        </div>
       </div>
       <div className="flex mb-4 mt-8 justify-between gap-16 max-sm:flex-col max-sm:gap-4">
         <Input
@@ -79,14 +89,6 @@ const CostCentersCharts = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <div className="flex gap-4">
-          <Button className="btn-outline" onClick={collapseAllCostCenters}>
-            {t("collapseAll")}
-          </Button>
-          <Button className="btn-outline" onClick={expandAllCostCenters}>
-            {t("expandAll")}
-          </Button>
-        </div>
         {/* <div className="flex gap-4">
           <Filter
             title="Filter 1"

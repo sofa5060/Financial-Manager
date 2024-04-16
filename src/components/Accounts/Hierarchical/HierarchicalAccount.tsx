@@ -8,7 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Account } from "../schema";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import HierarchicalAccounts from "./HierarchicalAccounts";
 import { cn } from "@/lib/utils";
 import AccountForm from "./AccountForm";
@@ -34,7 +34,7 @@ const HierarchicalAccount = ({
   collapseAll,
   expandAll,
 }: HierarchicalAccountProps) => {
-  const { t, i18n } = useTranslation("accounts");
+  const { i18n } = useTranslation("accounts");
   const [hideChildren, setHideChildren] = useState(level !== 1);
 
   useEffect(() => {
@@ -105,6 +105,9 @@ const HierarchicalAccount = ({
                   <DeleteModal accountId={account.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
+                  <AccountForm level={level + 1} parentAccount={account}>
+                    <Plus className="w-4 text-primary" />
+                  </AccountForm>
                   {account.children && account.children.length > 0 && (
                     <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (
@@ -130,12 +133,12 @@ const HierarchicalAccount = ({
                 </div>
               </div>
             </div>
-            <AccountForm level={level + 1} parentAccount={account}>
+            {/* <AccountForm level={level + 1} parentAccount={account}>
               <Button className="btn-outline">
                 <Plus className="w-4 me-1" />
                 {t("subAccount.add")}
               </Button>
-            </AccountForm>
+            </AccountForm> */}
           </div>
         </div>
         {account.children && account.children.length > 0 && (

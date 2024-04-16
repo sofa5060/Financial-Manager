@@ -8,7 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { CostCenter } from "../schema";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import HierarchicalCostCenters from "./HierarchicalCostCenters";
 import { cn } from "@/lib/utils";
 import DeleteModal from "./DeleteModal";
@@ -35,7 +35,7 @@ const HierarchicalCostCenter = ({
   expandAll,
 }: HierarchicalCostCenterProps) => {
   const [hideChildren, setHideChildren] = useState(level !== 1);
-  const { i18n, t } = useTranslation("costCenters");
+  const { i18n } = useTranslation("costCenters");
 
   useEffect(() => {
     if (collapseAll) {
@@ -103,6 +103,12 @@ const HierarchicalCostCenter = ({
                   <DeleteModal costCenterId={costCenter.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
+                  <CostCenterForm
+                    level={level + 1}
+                    parentCostCenter={costCenter}
+                  >
+                    <Plus className="w-4 text-primary" />
+                  </CostCenterForm>
                   {costCenter.children && costCenter.children.length > 0 && (
                     <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (
@@ -128,12 +134,12 @@ const HierarchicalCostCenter = ({
                 </div>
               </div>
             </div>
-            <CostCenterForm level={level + 1} parentCostCenter={costCenter}>
+            {/* <CostCenterForm level={level + 1} parentCostCenter={costCenter}>
               <Button className="btn-outline">
                 <Plus className="w-4 me-1" />
                 {t("subCostCenter.add")}
               </Button>
-            </CostCenterForm>
+            </CostCenterForm> */}
           </div>
         </div>
         {costCenter.children && costCenter.children.length > 0 && (
