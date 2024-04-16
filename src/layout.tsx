@@ -46,7 +46,7 @@ const PageLayout = () => {
         <div className="fixed w-full z-10 top-0">
           <AppBar />
         </div>
-        <div className="mt-16 w-full px-12 py-12 max-sm:px-4">
+        <div className="mt-16 w-full px-9 py-5 max-sm:px-4">
           <InitialDataProvider>
             <Outlet />
             <Toaster />

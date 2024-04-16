@@ -39,6 +39,8 @@ export const TransactionSchema = z
     date: z.string(),
     posted_at: z.string().nullable(),
     created_by_name: z.string(),
+    cost_center_en: z.string().nullable(),
+    cost_center_ar: z.string().nullable(),
   })
   .merge(NewTransactionSchema);
 

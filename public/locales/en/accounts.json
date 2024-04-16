@@ -38,5 +38,8 @@
   "yes": "Yes",
   "no": "No",
   "expandAll": "Expand All",
-  "collapseAll": "Collapse All"
+  "collapseAll": "Collapse All",
+  "asc": "Ascending",
+  "desc": "Descending",
+  "hide": "Hide"
 }

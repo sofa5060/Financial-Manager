@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "react-i18next";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,6 +28,7 @@ export function DataTableColumnHeader<TData, TValue>({
   title,
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
+  const {t} = useTranslation("accounts");
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;
   }
@@ -53,16 +55,16 @@ export function DataTableColumnHeader<TData, TValue>({
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className="me-2 h-3.5 w-3.5 text-muted-foreground/70" />
-            Asc
+            {t("asc")}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDownIcon className="me-2 h-3.5 w-3.5 text-muted-foreground/70" />
-            Desc
+            {t("desc")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <EyeOff className="me-2 h-3.5 w-3.5 text-muted-foreground/70" />
-            Hide
+            {t("hide")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

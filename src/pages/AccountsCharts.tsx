@@ -117,14 +117,14 @@ const AccountsCharts = () => {
         </div> */}
       </div>
       <Separator />
-      <div className="max-w-full overflow-x-auto pb-4">
+      <div className="max-w-full overflow-x-auto pb-4 px-1">
         <HierarchicalAccounts
           accounts={searchResults! ?? accounts!}
           collapseAll={collapseAll}
           expandAll={expandAll}
         />
       </div>
-      <div className="fixed bottom-16 right-32">
+      <div className="fixed bottom-16 ltr:right-32 rtl:left-32">
         <AccountForm level={1}>
           <Button className="btn btn-primary">
             <Plus className="w-6 h-6 me-2" />

@@ -118,14 +118,14 @@ const CostCentersCharts = () => {
         </div> */}
       </div>
       <Separator />
-      <div className="max-w-full overflow-x-auto pb-4">
+      <div className="max-w-full overflow-x-auto pb-4 px-1">
         <HierarchicalCostCenters
           costCenters={searchResults! ?? costCenters!}
           collapseAll={collapseAll}
           expandAll={expandAll}
         />
       </div>
-      <div className="fixed bottom-16 right-32">
+      <div className="fixed bottom-16 ltr:right-32 rtl:left-32">
         <CostCenterForm level={1}>
           <Button className="btn btn-primary">
             <Plus className="w-5 h-5 me-2" />

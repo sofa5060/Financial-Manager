@@ -5,7 +5,7 @@ import { formatDateTime } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 export const usePostAccountTransactionsColumns = () => {
-  const { t } = useTranslation("transactions");
+  const { t, i18n } = useTranslation("transactions");
 
   const columns: ColumnDef<Transaction>[] = [
     {
@@ -91,7 +91,7 @@ export const usePostAccountTransactionsColumns = () => {
         header: t("costCenter"),
       },
       cell: ({ row }) => {
-        return <span>{row.original.cost_center ? "Yes" : "No"}</span>;
+        return <span>{i18n.language === "ar" ? row.original.cost_center_ar : row.original.cost_center_en}</span>;
       },
     },
     {

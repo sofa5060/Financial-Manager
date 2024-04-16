@@ -194,15 +194,25 @@ export const useParkAccountingEntriesColumns = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <SaveAll
-              className={cn("cursor-pointer text-primary w-5", {
-                "opacity-50": isPending,
-              })}
-              onClick={() => {
-                if (isPending) return;
-                saveTemplateMutate(entry.id);
-              }}
-            />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <SaveAll
+                    className={cn("cursor-pointer text-primary w-5", {
+                      "opacity-50": isPending,
+                    })}
+                    onClick={() => {
+                      if (isPending) return;
+                      saveTemplateMutate(entry.id);
+                    }}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("saveAsTemplate")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <DeleteModal entryId={entry.id}>
               <Trash2 className="cursor-pointer text-red-400 w-5" />
             </DeleteModal>
