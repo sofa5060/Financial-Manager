@@ -6,8 +6,10 @@ import BanksManager from "@/managers/BanksManager";
 import { useQuery } from "@tanstack/react-query";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useBanksColumns } from "./TableView/Columns";
+import { useTranslation } from "react-i18next";
 
 const BanksPage = () => {
+  const { t } = useTranslation("settings");
   const { columns } = useBanksColumns();
 
   const { data, isLoading, isError } = useQuery({
@@ -25,7 +27,7 @@ const BanksPage = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch banks",
+      title: t("banks.failed"),
     });
     return <></>;
   }

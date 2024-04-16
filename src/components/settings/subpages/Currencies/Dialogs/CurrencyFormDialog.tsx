@@ -24,6 +24,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import CurrenciesManager from "@/managers/CurrenciesManager";
 import { Currency, NewCurrency, NewCurrencySchema } from "../schema";
+import { useTranslation } from "react-i18next";
 
 type CurrencyFormProps = {
   type?: "add" | "edit";
@@ -36,6 +37,7 @@ const CurrencyFormDialog = ({
   currency,
   type = "add",
 }: CurrencyFormProps) => {
+  const { t } = useTranslation("settings");
   useEffect(() => {
     form.reset({
       functional_currency: false,
@@ -60,13 +62,13 @@ const CurrencyFormDialog = ({
   } = form;
 
   const TITLES = {
-    add: "Add New Currency",
-    edit: "Edit Currency",
+    add: t("addCurrency"),
+    edit: t("editCurrency"),
   };
 
   const DESCRIPTIONS = {
-    add: "Click save when you're done",
-    edit: "Click save when you're done",
+    add: t("form.message"),
+    edit: t("form.message"),
   };
 
   const { mutate: addCurrencyMutate, isPending } = useMutation({
@@ -80,7 +82,7 @@ const CurrencyFormDialog = ({
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to add currency",
+        title: t("currency.add.failed"),
         description: error.message,
       });
     },
@@ -99,7 +101,7 @@ const CurrencyFormDialog = ({
         console.log(error.message);
         toast({
           variant: "destructive",
-          title: "Failed to update currency",
+          title: t("currency.update.failed"),
           description: error.message,
         });
       },
@@ -136,7 +138,9 @@ const CurrencyFormDialog = ({
               name="currency"
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
-                  <FormLabel className="whitespace-nowrap">Currency</FormLabel>
+                  <FormLabel className="whitespace-nowrap">
+                    {t("currency")}
+                  </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
                       <Input
@@ -156,7 +160,7 @@ const CurrencyFormDialog = ({
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Abbreviation
+                    {t("abbreviation")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -173,7 +177,7 @@ const CurrencyFormDialog = ({
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Default Rate
+                    {t("defaultRate")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -201,7 +205,7 @@ const CurrencyFormDialog = ({
                 htmlFor="functional_currency"
                 className="font-medium text-sm"
               >
-                Functional Currency
+                {t("functionalCurrency")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -237,10 +241,10 @@ const CurrencyFormDialog = ({
                 onClick={closeDialog}
                 disabled={isPending || isPendingUpdate}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" disabled={isPending || isPendingUpdate}>
-                Save
+                {t("save")}
               </Button>
             </div>
           </form>

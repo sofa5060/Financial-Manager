@@ -3,26 +3,27 @@ import BankFormDialog from "../Dialogs/BankFormDialog";
 import { Pencil, Trash2 } from "lucide-react";
 import DeleteBankDialog from "../Dialogs/DeleteBankDialog";
 import { Bank } from "../schema";
+import { useTranslation } from "react-i18next";
 
 export const useBanksColumns = () => {
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   const columns: ColumnDef<Bank>[] = [
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
     },
     {
       accessorKey: "name_en",
-      header: "English Name",
+      header: t("enName"),
     },
     {
       accessorKey: "name_ar",
-      header: "Arabic Name",
+      header: t("arName"),
     },
     {
       id: "actions",
-      header: () => <div className="w-[80px]">Actions</div>,
+      header: () => <div className="w-[80px]">{t("actions")}</div>,
       cell: ({ row }) => {
         const bank = row.original;
 

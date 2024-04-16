@@ -8,8 +8,10 @@ import { FlowerSpinner } from "react-epic-spinners";
 import { useCategoriesColumns } from "./TableView/Columns";
 import { useState } from "react";
 import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
+import { useTranslation } from "react-i18next";
 
 const CategoriesPage = () => {
+  const { t } = useTranslation("settings");
   const { columns } = useCategoriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -29,7 +31,7 @@ const CategoriesPage = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch categories",
+      title: t("categories.failed"),
     });
     return <></>;
   }

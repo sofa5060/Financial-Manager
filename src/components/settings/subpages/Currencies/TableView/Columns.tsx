@@ -3,30 +3,31 @@ import CurrencyFormDialog from "../Dialogs/CurrencyFormDialog";
 import { Pencil, Trash2 } from "lucide-react";
 import DeleteCurrencyDialog from "../Dialogs/DeleteCurrencyDialog";
 import { Currency } from "../schema";
+import { useTranslation } from "react-i18next";
 
 export const useCurrenciesColumns = () => {
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   const columns: ColumnDef<Currency>[] = [
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
     },
     {
       accessorKey: "currency",
-      header: "Currency",
+      header: t("currency"),
     },
     {
       accessorKey: "appreviation",
-      header: "Abbreviation",
+      header: t("abbreviation"),
     },
     {
       accessorKey: "default_rate",
-      header: "Default Rate",
+      header: t("defaultRate"),
     },
     {
       accessorKey: "functional_currency",
-      header: "Functional Currency",
+      header: t("functionalCurrency"),
       cell: ({ row }) => {
         const currency = row.original;
 
@@ -35,7 +36,7 @@ export const useCurrenciesColumns = () => {
     },
     {
       id: "actions",
-      header: () => <div className="w-[80px]">Actions</div>,
+      header: () => <div className="w-[80px]">{t("actions")}</div>,
       cell: ({ row }) => {
         const currency = row.original;
 

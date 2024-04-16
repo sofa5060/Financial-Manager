@@ -3,28 +3,34 @@ import GroupFormDialog from "../Dialogs/GroupFormDialog";
 import { Pencil, Trash2 } from "lucide-react";
 import { Group } from "../schema";
 import DeleteGroupDialog from "../Dialogs/DeleteGroupDialog";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useTranslation } from "react-i18next";
 
 export const useGroupsColumns = () => {
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   const columns: ColumnDef<Group>[] = [
     {
       accessorKey: "id",
-      header: "Serial",
+      header: t("serial"),
     },
     {
       accessorKey: "name_en",
-      header: "English Name",
+      header: t("enName"),
     },
     {
       accessorKey: "name_ar",
-      header: "Arabic Name",
+      header: t("arName"),
     },
     {
       accessorKey: "members",
-      header: "Members",
+      header: t("members"),
       cell({ row }) {
         const group = row.original;
         return (
@@ -49,7 +55,7 @@ export const useGroupsColumns = () => {
     },
     {
       id: "actions",
-      header: () => <div className="w-[80px]">Actions</div>,
+      header: () => <div className="w-[80px]">{t("actions")}</div>,
       cell: ({ row }) => {
         const group = row.original;
 

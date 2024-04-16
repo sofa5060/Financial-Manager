@@ -25,6 +25,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Group, NewGroup, NewGroupSchema } from "../schema";
 import GroupsManager from "@/managers/GroupsManager";
 import { useUsersStore } from "@/hooks/useUsersStore";
+import { useTranslation } from "react-i18next";
 
 type GroupFormProps = {
   type?: "add" | "edit";
@@ -33,6 +34,7 @@ type GroupFormProps = {
 };
 
 const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
+  const { t } = useTranslation("settings");
   useEffect(() => {
     form.reset({
       ...group,
@@ -57,13 +59,13 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
   } = form;
 
   const TITLES = {
-    add: "Add New Group",
-    edit: "Edit Group",
+    add: t("addGroup"),
+    edit: t("editGroup"),
   };
 
   const DESCRIPTIONS = {
-    add: "Click save when you're done",
-    edit: "Click save when you're done",
+    add: t("form.message"),
+    edit: t("form.message"),
   };
 
   const { mutate: addGroupMutate, isPending } = useMutation({
@@ -77,7 +79,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to add group",
+        title: t("group.add.failed"),
         description: error.message,
       });
     },
@@ -95,7 +97,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
         console.log(error.message);
         toast({
           variant: "destructive",
-          title: "Failed to update group",
+          title: t("group.edit.failed"),
           description: error.message,
         });
       },
@@ -134,7 +136,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
                   <FormLabel className="whitespace-nowrap">
-                    Name (English)
+                    {t("nameEnglish")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -155,7 +157,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Name (Arabic)
+                    {t("nameArabic")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -172,7 +174,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
             />
             <div className="flex gap-4 items-center justify-end">
               <label htmlFor="members" className="font-medium text-sm">
-                Members
+                {t("members")}
               </label>
               <div className="flex-col w-full max-w-[65%]">
                 <Select
@@ -194,9 +196,7 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
                   options={usersOptions}
                 />
                 {errors.members && (
-                  <span className="error-text">
-                    {errors.members.message}
-                  </span>
+                  <span className="error-text">{errors.members.message}</span>
                 )}
               </div>
             </div>
@@ -207,10 +207,10 @@ const GroupFormDialog = ({ children, group, type = "add" }: GroupFormProps) => {
                 onClick={closeDialog}
                 disabled={isPending || isPendingUpdate}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" disabled={isPending || isPendingUpdate}>
-                Save
+                {t("save")}
               </Button>
             </div>
           </form>

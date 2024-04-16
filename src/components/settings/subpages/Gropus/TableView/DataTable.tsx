@@ -23,6 +23,7 @@ import { useState } from "react";
 import GroupFormDialog from "../Dialogs/GroupFormDialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +35,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation("settings");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -59,7 +61,7 @@ export function DataTable<TData, TValue>({
       <GroupFormDialog>
         <Button>
           <PlusCircle className="me-2 w-4" />
-          Add Group
+          {t("addGroup")}
         </Button>
       </GroupFormDialog>
       <div className="rounded-md border">
@@ -69,7 +71,10 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className="text-start whitespace-nowrap"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(

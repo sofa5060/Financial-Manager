@@ -12,6 +12,7 @@ import CategoriesManager from "@/managers/CategoriesManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteCategoryDialogProps = {
   categoryId: number;
@@ -22,6 +23,7 @@ const DeleteCategoryDialog = ({
   children,
   categoryId,
 }: DeleteCategoryDialogProps) => {
+  const { t } = useTranslation("settings");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -30,14 +32,14 @@ const DeleteCategoryDialog = ({
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete category",
+        title: t("category.delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categories"] });
       toast({
-        title: "Category deleted successfully",
+        title: t("category.delete.success"),
       });
       closeDialog();
     },
@@ -54,10 +56,9 @@ const DeleteCategoryDialog = ({
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Category</DialogTitle>
+          <DialogTitle>{t("category.delete.title")}</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            category and remove your data from our servers.
+            {t("category.delete.message")}
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
@@ -68,7 +69,7 @@ const DeleteCategoryDialog = ({
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -78,7 +79,7 @@ const DeleteCategoryDialog = ({
             disabled={isPending}
           >
             <Trash className="w-4 h-4 me-2" />
-            Delete This Category
+            {t("category.delete.confirm")}
           </Button>
         </div>
       </DialogContent>

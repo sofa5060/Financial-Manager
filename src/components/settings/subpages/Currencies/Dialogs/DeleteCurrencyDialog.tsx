@@ -12,6 +12,7 @@ import CurrenciesManager from "@/managers/CurrenciesManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteCurrencyDialogProps = {
   currencyId: number;
@@ -22,6 +23,7 @@ const DeleteCurrencyDialog = ({
   children,
   currencyId,
 }: DeleteCurrencyDialogProps) => {
+  const { t } = useTranslation("settings");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -30,14 +32,14 @@ const DeleteCurrencyDialog = ({
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete currency",
+        title: t("currency.delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["currencies"] });
       toast({
-        title: "Currency deleted successfully",
+        title: t("currency.delete.success"),
       });
       closeDialog();
     },
@@ -54,11 +56,8 @@ const DeleteCurrencyDialog = ({
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Currency</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            currency and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{t("currency.delete.title")}</DialogTitle>
+          <DialogDescription>{t("currency.delete.message")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -68,7 +67,7 @@ const DeleteCurrencyDialog = ({
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -78,7 +77,7 @@ const DeleteCurrencyDialog = ({
             disabled={isPending}
           >
             <Trash className="w-4 h-4 me-2" />
-            Delete This Currency
+            {t("currency.delete.confirm")}
           </Button>
         </div>
       </DialogContent>

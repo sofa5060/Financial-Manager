@@ -6,8 +6,10 @@ import CurrenciesManager from "@/managers/CurrenciesManager";
 import { useQuery } from "@tanstack/react-query";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useCurrenciesColumns } from "./TableView/Columns";
+import { useTranslation } from "react-i18next";
 
 const CurrenciesPage = () => {
+  const { t } = useTranslation("settings");
   const { columns } = useCurrenciesColumns();
 
   const { data, isLoading, isError } = useQuery({
@@ -25,7 +27,7 @@ const CurrenciesPage = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch currencies",
+      title: t("currency.failed"),
     });
     return <></>;
   }

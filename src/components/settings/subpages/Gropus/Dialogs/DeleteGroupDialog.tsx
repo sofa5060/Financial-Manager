@@ -12,6 +12,7 @@ import GroupsManager from "@/managers/GroupsManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteGroupDialogProps = {
   groupId: number;
@@ -19,6 +20,7 @@ type DeleteGroupDialogProps = {
 };
 
 const DeleteGroupDialog = ({ children, groupId }: DeleteGroupDialogProps) => {
+  const { t } = useTranslation("settings");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,14 +29,14 @@ const DeleteGroupDialog = ({ children, groupId }: DeleteGroupDialogProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete group",
+        title: t("group.delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["groups"] });
       toast({
-        title: "Group deleted successfully",
+        title: t("group.delete.success"),
       });
       closeDialog();
     },
@@ -51,11 +53,8 @@ const DeleteGroupDialog = ({ children, groupId }: DeleteGroupDialogProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Group</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            group and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{t("group.delete.title")}</DialogTitle>
+          <DialogDescription>{t("group.delete.message")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -65,7 +64,7 @@ const DeleteGroupDialog = ({ children, groupId }: DeleteGroupDialogProps) => {
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -75,7 +74,7 @@ const DeleteGroupDialog = ({ children, groupId }: DeleteGroupDialogProps) => {
             disabled={isPending}
           >
             <Trash className="w-4 h-4 me-2" />
-            Delete This Group
+            {t("group.delete.confirm")}
           </Button>
         </div>
       </DialogContent>

@@ -8,8 +8,10 @@ import { FlowerSpinner } from "react-epic-spinners";
 import { useGroupsColumns } from "./TableView/Columns";
 import { useState } from "react";
 import PaginationAndSizeFooter from "@/components/common/PaginationAndSizeFooter/PaginationAndSizeFooter";
+import { useTranslation } from "react-i18next";
 
 const GroupsPage = () => {
+  const { t } = useTranslation("settings");
   const { columns } = useGroupsColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -29,7 +31,7 @@ const GroupsPage = () => {
   if (isError) {
     toast({
       variant: "destructive",
-      title: "Failed to fetch groups",
+      title: t("groups.failed"),
     });
     return <></>;
   }

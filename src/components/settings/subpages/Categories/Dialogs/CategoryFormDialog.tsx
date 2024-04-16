@@ -23,6 +23,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { Category, NewCategory, NewCategorySchema } from "../schema";
 import CategoriesManager from "@/managers/CategoriesManager";
+import { useTranslation } from "react-i18next";
 
 type CategoryFormProps = {
   type?: "add" | "edit";
@@ -30,7 +31,12 @@ type CategoryFormProps = {
   category?: Category;
 };
 
-const CategoryFormDialog = ({ children, category, type = "add" }: CategoryFormProps) => {
+const CategoryFormDialog = ({
+  children,
+  category,
+  type = "add",
+}: CategoryFormProps) => {
+  const { t } = useTranslation("settings");
   useEffect(() => {
     form.reset({
       ...category,
@@ -48,13 +54,13 @@ const CategoryFormDialog = ({ children, category, type = "add" }: CategoryFormPr
   });
 
   const TITLES = {
-    add: "Add New Category",
-    edit: "Edit Category",
+    add: t("addCategory"),
+    edit: t("editCategory"),
   };
 
   const DESCRIPTIONS = {
-    add: "Click save when you're done",
-    edit: "Click save when you're done",
+    add: t("form.message"),
+    edit: t("form.message"),
   };
 
   const { mutate: addCategoryMutate, isPending } = useMutation({
@@ -68,27 +74,29 @@ const CategoryFormDialog = ({ children, category, type = "add" }: CategoryFormPr
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to add category",
+        title: t("category.add.failed"),
         description: error.message,
       });
     },
   });
 
-  const { mutate: updateCategoryMutate, isPending: isPendingUpdate } = useMutation({
-    mutationFn: (data: NewCategory) => CategoriesManager.updateCategory(data, category!.id),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categories"] });
-      setIsOpen(false);
-    },
-    onError: (error) => {
-      console.log(error.message);
-      toast({
-        variant: "destructive",
-        title: "Failed to update category",
-        description: error.message,
-      });
-    },
-  });
+  const { mutate: updateCategoryMutate, isPending: isPendingUpdate } =
+    useMutation({
+      mutationFn: (data: NewCategory) =>
+        CategoriesManager.updateCategory(data, category!.id),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["categories"] });
+        setIsOpen(false);
+      },
+      onError: (error) => {
+        console.log(error.message);
+        toast({
+          variant: "destructive",
+          title: t("category.edit.failed"),
+          description: error.message,
+        });
+      },
+    });
 
   const onSubmit: SubmitHandler<NewCategory> = (data) => {
     if (type === "add") {
@@ -122,7 +130,7 @@ const CategoryFormDialog = ({ children, category, type = "add" }: CategoryFormPr
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
                   <FormLabel className="whitespace-nowrap">
-                    Name (English)
+                    {t("nameEnglish")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -143,7 +151,7 @@ const CategoryFormDialog = ({ children, category, type = "add" }: CategoryFormPr
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Name (Arabic)
+                    {t("nameArabic")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -165,10 +173,10 @@ const CategoryFormDialog = ({ children, category, type = "add" }: CategoryFormPr
                 onClick={closeDialog}
                 disabled={isPending || isPendingUpdate}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" disabled={isPending || isPendingUpdate}>
-                Save
+                {t("save")}
               </Button>
             </div>
           </form>

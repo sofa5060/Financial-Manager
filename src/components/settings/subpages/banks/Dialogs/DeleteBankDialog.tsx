@@ -12,6 +12,7 @@ import BanksManager from "@/managers/BanksManager";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DeleteBankDialogProps = {
   bankId: number;
@@ -19,6 +20,7 @@ type DeleteBankDialogProps = {
 };
 
 const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
+  const { t } = useTranslation("settings");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -27,14 +29,14 @@ const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to delete bank",
+        title: t("bank.delete.failed"),
         description: error.message,
       });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["banks"] });
       toast({
-        title: "Bank deleted successfully",
+        title: t("bank.delete.success"),
       });
       closeDialog();
     },
@@ -51,11 +53,8 @@ const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>You Are About To Delete This Bank</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your bank
-            and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{t("bank.delete.title")}</DialogTitle>
+          <DialogDescription>{t("bank.delete.message")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 mt-4 justify-between">
           <Button
@@ -65,7 +64,7 @@ const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
             className="bg-white text-black ring-1 ring-gray-300"
             disabled={isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => {
@@ -75,7 +74,7 @@ const DeleteBankDialog = ({ children, bankId }: DeleteBankDialogProps) => {
             disabled={isPending}
           >
             <Trash className="w-4 h-4 me-2" />
-            Delete This Bank
+            {t("bank.delete.confirm")}
           </Button>
         </div>
       </DialogContent>

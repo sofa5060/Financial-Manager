@@ -23,6 +23,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { Bank, NewBank, NewBankSchema } from "../schema";
 import BanksManager from "@/managers/BanksManager";
+import { useTranslation } from "react-i18next";
 
 type BankFormProps = {
   type?: "add" | "edit";
@@ -31,6 +32,7 @@ type BankFormProps = {
 };
 
 const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
+  const { t } = useTranslation("settings");
   useEffect(() => {
     form.reset({
       ...bank,
@@ -48,13 +50,13 @@ const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
   });
 
   const TITLES = {
-    add: "Add New Bank",
-    edit: "Edit Bank",
+    add: t("addBank"),
+    edit: t("editBank"),
   };
 
   const DESCRIPTIONS = {
-    add: "Click save when you're done",
-    edit: "Click save when you're done",
+    add: t("form.message"),
+    edit: t("form.message"),
   };
 
   const { mutate: addBankMutate, isPending } = useMutation({
@@ -68,7 +70,7 @@ const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to add bank",
+        title: t("bank.add.failed"),
         description: error.message,
       });
     },
@@ -84,7 +86,7 @@ const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
       console.log(error.message);
       toast({
         variant: "destructive",
-        title: "Failed to update bank",
+        title: t("bank.update.failed"),
         description: error.message,
       });
     },
@@ -122,7 +124,7 @@ const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end">
                   <FormLabel className="whitespace-nowrap">
-                    Name (English)
+                    {t("nameEnglish")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -143,7 +145,7 @@ const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center justify-end w-full">
                   <FormLabel className="whitespace-nowrap">
-                    Name (Arabic)
+                    {t("nameArabic")}
                   </FormLabel>
                   <div className="flex-col w-full max-w-[65%]">
                     <FormControl>
@@ -165,10 +167,10 @@ const BankFormDialog = ({ children, bank, type = "add" }: BankFormProps) => {
                 onClick={closeDialog}
                 disabled={isPending || isPendingUpdate}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" disabled={isPending || isPendingUpdate}>
-                Save
+                {t("save")}
               </Button>
             </div>
           </form>
