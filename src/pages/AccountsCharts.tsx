@@ -65,29 +65,30 @@ const AccountsCharts = () => {
 
   return (
     <div className="pb-12">
-      <div className="flex justify-between max-sm:flex-col gap-4">
-        <h1 className="text-primary text-3xl font-semibold">{t("charts")}</h1>
-        <div className="flex">
-          <div className="flex gap-4 flex-wrap">
-            <Button className="btn-outline">{t("download")}</Button>
-            <Button className="btn-outline" onClick={collapseAllAccounts}>
-              {t("collapseAll")}
-            </Button>
-            <Button className="btn-outline" onClick={expandAllAccounts}>
-              {t("expandAll")}
-            </Button>
+      <div className="lg:sticky lg:top-16 lg:pt-2 lg:bg-white">
+        <div className="flex justify-between max-sm:flex-col gap-4">
+          <h1 className="text-primary text-3xl font-semibold">{t("charts")}</h1>
+          <div className="flex">
+            <div className="flex gap-4 flex-wrap">
+              <Button className="btn-outline">{t("download")}</Button>
+              <Button className="btn-outline" onClick={collapseAllAccounts}>
+                {t("collapseAll")}
+              </Button>
+              <Button className="btn-outline" onClick={expandAllAccounts}>
+                {t("expandAll")}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex mb-4 mt-8 justify-between gap-16 max-sm:flex-col max-sm:gap-4">
-        <Input
-          placeholder={t("search")}
-          className="max-w-2xl"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        <div className="flex mb-4 mt-8 justify-between gap-16 max-sm:flex-col max-sm:gap-4">
+          <Input
+            placeholder={t("search")}
+            className="max-w-2xl"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
 
-        {/* <div className="flex gap-4">
+          {/* <div className="flex gap-4">
           <Filter
             title="Filter 1"
             options={[
@@ -115,8 +116,9 @@ const AccountsCharts = () => {
             defaultSelected={["1", "2"]}
           />
         </div> */}
-      </div>
+        </div>
       <Separator />
+      </div>
       <div className="max-w-full overflow-x-auto pb-4 px-1">
         <HierarchicalAccounts
           accounts={searchResults! ?? accounts!}
