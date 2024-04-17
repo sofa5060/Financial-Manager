@@ -157,6 +157,8 @@ const AccountForm = ({
 
   const openDialog = () => setIsOpen(true);
 
+  console.log(form.formState.errors);
+
   return (
     <Dialog open={isOpen} onOpenChange={isOpen ? closeDialog : openDialog}>
       <DialogTrigger className="w-full">{children}</DialogTrigger>
@@ -238,10 +240,12 @@ const AccountForm = ({
                   onChange={(val) => {
                     form.clearErrors("properties");
                     setValue("properties", val!.value);
-                    if(val!.value === "main") {
+                    if (val!.value === "main") {
                       setValue("categories", []);
                       setValue("cost_center", false);
                       setValue("currencies", []);
+                    }else{
+                      setValue("cost_center", account?.cost_center || false);
                     }
                   }}
                   defaultValue={ACCOUNT_PROPERTIES.find(
@@ -367,6 +371,11 @@ const AccountForm = ({
                       ]}
                       defaultValue={
                         account?.cost_center
+                          ? { label: t("yes"), value: true }
+                          : { label: t("no"), value: false }
+                      }
+                      value={
+                        form.getValues("cost_center") === true
                           ? { label: t("yes"), value: true }
                           : { label: t("no"), value: false }
                       }
