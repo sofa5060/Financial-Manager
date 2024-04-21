@@ -84,6 +84,20 @@ export const useTreasuryPaymentBondsColumns = () => {
       },
     },
     {
+      accessorKey: "status",
+      header: t("status"),
+      cell: ({ row }) => {
+        return row.original.status === "park" ? t("park") : t("post");
+      },
+    },
+    {
+      accessorKey: "type",
+      header: t("paymentWay"),
+      cell: ({ row }) => {
+        return row.original.type === "check" ? t("check") : t("cash");
+      },
+    },
+    {
       accessorKey: "amount",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("amount")} />
@@ -110,13 +124,17 @@ export const useTreasuryPaymentBondsColumns = () => {
               className="cursor-pointer text-primary w-5"
               onClick={() => navigate(`/treasury/payment/${bondId}/view`)}
             />
-            <Pen
-              className="cursor-pointer text-primary w-5"
-              onClick={() => navigate(`/treasury/payment/${bondId}`)}
-            />
-            <DeleteModal bondId={bondId}>
-              <Trash2 className="cursor-pointer text-red-400 w-5" />
-            </DeleteModal>
+            {row.original.status === "park" && (
+              <>
+                <Pen
+                  className="cursor-pointer text-primary w-5"
+                  onClick={() => navigate(`/treasury/payment/${bondId}`)}
+                />
+                <DeleteModal bondId={bondId}>
+                  <Trash2 className="cursor-pointer text-red-400 w-5" />
+                </DeleteModal>
+              </>
+            )}
           </div>
         );
       },
@@ -205,6 +223,20 @@ export const useTreasuryReceiptBondsColumns = () => {
       },
     },
     {
+      accessorKey: "status",
+      header: t("status"),
+      cell: ({ row }) => {
+        return row.original.status === "park" ? t("park") : t("post");
+      },
+    },
+    {
+      accessorKey: "type",
+      header: t("paymentWay"),
+      cell: ({ row }) => {
+        return row.original.type === "check" ? t("check") : t("cash");
+      },
+    },
+    {
       accessorKey: "amount",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("amount")} />
@@ -231,13 +263,17 @@ export const useTreasuryReceiptBondsColumns = () => {
               className="cursor-pointer text-primary w-5"
               onClick={() => navigate(`/treasury/receive/${bondId}/view`)}
             />
-            <Pen
-              className="cursor-pointer text-primary w-5"
-              onClick={() => navigate(`/treasury/receive/${bondId}`)}
-            />
-            <DeleteModal bondId={bondId}>
-              <Trash2 className="cursor-pointer text-red-400 w-5" />
-            </DeleteModal>
+            {row.original.status === "park" && (
+              <>
+                <Pen
+                  className="cursor-pointer text-primary w-5"
+                  onClick={() => navigate(`/treasury/receive/${bondId}`)}
+                />
+                <DeleteModal bondId={bondId}>
+                  <Trash2 className="cursor-pointer text-red-400 w-5" />
+                </DeleteModal>
+              </>
+            )}
           </div>
         );
       },

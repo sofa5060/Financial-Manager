@@ -72,16 +72,28 @@ const HierarchicalAccount = ({
           )}
           <div className="flex items-center gap-4 mt-4">
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
-              <div className="border-s-4 border-primary ps-2 flex items-center gap-4">
+              <div
+                className={cn("border-s-4 ps-2 flex items-center gap-4", {
+                  "border-primary": account.properties === "main",
+                  "border-[#A16207]": account.properties === "sub",
+                })}
+              >
                 <div className="flex gap-2">
-                  <h4 className="text-sm whitespace-nowrap">
-                    {i18n.language === "ar" ? account.name_ar : account.name_en}
-                  </h4>
                   <div className="flex items-center gap-2">
-                    <h5 className="text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap">
+                    <h5
+                      className={cn(
+                        "text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap",
+                        {
+                          "bg-[#A16207]": account.properties === "sub",
+                        }
+                      )}
+                    >
                       {account.code}
                     </h5>
                   </div>
+                  <h4 className="text-sm whitespace-nowrap">
+                    {i18n.language === "ar" ? account.name_ar : account.name_en}
+                  </h4>
                 </div>
                 <div className="flex items-center gap-1">
                   <AccountForm
@@ -93,21 +105,26 @@ const HierarchicalAccount = ({
                   >
                     <Eye className="w-4 text-primary cursor-pointer" />
                   </AccountForm>
-                  <AccountForm
-                    level={level + 1}
-                    parentAccount={parentAccount}
-                    type="edit"
-                    account={account}
-                    key="edit"
-                  >
-                    <Pen className="w-4 text-[#A16207] cursor-pointer" />
-                  </AccountForm>
+                  {(!account.total_debit || account.total_debit === 0) &&
+                    (!account.total_credit || account.total_credit === 0) && (
+                      <AccountForm
+                        level={level + 1}
+                        parentAccount={parentAccount}
+                        type="edit"
+                        account={account}
+                        key="edit"
+                      >
+                        <Pen className="w-4 text-[#A16207] cursor-pointer" />
+                      </AccountForm>
+                    )}
                   <DeleteModal accountId={account.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
-                  <AccountForm level={level + 1} parentAccount={account}>
-                    <Plus className="text-primary" />
-                  </AccountForm>
+                  {account.properties === "main" && (
+                    <AccountForm level={level + 1} parentAccount={account}>
+                      <Plus className="text-primary w-5" />
+                    </AccountForm>
+                  )}
                   {account.children && account.children.length > 0 && (
                     <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (

@@ -70,18 +70,32 @@ const HierarchicalCostCenter = ({
           )}
           <div className="flex items-center gap-4 mt-4">
             <div className="p-3 ring-1 max-w-max rounded-md ring-[#E4E4E7]">
-              <div className="border-s-4 border-primary ps-2 flex items-center gap-4">
+              <div
+                className={cn(
+                  "border-s-4 border-primary ps-2 flex items-center gap-4",
+                  {
+                    "border-[#A16207]": costCenter.properties === "sub",
+                  }
+                )}
+              >
                 <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
+                    <h5
+                      className={cn(
+                        "text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap",
+                        {
+                          "bg-[#A16207]": costCenter.properties === "sub",
+                        }
+                      )}
+                    >
+                      {costCenter.code}
+                    </h5>
+                  </div>
                   <h4 className="text-sm whitespace-nowrap">
                     {i18n.language === "ar"
                       ? costCenter.name_ar
                       : costCenter.name_en}
                   </h4>
-                  <div className="flex items-center gap-2">
-                    <h5 className="text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap">
-                      {costCenter.code}
-                    </h5>
-                  </div>
                 </div>
                 <div className="flex items-center gap-1">
                   <CostCenterForm
@@ -103,12 +117,14 @@ const HierarchicalCostCenter = ({
                   <DeleteModal costCenterId={costCenter.id}>
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
-                  <CostCenterForm
-                    level={level + 1}
-                    parentCostCenter={costCenter}
-                  >
-                    <Plus className="w-4 text-primary" />
-                  </CostCenterForm>
+                  {costCenter.properties === "main" && (
+                    <CostCenterForm
+                      level={level + 1}
+                      parentCostCenter={costCenter}
+                    >
+                      <Plus className="w-5 text-primary" />
+                    </CostCenterForm>
+                  )}
                   {costCenter.children && costCenter.children.length > 0 && (
                     <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (

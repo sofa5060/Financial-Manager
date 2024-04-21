@@ -78,16 +78,16 @@ export const useParkAccountingEntriesColumns = () => {
     },
     {
       accessorKey: "id",
-      header: t("documentNo"),
+      header: t("serial"),
       meta: {
-        header: t("documentNo"),
+        header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("serial"),
+      header: t("documentNo"),
       meta: {
-        header: t("serial"),
+        header: t("documentNo"),
       },
     },
     {
@@ -279,16 +279,16 @@ export const usePostAccountingEntriesColumns = () => {
     },
     {
       accessorKey: "id",
-      header: t("documentNo"),
+      header: t("serial"),
       meta: {
-        header: t("documentNo"),
+        header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("serial"),
+      header: t("documentNo"),
       meta: {
-        header: t("serial"),
+        header: t("documentNo"),
       },
     },
     {

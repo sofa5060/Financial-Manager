@@ -84,5 +84,9 @@
   "bonds.failed": "Failed to fetch bonds",
   "treasury": "Treasury",
   "paymentBonds": "Payment Bonds",
-  "receiveBonds": "Receive Bonds"
+  "receiveBonds": "Receive Bonds",
+  "status": "Status",
+  "paymentWay": "Payment Way",
+  "check": "Check",
+  "cash": "Cash"
 }

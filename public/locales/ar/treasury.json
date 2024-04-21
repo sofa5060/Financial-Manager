@@ -84,5 +84,9 @@
   "bonds.failed": "فشل جلب السندات",
   "treasury": "الخزينة",
   "paymentBonds": "سندات المدفوعات",
-  "receiveBonds": "سندات المقبوضات"
+  "receiveBonds": "سندات المقبوضات",
+  "status": "الحالة",
+  "paymentWay": "طريقة الدفع",
+  "check": "شيك",
+  "cash": "نقدي"
 }

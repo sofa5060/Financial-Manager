@@ -46,6 +46,8 @@ const TreasuryPayments = () => {
     setSize(size);
   }, [searchParams]);
 
+  console.log(data)
+
   if (isLoading)
     return (
       <div className="grid place-items-center w-full h-full min-h-screen">

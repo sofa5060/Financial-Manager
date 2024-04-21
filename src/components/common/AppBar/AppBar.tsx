@@ -1,6 +1,6 @@
 // import { UserNav } from "../user-nav/user-nav";
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
+// import { useEffect, useState } from "react";
 import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
@@ -12,14 +12,14 @@ import { useTranslation } from "react-i18next";
 // import NotificationsList from "@/components/notifications/notifications-list";
 // import useNotificationsStore from "@/hooks/notifications/use-notifications-store";
 import { Badge } from "@/components/ui/badge";
-import BreadCrumbs from "./BreadCrumbs";
+// import BreadCrumbs from "./BreadCrumbs";
 import { MobileSidebar } from "../SideBar/MobileSideBar";
 import { UserNav } from "../UserNav/UserNav";
 
 const AppBar = () => {
-  const location = useLocation();
-  const [currentPath, setCurrentPath] = useState("/");
-  const { i18n } = useTranslation("navbar");
+  // const location = useLocation();
+  // const [currentPath, setCurrentPath] = useState("/");
+  const { i18n, t } = useTranslation("navbar");
   // const { unSeenNotificationsNumber } = useNotificationsStore();
 
   const changeWebsiteLanguage = () => {
@@ -31,15 +31,15 @@ const AppBar = () => {
     }
   };
 
-  useEffect(() => {
-    setCurrentPath(location.pathname);
-  }, [location]);
+  // useEffect(() => {
+  //   setCurrentPath(location.pathname);
+  // }, [location]);
 
   return (
     <div className="border-b bg-white flex h-16 items-center px-8 md:pe-24">
       <div className="flex items-center gap-5">
         <MobileSidebar />
-        <BreadCrumbs path={currentPath} />
+        {/* <BreadCrumbs path={currentPath} /> */}
       </div>
       <div className="ms-auto flex items-center gap-5">
         {/* <DropdownMenu dir={i18n.dir(i18n.language)}>
@@ -58,7 +58,7 @@ const AppBar = () => {
           </DropdownMenuContent>
         </DropdownMenu> */}
         <Badge className="bg-red-500 hover:bg-red-500 py-2 rounded-md">
-          Under Development
+          {t("underDevelopment")}
         </Badge>
         <Button variant="link" className="p-0" onClick={changeWebsiteLanguage}>
           <Globe className="h-5 w-5 text-gray-500" />

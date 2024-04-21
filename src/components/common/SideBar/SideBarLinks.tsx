@@ -5,7 +5,7 @@ import {
   LucideIcon,
   MessagesSquare,
   Settings,
-  Table,
+  // Table,
   Table2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -47,16 +47,16 @@ const useSidebarLinks = () => {
         },
       ],
     },
-    {
-      label: t("parkAccountingTransactions"),
-      href: "/transactions/park",
-      icon: Table,
-    },
-    {
-      label: t("postAccountingTransactions"),
-      href: "/transactions/post",
-      icon: Table,
-    },
+    // {
+    //   label: t("parkAccountingTransactions"),
+    //   href: "/transactions/park",
+    //   icon: Table,
+    // },
+    // {
+    //   label: t("postAccountingTransactions"),
+    //   href: "/transactions/post",
+    //   icon: Table,
+    // },
     {
       label: t("treasury"),
       icon: Table2,

@@ -18,9 +18,9 @@
   "view": "عرض الأعمدة",
   "search": "بحث",
   "searchPlaceholder": "البحث حسب العنوان",
-  "accountingTransactions": "المعاملات المحاسبية",
-  "park": "تعليق",
-  "post": "نشر",
+  "accountingTransactions": "الحركات المحاسبية",
+  "park": "غير مرحلة",
+  "post": "مرحلة",
   "rowsPerPage": "الصفوف لكل صفحة",
   "pageOf": "الصفحة {{page}} من {{totalPages}}"
 }

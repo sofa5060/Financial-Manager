@@ -1,10 +1,8 @@
 {
   "chartsOfAccounts": "الدليل المحاسبي",
   "costCenters": "مراكز التكلفة",
-  "parkAccountingEntries": "قيود المحاسبة (تعليق)",
-  "parkAccountingTransactions": "المعاملات المحاسبية (تعليق)",
-  "postAccountingEntries": "قيود المحاسبة (نشر)",
-  "postAccountingTransactions": "المعاملات المحاسبية (نشر)",
+  "parkAccountingTransactions": "الحركات المحاسبية (غير مرحلة)",
+  "postAccountingTransactions": "الحركات المحاسبية (مرحلة)",
   "receiveTreasury": "خزينة الاستلامات",
   "paymentTreasury": "خزينة المدفوعات",
   "templates": "قوالب الحسابات",
