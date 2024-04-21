@@ -19,8 +19,8 @@
   "search": "بحث",
   "search.placeholder": "البحث حسب العنوان",
   "accountingEntries": "قيود المحاسبة",
-  "park": "تعليق",
-  "post": "نشر",
+  "park": "غير مرحل",
+  "post": "مرحل",
   "newBond": "سند جديد",
   "printSelected": "طباعة المحدد",
   "postSelected": "نشر المحدد",
@@ -80,9 +80,9 @@
   "viewTreasury": "عرض الخزينة",
   "newTreasury": "خزينة جديدة",
   "paymentBond": "سند الدفع",
-  "receiveBond": "سند الاستلام",
+  "receiveBond": "سند القبض",
   "bonds.failed": "فشل جلب السندات",
   "treasury": "الخزينة",
-  "paymentBonds": "سندات الدفع",
-  "receiveBonds": "سندات الاستلام"
+  "paymentBonds": "سندات المدفوعات",
+  "receiveBonds": "سندات المقبوضات"
 }

@@ -9,5 +9,11 @@
   "paymentTreasury": "Treasury Payments",
   "templates": "Account Templates",
   "sidebar.chat": "Chat",
-  "sidebar.settings": "Settings"
+  "sidebar.settings": "Settings",
+  "park": "Park",
+  "post": "Post",
+  "entries": "Entries",
+  "treasury": "Treasury",
+  "receive": "Receive",
+  "payment": "Payment"
 }

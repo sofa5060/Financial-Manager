@@ -6,6 +6,12 @@ import { LogOut } from "lucide-react";
 import useSidebarLinks from "./SideBarLinks";
 import { UserNav } from "../UserNav/UserNav";
 import { useAuthStore } from "@/hooks/useAuthStore";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(window.innerWidth < 768);
@@ -54,21 +60,81 @@ const SideBar = () => {
                 link.href ==
                 `/${location.pathname.split("/").slice(1).join("/")}`;
 
-              return (
-                <Link
-                  key={link.href}
-                  className={cn(
-                    "hover:text-green-700 hover:no-underline text-start",
-                    isActive
-                      ? "flex items-center w-full h-12 px-3 mt-2 bg-green-100 rounded"
-                      : "flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-green-50"
-                  )}
-                  to={link.href}
-                >
-                  <link.icon className="w-5 h-5" />
-                  <span className="ms-2 text-sm font-medium">{link.label}</span>
-                </Link>
-              );
+              if (link.children) {
+                return (
+                  <Accordion
+                    type="single"
+                    collapsible
+                    key={link.label}
+                    defaultValue={
+                      link.children.findIndex(
+                        (child) => child.href === location.pathname
+                      ) !== -1
+                        ? link.label
+                        : undefined
+                    }
+                    className="w-full"
+                  >
+                    <AccordionItem
+                      value={link.label}
+                      className="group hover:text-green-700 text-start w-full pe-4 border-b-0"
+                    >
+                      <AccordionTrigger>
+                        <div
+                          className={cn(
+                            "hover:text-green-700 text-start w-full flex items-center px-3"
+                          )}
+                        >
+                          <link.icon className="w-5 h-5" />
+                          <span className="ms-2 text-sm font-medium no-underline">
+                            {link.label}
+                          </span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        {link.children.map((child) => {
+                          const isActive = child.href === location.pathname;
+                          return (
+                            <Link
+                              key={child.href}
+                              className={cn(
+                                "ms-8",
+                                isActive
+                                  ? "flex items-center w-full h-12 px-3 mt-2 bg-green-100 rounded"
+                                  : "flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-green-50"
+                              )}
+                              to={child.href!}
+                            >
+                              <child.icon className="w-5 h-5" />
+                              <span className="ms-2 text-sm font-medium">
+                                {child.label}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                );
+              } else {
+                return (
+                  <Link
+                    key={link.href}
+                    className={cn(
+                      "hover:text-green-700 hover:no-underline text-start",
+                      isActive
+                        ? "flex items-center w-full h-12 px-3 mt-2 bg-green-100 rounded"
+                        : "flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-green-50"
+                    )}
+                    to={link.href!}
+                  >
+                    <link.icon className="w-5 h-5" />
+                    <span className="ms-2 text-sm font-medium">
+                      {link.label}
+                    </span>
+                  </Link>
+                );
+              }
             })}
           </div>
         </div>
@@ -120,14 +186,13 @@ const SideBar = () => {
                   ? "flex items-center justify-center w-12 h-12 mt-2 bg-green-100 rounded"
                   : "flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-green-50"
               )}
-              to={link.href}
+              to={link.href!}
             >
               <link.icon className="w-5 h-5" />
             </Link>
           );
         })}
       </div>
-
       <div className="flex items-center justify-center w-16 h-16 mt-auto">
         <UserNav />
       </div>

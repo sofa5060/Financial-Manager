@@ -1,5 +1,5 @@
 {
-  "chartsOfAccounts": "جداول الحسابات",
+  "chartsOfAccounts": "الدليل المحاسبي",
   "costCenters": "مراكز التكلفة",
   "parkAccountingEntries": "قيود المحاسبة (تعليق)",
   "parkAccountingTransactions": "المعاملات المحاسبية (تعليق)",
@@ -9,5 +9,11 @@
   "paymentTreasury": "خزينة المدفوعات",
   "templates": "قوالب الحسابات",
   "sidebar.chat": "الدردشة",
-  "sidebar.settings": "الإعدادات"
+  "sidebar.settings": "الإعدادات",
+  "park": "غير المرحلة",
+  "post": "المرحلة",
+  "entries": "القيود",
+  "treasury": "الخزينة",
+  "receive": "المقبوضات",
+  "payment": "المدفوعات"
 }

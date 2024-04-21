@@ -12,8 +12,9 @@ import { useTranslation } from "react-i18next";
 
 export type SidebarLink = {
   label: string;
-  href: string;
+  href?: string;
   icon: LucideIcon;
+  children?: SidebarLink[];
 };
 
 const useSidebarLinks = () => {
@@ -31,9 +32,20 @@ const useSidebarLinks = () => {
       icon: Calculator,
     },
     {
-      label: t("parkAccountingEntries"),
-      href: "/accounting-entries/park",
+      label: t("entries"),
       icon: Table2,
+      children: [
+        {
+          label: t("park"),
+          href: "/accounting-entries/park",
+          icon: Table2,
+        },
+        {
+          label: t("post"),
+          href: "/accounting-entries/post",
+          icon: Table2,
+        },
+      ],
     },
     {
       label: t("parkAccountingTransactions"),
@@ -41,24 +53,25 @@ const useSidebarLinks = () => {
       icon: Table,
     },
     {
-      label: t("postAccountingEntries"),
-      href: "/accounting-entries/post",
-      icon: Table2,
-    },
-    {
       label: t("postAccountingTransactions"),
       href: "/transactions/post",
       icon: Table,
     },
     {
-      label: t("receiveTreasury"),
-      href: "/treasury/receive",
+      label: t("treasury"),
       icon: Table2,
-    },
-    {
-      label: t("paymentTreasury"),
-      href: "/treasury/payment",
-      icon: Table2,
+      children: [
+        {
+          label: t("receive"),
+          href: "/treasury/receive",
+          icon: Table2,
+        },
+        {
+          label: t("payment"),
+          href: "/treasury/payment",
+          icon: Table2,
+        },
+      ],
     },
     {
       label: t("templates"),
