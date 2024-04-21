@@ -37,7 +37,7 @@ export const NewAccountSchema = z.object({
   properties: AccountPropertiesSchema,
   type: AccountTypeSchema,
   reporting_type: ReportingTypeSchema,
-  cost_center: z.boolean(),
+  cost_center: z.boolean().nullable(),
   parent_id: z.number().optional().nullable(),
   categories: z.array(z.number()),
   currencies: z.array(z.number()),

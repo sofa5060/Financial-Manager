@@ -106,25 +106,25 @@ const HierarchicalAccount = ({
                     <Trash2 className="w-4 text-destructive cursor-pointer" />
                   </DeleteModal>
                   <AccountForm level={level + 1} parentAccount={account}>
-                    <Plus className="w-4 text-primary" />
+                    <Plus className="text-primary" />
                   </AccountForm>
                   {account.children && account.children.length > 0 && (
                     <div className="w-5 text-primary cursor-pointer ms-4">
                       {hideChildren ? (
                         i18n.language === "ar" ? (
                           <ArrowLeftFromLine
-                            className="w-full"
+                            className="w-4"
                             onClick={() => setHideChildren(false)}
                           />
                         ) : (
                           <ArrowRightFromLine
-                            className="w-full"
+                            className="w-4"
                             onClick={() => setHideChildren(false)}
                           />
                         )
                       ) : (
                         <ArrowDownFromLine
-                          className="w-full"
+                          className="w-4"
                           onClick={() => setHideChildren(true)}
                         />
                       )}

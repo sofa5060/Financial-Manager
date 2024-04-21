@@ -114,18 +114,18 @@ const HierarchicalCostCenter = ({
                       {hideChildren ? (
                         i18n.language === "ar" ? (
                           <ArrowLeftFromLine
-                            className="w-full"
+                            className="w-4"
                             onClick={() => setHideChildren(false)}
                           />
                         ) : (
                           <ArrowRightFromLine
-                            className="w-full"
+                            className="w-4"
                             onClick={() => setHideChildren(false)}
                           />
                         )
                       ) : (
                         <ArrowDownFromLine
-                          className="w-full"
+                          className="w-4"
                           onClick={() => setHideChildren(true)}
                         />
                       )}
