@@ -2,14 +2,14 @@ import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
 
 export type User = {
-  "user_id": 2,
-  "name": "admin",
-  "email": "admin@example.com",
-  "type": "admin",
-  "active": true,
-  "verified": true,
-  "avatar": null
-}
+  user_id: number;
+  name: string;
+  email: string;
+  type: "admin" | "user";
+  active: boolean;
+  verified: boolean;
+  avatar: null | string;
+};
 
 type UsersResponse = {
   users: User[];
@@ -23,9 +23,7 @@ class UsersManager {
     size: number = 1000
   ): Promise<UsersResponse | undefined> {
     try {
-      const response = await axios.get(
-        `/api/user?page=${page}&size=${size}`
-      );
+      const response = await axios.get(`/api/user?page=${page}&size=${size}`);
 
       return {
         users: response.data.data,

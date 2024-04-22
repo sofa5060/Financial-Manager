@@ -37,6 +37,7 @@ import CurrenciesPage from "./components/settings/subpages/Currencies/Currencies
 import CategoriesPage from "./components/settings/subpages/Categories/CategoriesPage";
 import GroupsPage from "./components/settings/subpages/Gropus/GroupsPage";
 import PermissionsPage from "./components/settings/subpages/Permissions/PermissionsPage";
+import ReportsPage from "./components/settings/subpages/Reports/ReportsPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -152,6 +153,10 @@ function App() {
               <Route
                 path="settings/groups"
                 element={<GroupsPage />}
+              />
+              <Route
+                path="settings/reports"
+                element={<ReportsPage />}
               />
               <Route
                 path="settings/permissions"

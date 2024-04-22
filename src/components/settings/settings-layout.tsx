@@ -29,6 +29,10 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       href: "/settings/groups",
     },
     {
+      title: t("settings.sidebar.reports"),
+      href: "/settings/reports",
+    },
+    {
       title: t("settings.sidebar.permissions"),
       href: "/settings/permissions",
     },

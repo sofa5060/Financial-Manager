@@ -93,5 +93,20 @@
   "show": "عرض",
   "permissions.failed": "فشل جلب الصلاحيات",
   "permissions.modify.success": "تم تحديث الصلاحيات بنجاح",
-  "permissions.modify.failed": "فشل تحديث الصلاحيات"
+  "permissions.modify.failed": "فشل تحديث الصلاحيات",
+  "reports": "التقارير",
+  "reports.failed": "فشل جلب التقارير",
+  "addReport": "إضافة اسم التقرير",
+  "editReport": "تعديل اسم التقرير",
+  "editReport.message": "انقر على حفظ عند الانتهاء",
+  "report.delete.title": "أنت على وشك حذف هذا الاسم التقرير",
+  "report.delete.message": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف التقرير نهائيًا وإزالة بياناتك من خوادمنا.",
+  "report.delete.success": "تم حذف التقرير بنجاح",
+  "report.delete.failed": "فشل حذف التقرير",
+  "report.delete.confirm": "حذف هذا الاسم التقرير",
+  "report.add.success": "تمت إضافة التقرير بنجاح",
+  "report.add.failed": "فشل إضافة اسم التقرير",
+  "report.edit.success": "تم تحديث التقرير بنجاح",
+  "report.edit.failed": "فشل تحديث اسم التقرير",
+  "settings.sidebar.reports": "أسماء التقارير"
 }

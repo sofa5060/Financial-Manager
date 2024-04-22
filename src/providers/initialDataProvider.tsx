@@ -2,6 +2,7 @@ import { useBanksStore } from "@/hooks/useBanksStore";
 import { useCategoriesStore } from "@/hooks/useCategories";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useGroupsStore } from "@/hooks/useGroupsStore";
+import { useReportsStore } from "@/hooks/useReportsStore";
 import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useSubCostCentersStore } from "@/hooks/useSubCostCenters";
 import { useUsersStore } from "@/hooks/useUsersStore";
@@ -11,6 +12,7 @@ import CategoriesManager from "@/managers/CategoriesManager";
 import CostCentersManager from "@/managers/CostCentersManager";
 import CurrenciesManager from "@/managers/CurrenciesManager";
 import GroupsManager from "@/managers/GroupsManager";
+import ReportsManager from "@/managers/ReportsManager";
 import UsersManager from "@/managers/UsersManager";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -28,6 +30,7 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
   const setBanks = useBanksStore((state) => state.setBanks);
   const setUsers = useUsersStore((state) => state.setUsers);
   const setGroups = useGroupsStore((state) => state.setGroups);
+  const setReports = useReportsStore((state) => state.setReports);
 
   // fetch currencies
   const { data: currencies } = useQuery({
@@ -119,6 +122,19 @@ const InitialDataProvider = ({ children }: initialDataProviderProps) => {
       setGroups(groupsResponse.groups);
     }
   }, [groupsResponse]);
+
+  // fetch reports
+  const { data: reports } = useQuery({
+    queryKey: ["reports", "page", 1, "size", 1000],
+    queryFn: () => ReportsManager.getReports(1, 1000),
+  });
+
+  // store reports
+  useEffect(() => {
+    if (reports) {
+      setReports(reports.reports);
+    }
+  }, [reports, setReports]);
 
   return <div>{children}</div>;
 };

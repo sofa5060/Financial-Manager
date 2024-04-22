@@ -6,6 +6,7 @@
   "settings.sidebar.banks": "Banks",
   "settings.sidebar.currencies": "Currencies",
   "settings.sidebar.groups": "Groups",
+  "settings.sidebar.reports": "Report Names",
   "settings.sidebar.permissions": "Permissions",
   "settings.general.softwareVersion": "Software Version",
   "settings.general.lastUpdated": "Last Updated",
@@ -93,5 +94,19 @@
   "show": "Show",
   "permissions.failed": "Failed to fetch permissions",
   "permissions.modify.success": "Permissions have been updated successfully",
-  "permissions.modify.failed": "Failed to update permissions"
+  "permissions.modify.failed": "Failed to update permissions",
+  "reports": "Reports",
+  "reports.failed": "Failed to fetch reports",
+  "addReport": "Add Report Name",
+  "editReport": "Edit Report Name",
+  "editReport.message": "Click save when you're done",
+  "report.delete.title": "You Are About To Delete This Report Name",
+  "report.delete.message": "This action cannot be undone. This will permanently delete your report and remove your data from our servers.",
+  "report.delete.success": "Report has been deleted successfully",
+  "report.delete.failed": "Failed to delete report",
+  "report.delete.confirm": "Delete This Report Name",
+  "report.add.success": "Report has been added successfully",
+  "report.add.failed": "Failed to add report name",
+  "report.edit.success": "Report has been updated successfully",
+  "report.edit.failed": "Failed to update report name"
 }
