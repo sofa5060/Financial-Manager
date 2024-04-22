@@ -28,6 +28,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useCategoriesStore } from "@/hooks/useCategories";
 import { useTranslation } from "react-i18next";
+import { useReportsStore } from "@/hooks/useReportsStore";
 
 type AccountFormProps = {
   level: number;
@@ -44,8 +45,8 @@ const AccountForm = ({
   account,
   type = "add",
 }: AccountFormProps) => {
-  const { t } = useTranslation("accounts");
-  const { ACCOUNT_PROPERTIES, ACCOUNT_TYPES, REPORTING_TYPES } = useData();
+  const { t, i18n } = useTranslation("accounts");
+  const { ACCOUNT_PROPERTIES, ACCOUNT_TYPES } = useData();
 
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
@@ -53,6 +54,9 @@ const AccountForm = ({
   const categoriesOptions = useCategoriesStore(
     (state) => state.categoriesOptions
   );
+
+  const enReportsOptions = useReportsStore((state) => state.enReportsOptions);
+  const arReportsOptions = useReportsStore((state) => state.arReportsOptions);
 
   useEffect(() => {
     form.reset({
@@ -64,6 +68,9 @@ const AccountForm = ({
         : [],
       categories: account
         ? account.categories_ids?.map((category) => category.id)
+        : [],
+      reporting_type: account
+        ? account.reports_ids?.map((type) => type.id)
         : [],
     });
   }, [account]);
@@ -82,6 +89,9 @@ const AccountForm = ({
         : [],
       categories: account
         ? account.categories_ids?.map((category) => category.id)
+        : [],
+      reporting_type: account
+        ? account.reports_ids?.map((type) => type.id)
         : [],
     },
   });
@@ -244,7 +254,7 @@ const AccountForm = ({
                       setValue("categories", []);
                       setValue("cost_center", false);
                       setValue("currencies", []);
-                    }else{
+                    } else {
                       setValue("cost_center", account?.cost_center || false);
                     }
                   }}
@@ -293,19 +303,36 @@ const AccountForm = ({
               <div className="flex-col w-full max-w-[65%]">
                 <Select
                   id="reporting_type"
-                  isSearchable={false}
-                  isClearable={false}
+                  isSearchable={true}
+                  isClearable={true}
+                  isMulti
                   isDisabled={type === "view"}
-                  onChange={(val) => {
+                  onChange={(values) => {
                     form.clearErrors("reporting_type");
-                    setValue("reporting_type", val!.value);
+                    setValue(
+                      "reporting_type",
+                      values!.map((val) => val.value)
+                    );
                   }}
-                  defaultValue={REPORTING_TYPES.find(
-                    (reportingType) =>
-                      reportingType.value === account?.reporting_type
-                  )}
+                  defaultValue={
+                    i18n.language === "en"
+                      ? account?.reports_ids?.map(
+                          (type) =>
+                            enReportsOptions.find(
+                              (option) => option.value === type.id
+                            )!
+                        )
+                      : account?.reports_ids?.map(
+                          (type) =>
+                            arReportsOptions.find(
+                              (option) => option.value === type.id
+                            )!
+                        )
+                  }
                   className="w-full"
-                  options={REPORTING_TYPES}
+                  options={
+                    i18n.language === "en" ? enReportsOptions : arReportsOptions
+                  }
                 />
                 {errors.reporting_type && (
                   <span className="error-text">

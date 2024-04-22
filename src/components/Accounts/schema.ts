@@ -2,7 +2,6 @@ import { z } from "zod";
 import {
   AccountPropertiesSchema,
   AccountTypeSchema,
-  ReportingTypeSchema,
 } from "./Hierarchical/data";
 import { Currency } from "../settings/subpages/Currencies/schema";
 
@@ -29,6 +28,7 @@ export type Account = {
   children: Account[];
   currencies_ids: { id: number }[];
   categories_ids: { id: number }[];
+  reports_ids: { id: number }[];
   total_credit: number | null;
   total_debit: number | null;
 } & NewAccount;
@@ -38,7 +38,7 @@ export const NewAccountSchema = z.object({
   name_ar: z.string(),
   properties: AccountPropertiesSchema,
   type: AccountTypeSchema,
-  reporting_type: ReportingTypeSchema,
+  reporting_type: z.array(z.number()),
   cost_center: z.boolean().nullable(),
   parent_id: z.number().optional().nullable(),
   categories: z.array(z.number()),
