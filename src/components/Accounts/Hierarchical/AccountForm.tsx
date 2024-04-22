@@ -351,8 +351,8 @@ const AccountForm = ({
                     <Select
                       id="categories"
                       isMulti
-                      isSearchable={false}
-                      isClearable={false}
+                      isSearchable={true}
+                      isClearable={true}
                       isDisabled={type === "view"}
                       onChange={(values) => {
                         form.clearErrors("categories");
@@ -384,8 +384,8 @@ const AccountForm = ({
                   <div className="flex-col w-full max-w-[65%]">
                     <Select
                       id="cost_center"
-                      isSearchable={false}
-                      isClearable={false}
+                      isSearchable={true}
+                      isClearable={true}
                       isDisabled={type === "view"}
                       onChange={(val) => {
                         form.clearErrors("cost_center");
@@ -422,8 +422,8 @@ const AccountForm = ({
                     <Select
                       id="currencies"
                       isMulti
-                      isSearchable={false}
-                      isClearable={false}
+                      isSearchable={true}
+                      isClearable={true}
                       isDisabled={type === "view"}
                       defaultValue={account?.currencies_ids?.map((currency) =>
                         currenciesOptions.find(
@@ -432,13 +432,33 @@ const AccountForm = ({
                       )}
                       onChange={(values) => {
                         form.clearErrors("currencies");
-                        setValue(
-                          "currencies",
-                          values!.map((val) => val!.value)
-                        );
+                        if (values.find((val) => val!.value === -1)) {
+                          setValue(
+                            "currencies",
+                            currenciesOptions.map((option) => option.value)
+                          );
+                        } else {
+                          setValue(
+                            "currencies",
+                            values!.map((val) => val!.value)
+                          );
+                        }
                       }}
+                      value={form
+                        .getValues("currencies")
+                        .map((currency) =>
+                          currenciesOptions.find(
+                            (option) => option.value === currency
+                          )
+                        )}
                       className="w-full"
-                      options={currenciesOptions}
+                      options={[
+                        {
+                          label: t("all"),
+                          value: -1,
+                        },
+                        ...currenciesOptions,
+                      ]}
                     />
                     {errors.currencies && (
                       <span className="error-text">
