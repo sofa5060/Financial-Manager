@@ -41,17 +41,26 @@ const DynamicTableForm = ({
 
   const [rows, setRows] = useState<NewTransaction[]>(
     transactions.length
-      ? transactions
+      ? transactions.map((transaction) => ({
+          account_id: transaction.account_id,
+          category_id: transaction.category_id,
+          cost_center_id: transaction.cost_center_id,
+          f_debit: transaction.f_debit === 0 ? null : transaction.f_debit,
+          f_credit: transaction.f_credit === 0 ? null : transaction.f_credit,
+          description: transaction.description,
+          debit: transaction.debit === 0 ? undefined : transaction.debit,
+          credit: transaction.credit === 0 ? undefined : transaction.credit,
+        }))
       : [
           {
             account_id: undefined,
             category_id: null,
             cost_center_id: null,
-            f_debit: 0,
-            f_credit: 0,
+            f_debit: null,
+            f_credit: null,
             description: "",
-            debit: 0,
-            credit: 0,
+            debit: undefined,
+            credit: undefined,
           },
         ]
   );
@@ -89,11 +98,11 @@ const DynamicTableForm = ({
       account_id: undefined,
       category_id: null,
       cost_center_id: null,
-      f_debit: 0,
-      f_credit: 0,
+      f_debit: null,
+      f_credit: null,
       description: "",
-      debit: 0,
-      credit: 0,
+      debit: undefined,
+      credit: undefined,
     });
     setRows(updatedRows);
   };
@@ -131,12 +140,6 @@ const DynamicTableForm = ({
             >
               {t("description")}
             </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              {t("costCenter")}
-            </th>
             {type === "apply" && (
               <>
                 <th
@@ -169,6 +172,12 @@ const DynamicTableForm = ({
                 )}
               </>
             )}
+            <th
+              scope="col"
+              className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              {t("costCenter")}
+            </th>
             {!disabled && (
               <th
                 scope="col"
@@ -182,7 +191,7 @@ const DynamicTableForm = ({
         <tbody className="bg-white divide-y divide-gray-200">
           {rows.map((row, index) => (
             <tr key={index}>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="category_id"
                   isSearchable={false}
@@ -198,7 +207,7 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="account_code"
                   isSearchable={false}
@@ -216,7 +225,7 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="account_name"
                   isSearchable={false}
@@ -234,7 +243,7 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Input
                   type="text"
                   value={row.description}
@@ -246,7 +255,79 @@ const DynamicTableForm = ({
                   disabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              {type === "apply" && (
+                <>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    <Input
+                      type="number"
+                      value={
+                        !isDefaultCurrency
+                          ? (row.f_debit as number) * rate!
+                          : row.debit
+                      }
+                      onChange={(e) =>
+                        handleChange(index, "debit", e.target.value)
+                      }
+                      required
+                      className="min-w-32"
+                      disabled={
+                        row.credit !== undefined ||
+                        !isDefaultCurrency ||
+                        disabled
+                      }
+                    />
+                  </td>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    <Input
+                      type="number"
+                      value={
+                        !isDefaultCurrency
+                          ? (row.f_credit as number) * rate!
+                          : row.credit
+                      }
+                      onChange={(e) =>
+                        handleChange(index, "credit", e.target.value)
+                      }
+                      required
+                      className="min-w-32"
+                      disabled={
+                        row.debit !== undefined ||
+                        !isDefaultCurrency ||
+                        disabled
+                      }
+                    />
+                  </td>
+                </>
+              )}
+              {type === "apply" && !isDefaultCurrency && (
+                <>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    <Input
+                      type="number"
+                      value={row.f_debit as number}
+                      onChange={(e) =>
+                        handleChange(index, "f_debit", e.target.value)
+                      }
+                      required
+                      className="min-w-32"
+                      disabled={row.f_credit !== null || disabled}
+                    />
+                  </td>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    <Input
+                      type="number"
+                      value={row.f_credit as number}
+                      onChange={(e) =>
+                        handleChange(index, "f_credit", e.target.value)
+                      }
+                      required
+                      className="min-w-32"
+                      disabled={row.f_debit !== null || disabled}
+                    />
+                  </td>
+                </>
+              )}
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="cost_center_id"
                   isSearchable={false}
@@ -262,76 +343,8 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              {type === "apply" && (
-                <>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Input
-                      type="number"
-                      value={
-                        !isDefaultCurrency
-                          ? (row.f_debit as number) * rate!
-                          : row.debit
-                      }
-                      onChange={(e) =>
-                        handleChange(index, "debit", e.target.value)
-                      }
-                      required
-                      className="min-w-32"
-                      disabled={
-                        row.credit !== 0 || !isDefaultCurrency || disabled
-                      }
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Input
-                      type="number"
-                      value={
-                        !isDefaultCurrency
-                          ? (row.f_credit as number) * rate!
-                          : row.credit
-                      }
-                      onChange={(e) =>
-                        handleChange(index, "credit", e.target.value)
-                      }
-                      required
-                      className="min-w-32"
-                      disabled={
-                        row.debit !== 0 || !isDefaultCurrency || disabled
-                      }
-                    />
-                  </td>
-                </>
-              )}
-              {type === "apply" && !isDefaultCurrency && (
-                <>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Input
-                      type="number"
-                      value={row.f_debit as number}
-                      onChange={(e) =>
-                        handleChange(index, "f_debit", e.target.value)
-                      }
-                      required
-                      className="min-w-32"
-                      disabled={row.f_credit !== 0 || disabled}
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Input
-                      type="number"
-                      value={row.f_credit as number}
-                      onChange={(e) =>
-                        handleChange(index, "f_credit", e.target.value)
-                      }
-                      required
-                      className="min-w-32"
-                      disabled={row.f_debit !== 0 || disabled}
-                    />
-                  </td>
-                </>
-              )}
               {!disabled && (
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 whitespace-nowrap">
                   <div className="flex gap-2">
                     <Trash2
                       className="w-5 text-red-500 cursor-pointer"

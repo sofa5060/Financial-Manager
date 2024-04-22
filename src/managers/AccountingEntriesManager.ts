@@ -155,6 +155,7 @@ class AccountingEntriesManager {
     try {
       await axios.delete(`/api/entry/${entryId}`);
     } catch (error) {
+      console.log(error);
       handleAxiosError(error as AxiosError);
     }
   }

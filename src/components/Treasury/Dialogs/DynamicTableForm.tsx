@@ -129,12 +129,6 @@ const DynamicTableForm = ({
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              {t("costCenter")}
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
               {t("amount")}
             </th>
             {!isDefaultCurrency && (
@@ -147,6 +141,12 @@ const DynamicTableForm = ({
                 </th>
               </>
             )}
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              {t("costCenter")}
+            </th>
             {!disabled && (
               <th
                 scope="col"
@@ -160,7 +160,7 @@ const DynamicTableForm = ({
         <tbody className="bg-white divide-y divide-gray-200">
           {rows.map((row, index) => (
             <tr key={index}>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="category_id"
                   isSearchable={false}
@@ -176,7 +176,7 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="account_code"
                   isSearchable={false}
@@ -194,7 +194,7 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="account_name"
                   isSearchable={false}
@@ -212,7 +212,7 @@ const DynamicTableForm = ({
                   isDisabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Input
                   type="text"
                   value={row.description}
@@ -224,23 +224,7 @@ const DynamicTableForm = ({
                   disabled={disabled}
                 />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <Select
-                  id="cost_center_id"
-                  isSearchable={false}
-                  isClearable={false}
-                  onChange={(val) => {
-                    handleChange(index, "cost_center_id", val!.value!);
-                  }}
-                  value={subCostCentersOptions.find(
-                    (option) => option.value === row.cost_center_id
-                  )}
-                  className="min-w-48"
-                  options={subCostCentersOptions}
-                  isDisabled={disabled}
-                />
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-3 py-4 whitespace-nowrap">
                 <Input
                   type="number"
                   value={
@@ -258,7 +242,7 @@ const DynamicTableForm = ({
               </td>
               {!isDefaultCurrency && (
                 <>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-3 py-4 whitespace-nowrap">
                     <Input
                       type="number"
                       value={row.f_amount as number}
@@ -272,8 +256,24 @@ const DynamicTableForm = ({
                   </td>
                 </>
               )}
+              <td className="px-3 py-4 whitespace-nowrap">
+                <Select
+                  id="cost_center_id"
+                  isSearchable={false}
+                  isClearable={false}
+                  onChange={(val) => {
+                    handleChange(index, "cost_center_id", val!.value!);
+                  }}
+                  value={subCostCentersOptions.find(
+                    (option) => option.value === row.cost_center_id
+                  )}
+                  className="min-w-48"
+                  options={subCostCentersOptions}
+                  isDisabled={disabled}
+                />
+              </td>
               {!disabled && (
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 whitespace-nowrap">
                   <div className="flex gap-2">
                     <Trash2
                       className="w-5 text-red-500 cursor-pointer"
