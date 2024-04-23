@@ -124,6 +124,13 @@ export const useParkAccountingEntriesColumns = () => {
       },
     },
     {
+      accessorKey: "type",
+      header: t("paymentWay"),
+      cell: ({ row }) => {
+        return row.original.type === "check" ? t("check") : t("cash");
+      },
+    },
+    {
       accessorKey: "amount",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("amount")} />
@@ -334,6 +341,13 @@ export const usePostAccountingEntriesColumns = () => {
       },
       meta: {
         header: t("user"),
+      },
+    },
+    {
+      accessorKey: "type",
+      header: t("paymentWay"),
+      cell: ({ row }) => {
+        return row.original.type === "check" ? t("check") : t("cash");
       },
     },
     {

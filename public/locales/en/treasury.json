@@ -88,5 +88,7 @@
   "status": "Status",
   "paymentWay": "Payment Way",
   "check": "Check",
-  "cash": "Cash"
+  "cash": "Cash",
+  "checkDate": "Check Date",
+  "refNo": "Reference No"
 }

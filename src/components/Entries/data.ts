@@ -1,12 +1,15 @@
+import { useTranslation } from "react-i18next";
+
 export const useEntryType = () => {
+  const { t } = useTranslation("entries");
   const entryTypes = [
     {
-      label: "Check",
-      value: "check",
+      label: t("cash"),
+      value: "cash",
     },
     {
-      label: "Cash",
-      value: "cash",
+      label: t("check"),                
+      value: "check",
     },
   ];
   return { entryTypes };

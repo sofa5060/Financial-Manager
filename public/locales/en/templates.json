@@ -39,5 +39,7 @@
   "debit": "Debit",
   "credit": "Credit",
   "debitInForeignCurrency": "Debit in Foreign Currency",
-  "creditInForeignCurrency": "Credit in Foreign Currency"
+  "creditInForeignCurrency": "Credit in Foreign Currency",
+  "checkDate": "Check Date",
+  "refNo": "Reference No"
 }

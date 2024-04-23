@@ -24,8 +24,8 @@ import { useAuthStore } from "@/hooks/useAuthStore";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useEntryType } from "../data";
 import { useBanksStore } from "@/hooks/useBanksStore";
-import { formatDate } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import InputDate from "@/components/common/InputDate/InputDate";
 
 type EntryFormProps = {
   type?: "view" | "edit" | "add";
@@ -111,6 +111,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     resolver: zodResolver(NewEntrySchema),
     defaultValues: {
       ...entry,
+      type: entry?.type || "cash",
       transactions: [],
     },
   });
@@ -150,7 +151,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
       <Separator className="my-6" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="flex max-w-[70%] gap-4 max-md:flex-col max-sm:max-w-full">
+          <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
             {entry && (
               <FormField
                 control={form.control}
@@ -175,30 +176,24 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                 )}
               />
             )}
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">
-                    {t("date")}
-                  </FormLabel>
-                  <div className="flex-col w-full">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className="w-full"
-                        placeholder="Pick a date"
-                        type="date"
-                        defaultValue={entry && formatDate(entry.date)}
-                        disabled={type === "view"}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+            <div className="flex justify-end flex-col items-start gap-1">
+              <label htmlFor="currency_id" className="font-medium text-sm">
+                {t("date")}
+              </label>
+              <div className="flex-col w-full">
+                <InputDate
+                  value={form.getValues("date")}
+                  onChange={(val) => {
+                    setValue("date", val);
+                  }}
+                  disabled={type === "view"}
+                  disableFuture
+                />
+                {errors.date && (
+                  <span className="error-text">{errors.date.message}</span>
+                )}
+              </div>
+            </div>
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="currency_id" className="font-medium text-sm">
                 {t("currency")}
@@ -282,9 +277,13 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     setValue("type", val!.value as EntryType);
                     setIsCheckPayment(val!.value === "check");
                   }}
-                  defaultValue={entryTypes.find(
-                    (entryType) => entryType.value === entry?.type
-                  )}
+                  defaultValue={
+                    entry
+                      ? entryTypes.find(
+                          (entryType) => entryType.value === entry?.type
+                        )
+                      : entryTypes[0]
+                  }
                   className="w-full"
                   options={entryTypes}
                 />
@@ -346,14 +345,56 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     )}
                   </div>
                 </div>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                  <label htmlFor="currency_id" className="font-medium text-sm">
+                    {t("checkDate")}
+                  </label>
+                  <div className="flex-col w-full">
+                    <InputDate
+                      value={form.getValues("check_date")}
+                      onChange={(val) => {
+                        setValue("check_date", val);
+                      }}
+                      disabled={type === "view"}
+                    />
+                    {errors.check_date && (
+                      <span className="error-text">
+                        {errors.check_date.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </>
             ) : (
               <>
                 <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
                 <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
               </>
             )}
           </div>
+          <FormField
+            control={form.control}
+            name="ref_no"
+            render={({ field }) => (
+              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
+                <FormLabel className="whitespace-nowrap">
+                  {t("refNo")}
+                </FormLabel>
+                <div className="flex-col w-full">
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full"
+                      placeholder={t("refNo")}
+                      disabled={type === "view"}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="title"

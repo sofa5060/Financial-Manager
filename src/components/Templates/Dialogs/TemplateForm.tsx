@@ -28,10 +28,10 @@ import DynamicTableForm from "./DynamicTableForm";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 import { useBanksStore } from "@/hooks/useBanksStore";
-import { formatDate } from "@/lib/utils";
 import TemplatesManager from "@/managers/TemplatesManager";
 import { useEntryType } from "@/components/Entries/data";
 import { useTranslation } from "react-i18next";
+import InputDate from "@/components/common/InputDate/InputDate";
 
 type TemplateFormProps = {
   type?: "view" | "edit" | "apply";
@@ -118,6 +118,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
     resolver: zodResolver(NewTemplateSchema),
     defaultValues: {
       ...template,
+      type: template?.type ?? "cash",
       transactions: [],
     },
   });
@@ -160,30 +161,24 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex max-w-[70%] gap-4 max-md:flex-col max-sm:max-w-full">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                  <FormLabel className="whitespace-nowrap">
-                    {t("date")}
-                  </FormLabel>
-                  <div className="flex-col w-full">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className="w-full"
-                        placeholder="Pick a date"
-                        type="date"
-                        defaultValue={template && formatDate(template.date)}
-                        disabled={type === "view"}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+            <div className="flex justify-end flex-col items-start gap-1">
+              <label htmlFor="currency_id" className="font-medium text-sm">
+                {t("date")}
+              </label>
+              <div className="flex-col w-full">
+                <InputDate
+                  value={form.getValues("date")}
+                  onChange={(val) => {
+                    setValue("date", val);
+                  }}
+                  disabled={type === "view"}
+                  disableFuture
+                />
+                {errors.date && (
+                  <span className="error-text">{errors.date.message}</span>
+                )}
+              </div>
+            </div>
             <div className="flex justify-end flex-1 flex-col items-start gap-1">
               <label htmlFor="currency_id" className="font-medium text-sm">
                 {t("currency")}
@@ -267,9 +262,14 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     setValue("type", val!.value as TemplateType);
                     setIsCheckPayment(val!.value === "check");
                   }}
-                  defaultValue={entryTypes.find(
-                    (templateType) => templateType.value === template?.type
-                  )}
+                  defaultValue={
+                    template
+                      ? entryTypes.find(
+                          (templateType) =>
+                            templateType.value === template?.type
+                        )
+                      : entryTypes[0]
+                  }
                   className="w-full"
                   options={entryTypes}
                 />
@@ -331,14 +331,56 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     )}
                   </div>
                 </div>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                  <label htmlFor="currency_id" className="font-medium text-sm">
+                    {t("checkDate")}
+                  </label>
+                  <div className="flex-col w-full">
+                    <InputDate
+                      value={form.getValues("check_date")}
+                      onChange={(val) => {
+                        setValue("check_date", val);
+                      }}
+                      disabled={type === "view"}
+                    />
+                    {errors.check_date && (
+                      <span className="error-text">
+                        {errors.check_date.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </>
             ) : (
               <>
                 <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
                 <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
               </>
             )}
           </div>
+          <FormField
+            control={form.control}
+            name="ref_no"
+            render={({ field }) => (
+              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
+                <FormLabel className="whitespace-nowrap">
+                  {t("refNo")}
+                </FormLabel>
+                <div className="flex-col w-full">
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full"
+                      placeholder={t("refNo")}
+                      disabled={type === "view"}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="title"

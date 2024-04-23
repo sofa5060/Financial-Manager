@@ -5,19 +5,47 @@ export const BondStatusSchema = z.enum(["park", "post"]);
 
 export const BondType = z.enum(["check", "cash"]);
 
-export const NewBondSchema = z.object({
-  title: z.string(),
-  currency_id: z.number(),
-  rate: z.number().nullable().optional(),
-  type: BondType,
-  bank_id: z.number().nullable().optional(),
-  check_no: z.string().nullable().optional(),
-  date: z.string(),
-  description: z.string(),
-  safe_account_id: z.number(),
-  transactions: z.array(TreasuryTransactionSchema),
-  document_code: z.string().optional(),
-});
+export const NewBondSchema = z
+  .object({
+    title: z.string(),
+    currency_id: z.number(),
+    rate: z.number().nullable().optional(),
+    type: BondType,
+    bank_id: z.number().nullable().optional(),
+    check_no: z.string().nullable().optional(),
+    check_date: z.string().nullable().optional(),
+    date: z.string(),
+    description: z.string(),
+    safe_account_id: z.number(),
+    transactions: z.array(TreasuryTransactionSchema),
+    document_code: z.string().optional(),
+    ref_no: z.string().optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.type === "check" && !val.check_no) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["check_no"],
+        message: "Check number is required",
+      });
+    }
+
+    if (val.type === "check" && !val.check_date) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["check_date"],
+        message: "Check date is required",
+      });
+    }
+
+    if (val.type === "check" && !val.bank_id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["bank_id"],
+        message: "Bank is required",
+      });
+    }
+  });
 
 export type TreasuryBond = {
   created_by: number;

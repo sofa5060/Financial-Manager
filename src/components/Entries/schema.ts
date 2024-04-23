@@ -5,18 +5,46 @@ export const EntryStatusSchema = z.enum(["park", "post"]);
 
 export const EntryType = z.enum(["check", "cash"]);
 
-export const NewEntrySchema = z.object({
-  title: z.string(),
-  currency_id: z.number(),
-  rate: z.number().optional(),
-  type: EntryType,
-  bank_id: z.number().optional().nullable(),
-  check_no: z.string().optional().nullable(),
-  date: z.string(),
-  description: z.string(),
-  transactions: z.array(TransactionSchema),
-  document_code: z.string().optional(),
-});
+export const NewEntrySchema = z
+  .object({
+    title: z.string(),
+    currency_id: z.number(),
+    rate: z.number().optional(),
+    type: EntryType,
+    bank_id: z.number().optional().nullable(),
+    check_no: z.string().optional().nullable(),
+    check_date: z.string().optional().nullable(),
+    date: z.string(),
+    description: z.string(),
+    transactions: z.array(TransactionSchema),
+    document_code: z.string().optional(),
+    ref_no: z.string().optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.type === "check" && !val.check_no) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["check_no"],
+        message: "Check number is required",
+      });
+    }
+
+    if (val.type === "check" && !val.check_date) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["check_date"],
+        message: "Check date is required",
+      });
+    }
+
+    if (val.type === "check" && !val.bank_id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["bank_id"],
+        message: "Bank is required",
+      });
+    }
+  });
 
 export type Entry = {
   id: number;

@@ -62,6 +62,27 @@ class AccountingEntriesManager {
   }
 
   static async addEntry(entry: NewEntry): Promise<Entry | undefined> {
+    const tempTransactions = JSON.parse(JSON.stringify(entry.transactions));
+    // replace undefined debit with 0
+    entry.transactions = tempTransactions.map((transaction: Transaction) => {
+      if (transaction.debit === undefined) {
+        transaction.debit = 0;
+      }
+      if (transaction.credit === undefined) {
+        transaction.credit = 0;
+      }
+
+      if (transaction.f_debit === null) {
+        transaction.f_debit = 0;
+      }
+
+      if (transaction.f_credit === null) {
+        transaction.f_credit = 0;
+      }
+
+      return transaction;
+    });
+
     try {
       const response = await axios.post("/api/entry", entry);
       return response.data;
@@ -138,7 +159,23 @@ class AccountingEntriesManager {
       delete transaction.posted_at;
       delete transaction.currency;
       delete transaction.entry_created_at;
-      delete transaction.date
+      delete transaction.date;
+
+      if (transaction.debit === undefined) {
+        transaction.debit = 0;
+      }
+      if (transaction.credit === undefined) {
+        transaction.credit = 0;
+      }
+
+      if (transaction.f_debit === null) {
+        transaction.f_debit = 0;
+      }
+
+      if (transaction.f_credit === null) {
+        transaction.f_credit = 0;
+      }
+
       return transaction;
     });
     console.log(entry);

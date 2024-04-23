@@ -39,5 +39,7 @@
   "debit": "مدين",
   "credit": "دائن",
   "debitInForeignCurrency": "مدين بالعملة الأجنبية",
-  "creditInForeignCurrency": "دائن بالعملة الأجنبية"
+  "creditInForeignCurrency": "دائن بالعملة الأجنبية",
+  "checkDate": "تاريخ الشيك",
+  "refNo": "الرقم المرجعي"
 }

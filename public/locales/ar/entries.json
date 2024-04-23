@@ -74,5 +74,10 @@
   "editAccountingEntry": "تحرير القيد المحاسبي",
   "printEntry": "طباعة القيد",
   "entry.failed": "فشل جلب القيد",
-  "newAccountingEntry": "قيد محاسبي جديد"
+  "newAccountingEntry": "قيد محاسبي جديد",
+  "cash": "نقدي",
+  "check": "شيك",
+  "checkDate": "تاريخ الشيك",
+  "refNo": "الرقم المرجعي",
+  "paymentWay": "طريقة الدفع"
 }
