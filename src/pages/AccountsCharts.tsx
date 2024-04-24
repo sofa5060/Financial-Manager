@@ -7,7 +7,12 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/use-toast";
 import AccountsManager from "@/managers/AccountsManager";
 import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+import {
+  ArrowDownFromLine,
+  ArrowUpFromLine,
+  Download,
+  Plus,
+} from "lucide-react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
@@ -73,15 +78,21 @@ const AccountsCharts = () => {
               <Button
                 className="btn-outline"
                 onClick={() => {
-                  AccountsManager.exportExcel(searchQuery, Object.keys(searchResults ? searchResults[0] : accounts![0]));
+                  AccountsManager.exportExcel(
+                    searchQuery,
+                    Object.keys(searchResults ? searchResults[0] : accounts![0])
+                  );
                 }}
               >
+                <Download className="w-5 h-5 me-2" />
                 {t("download")}
               </Button>
               <Button className="btn-outline" onClick={collapseAllAccounts}>
+                <ArrowUpFromLine className="w-5 h-5 me-2" />
                 {t("collapseAll")}
               </Button>
               <Button className="btn-outline" onClick={expandAllAccounts}>
+                <ArrowDownFromLine className="w-5 h-5 me-2" />
                 {t("expandAll")}
               </Button>
             </div>

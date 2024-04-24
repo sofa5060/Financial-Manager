@@ -9,7 +9,7 @@ import { useStateCallback } from "@/hooks/useStateCallBack";
 import CostCentersManager from "@/managers/CostCentersManager";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
-import { Plus } from "lucide-react";
+import { ArrowDownFromLine, ArrowUpFromLine, Download, Plus } from "lucide-react";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useTranslation } from "react-i18next";
@@ -73,11 +73,16 @@ const CostCentersCharts = () => {
           </h1>
           <div className="flex">
             <div className="flex gap-4 flex-wrap">
-              <Button className="btn-outline">{t("download")}</Button>
+              <Button className="btn-outline">
+                <Download className="w-5 h-5 me-2" />
+                {t("download")}
+              </Button>
               <Button className="btn-outline" onClick={collapseAllCostCenters}>
+                <ArrowUpFromLine className="w-5 h-5 me-2" />
                 {t("collapseAll")}
               </Button>
               <Button className="btn-outline" onClick={expandAllCostCenters}>
+                <ArrowDownFromLine className="w-5 h-5 me-2" />
                 {t("expandAll")}
               </Button>
             </div>
