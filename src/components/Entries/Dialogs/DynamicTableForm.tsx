@@ -127,7 +127,7 @@ const DynamicTableForm = ({
   }, [rows]);
 
   return (
-    <div className="w-full pb-16 overflow-x-auto">
+    <div className="w-full pb-44 overflow-x-auto">
       <table className="w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -222,6 +222,7 @@ const DynamicTableForm = ({
                         )
                   }
                   className="min-w-48"
+                  maxMenuHeight={180}
                   options={
                     i18n.language === "en"
                       ? enCategoriesOptions
@@ -244,6 +245,7 @@ const DynamicTableForm = ({
                     (option) => option.value === row.account_id
                   )}
                   className="min-w-40"
+                  maxMenuHeight={180}
                   options={subAccountCodesOptions}
                   required
                   isDisabled={disabled}
@@ -269,6 +271,7 @@ const DynamicTableForm = ({
                         )
                   }
                   className="min-w-48"
+                  maxMenuHeight={180}
                   options={
                     i18n.language === "en"
                       ? enSubAccountOptions
@@ -373,6 +376,7 @@ const DynamicTableForm = ({
                           )
                     }
                     className="min-w-48"
+                    maxMenuHeight={180}
                     options={
                       i18n.language === "en"
                         ? enSubCostCentersOptions
