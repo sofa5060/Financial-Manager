@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NewTransaction, Transaction } from "@/components/Transactions/schema";
 import DynamicTableForm from "./DynamicTableForm";
 import { useAuthStore } from "@/hooks/useAuthStore";
@@ -26,6 +26,7 @@ import { useEntryType } from "../data";
 import { useBanksStore } from "@/hooks/useBanksStore";
 import { useTranslation } from "react-i18next";
 import InputDate from "@/components/common/InputDate/InputDate";
+import { cn } from "@/lib/utils";
 
 type EntryFormProps = {
   type?: "view" | "edit" | "add";
@@ -146,9 +147,46 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     }
   }, [form.watch("rate"), form.watch("currency_id"), currencies]);
 
+  const totalDebit = useMemo(() => {
+    return transactions.reduce(
+      (acc, curr) => (curr.debit ? acc + curr.debit : acc),
+      0
+    );
+  }, [transactions]);
+
+  const totalCredit = useMemo(() => {
+    return transactions.reduce(
+      (acc, curr) => (curr.credit ? acc + curr.credit : acc),
+      0
+    );
+  }, [transactions]);
+
   return (
     <div>
-      <h2 className="font-medium text-lg">{HEADERS[type]}</h2>
+      <div className="flex items-center justify-between flex-wrap gap-8">
+        <h2 className="font-medium text-lg">{HEADERS[type]}</h2>
+        <div className="flex items-center gap-12">
+          <div className="flex flex-col gap-2 items-center">
+            <h3 className="text-sm font-medium">Total Debit</h3>
+            <h2 className="text-xl font-semibold">{totalDebit}</h2>
+          </div>
+          <div className="flex flex-col gap-2 items-center">
+            <h3 className="text-sm font-medium">Total Credit</h3>
+            <h2 className="text-xl font-semibold">{totalCredit}</h2>
+          </div>
+          <div className="flex flex-col gap-2 items-center">
+            <h3 className="text-sm font-medium">Net</h3>
+            <h2
+              className={cn("text-xl font-semibold", {
+                "text-green-500": totalDebit - totalCredit === 0,
+                "text-red-500": totalDebit - totalCredit !== 0,
+              })}
+            >
+              {totalDebit - totalCredit}
+            </h2>
+          </div>
+        </div>
+      </div>
       <Separator className="my-6" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -345,7 +383,9 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                           : undefined
                       }
                       className="w-full"
-                      options={i18n.language === "en" ? enBanksOptions : arBanksOptions}
+                      options={
+                        i18n.language === "en" ? enBanksOptions : arBanksOptions
+                      }
                     />
                     {errors.bank_id && (
                       <span className="error-text">
