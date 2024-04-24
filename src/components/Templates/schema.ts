@@ -19,6 +19,8 @@ export const NewTemplateSchema = z
     transactions: z.array(TransactionSchema),
     document_code: z.string().optional(),
     ref_no: z.string().optional(),
+    attachments: z.array(z.string()).nullable().optional(),
+    files: z.array(z.any()).nullable().optional(),
   })
   .superRefine((val, ctx) => {
     if (val.type === "check" && !val.check_no) {

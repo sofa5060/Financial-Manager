@@ -117,6 +117,42 @@ const DynamicTableForm = ({
     setRows(updatedRows);
   };
 
+  const getAccountsOptions = (language: string, categoryId: number) => {
+    if (language === "en") {
+      if (categoryId === null || categoryId === undefined)
+        return enSubAccountOptions;
+      return enSubAccountOptions.filter(
+        (option) =>
+          subAccounts
+            .find((acc) => acc.id === option.value)
+            ?.categories.findIndex((category) => category.id === categoryId) !==
+          -1
+      );
+    } else {
+      if (categoryId === null || categoryId === undefined)
+        return arSubAccountOptions;
+      return arSubAccountOptions.filter(
+        (option) =>
+          subAccounts
+            .find((acc) => acc.id === option.value)
+            ?.categories.findIndex((category) => category.id === categoryId) !==
+          -1
+      );
+    }
+  };
+
+  const getAccountsCodesOptions = (categoryId: number) => {
+    if (categoryId === null || categoryId === undefined)
+      return subAccountCodesOptions;
+    return subAccountCodesOptions.filter(
+      (option) =>
+        subAccounts
+          .find((acc) => acc.id === option.value)
+          ?.categories.findIndex((category) => category.id === categoryId) !==
+        -1
+    );
+  };
+
   useEffect(() => {
     setTransactions(rows);
   }, [rows]);
@@ -207,7 +243,10 @@ const DynamicTableForm = ({
                   isSearchable={true}
                   isClearable={true}
                   onChange={(val) => {
+                    if (val === null)
+                      return handleChange(index, "category_id", null);
                     handleChange(index, "category_id", val!.value!);
+                    handleChange(index, "account_id", "");
                   }}
                   value={
                     row.category_id === null
@@ -235,17 +274,18 @@ const DynamicTableForm = ({
                   id="account_code"
                   isSearchable={true}
                   isClearable={false}
+                  key={row.account_id + " " + row.category_id}
                   onChange={(val) => {
                     console.log(val);
                     handleChange(index, "account_id", val!.value);
                     handleChange(index, "cost_center_id", null);
                   }}
-                  value={subAccountCodesOptions.find(
+                  value={getAccountsCodesOptions(row.category_id!).find(
                     (option) => option.value === row.account_id
                   )}
                   className="min-w-40"
                   maxMenuHeight={180}
-                  options={subAccountCodesOptions}
+                  options={getAccountsCodesOptions(row.category_id!)}
                   required
                   isDisabled={disabled}
                 />
@@ -255,27 +295,19 @@ const DynamicTableForm = ({
                   id="account_name"
                   isSearchable={true}
                   isClearable={false}
+                  key={row.account_id + " " + row.category_id}
                   onChange={(val) => {
                     console.log(val);
                     handleChange(index, "account_id", val!.value);
                     handleChange(index, "cost_center_id", null);
                   }}
-                  value={
-                    i18n.language
-                      ? enSubAccountOptions.find(
-                          (option) => option.value === row.account_id
-                        )
-                      : arSubAccountOptions.find(
-                          (option) => option.value === row.account_id
-                        )
-                  }
+                  value={getAccountsOptions(
+                    i18n.language,
+                    row.category_id!
+                  ).find((option) => option.value === row.account_id)}
                   className="min-w-48"
                   maxMenuHeight={180}
-                  options={
-                    i18n.language === "en"
-                      ? enSubAccountOptions
-                      : arSubAccountOptions
-                  }
+                  options={getAccountsOptions(i18n.language, row.category_id!)}
                   required
                   isDisabled={disabled}
                 />

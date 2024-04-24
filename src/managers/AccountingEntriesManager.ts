@@ -11,6 +11,37 @@ type AccountingEntriesResponse = {
   totalEntries: number;
 };
 
+async function updateAttachments(
+  entryId: number,
+  attachments: File[]
+): Promise<Entry | undefined> {
+  console.log("called")
+  const formData = new FormData();
+  console.log(attachments)
+  Array.from(attachments).forEach((attachment) => {
+    formData.append("file", attachment);
+  });
+
+  console.log(formData.get("file"));
+
+  try {
+    const response = await axios.post(
+      `/api/entry/${entryId}/attachment`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    handleAxiosError(error as AxiosError);
+  }
+}
+
 class AccountingEntriesManager {
   static async getPostEntries(
     page: number = 1,
@@ -61,6 +92,19 @@ class AccountingEntriesManager {
     }
   }
 
+  static async deleteAttachments(entryId: number, attachmentNames: string[]) {
+    try {
+      const response = await axios.delete(`/api/entry/${entryId}/attachment`, {
+        files: [attachmentNames],
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
   static async addEntry(entry: NewEntry): Promise<Entry | undefined> {
     const tempTransactions = JSON.parse(JSON.stringify(entry.transactions));
     // replace undefined debit with 0
@@ -83,9 +127,17 @@ class AccountingEntriesManager {
       return transaction;
     });
 
+    const files = entry.files;
+    delete entry.files;
+
     try {
       const response = await axios.post("/api/entry", entry);
-      return response.data;
+      console.log(entry)
+      if (files && files.length > 0) {
+        await updateAttachments(response.data.id, files);
+      } else {
+        return response.data;
+      }
     } catch (error) {
       console.log(error);
       handleAxiosError(error as AxiosError);

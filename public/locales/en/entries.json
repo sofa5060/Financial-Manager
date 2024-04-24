@@ -80,5 +80,6 @@
   "checkDate": "Check Date",
   "refNo": "Reference No",
   "paymentWay": "Payment Way",
-  "basicInfo": "Basic Info"
+  "basicInfo": "Basic Info",
+  "attachments": "Attachments"
 }

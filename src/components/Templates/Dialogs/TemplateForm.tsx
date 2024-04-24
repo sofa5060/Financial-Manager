@@ -210,7 +210,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
               <AccordionTrigger>
                 <h3 className="text-lg font-medium">{t("basicInfo")}</h3>
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="space-y-4">
                 <div className="flex max-w-[70%] gap-4 max-md:flex-col max-sm:max-w-full items-center max-md:items-start">
                   <div className="flex justify-end flex-col items-start gap-1">
                     <label

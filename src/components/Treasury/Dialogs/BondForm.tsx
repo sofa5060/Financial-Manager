@@ -192,7 +192,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
               <AccordionTrigger>
                 <h3 className="text-lg font-medium">{t("basicInfo")}</h3>
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="space-y-4">
                 <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
                   {bond && (
                     <FormField

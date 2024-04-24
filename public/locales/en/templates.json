@@ -45,5 +45,6 @@
   "refNo": "Reference No",
   "template": "Template",
   "view": "View",
-  "basicInfo": "Basic Info"
+  "basicInfo": "Basic Info",
+  "attachments": "Attachments"
 }

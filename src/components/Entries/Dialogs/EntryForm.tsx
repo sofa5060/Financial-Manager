@@ -33,6 +33,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Attachment from "./attachment";
 
 type EntryFormProps = {
   type?: "view" | "edit" | "add";
@@ -125,6 +126,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
   });
 
   const {
+    register,
     setValue,
     formState: { errors },
   } = form;
@@ -167,6 +169,8 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     );
   }, [transactions]);
 
+  console.log(form.formState.errors)
+
   return (
     <div>
       <div className="flex items-center justify-between flex-wrap gap-8">
@@ -201,7 +205,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               <AccordionTrigger>
                 <h3 className="text-lg font-medium">{t("basicInfo")}</h3>
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="space-y-4">
                 <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
                   {entry && (
                     <FormField
@@ -476,6 +480,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     </FormItem>
                   )}
                 />
+                <Attachment register={register}/>
                 <FormField
                   control={form.control}
                   name="title"

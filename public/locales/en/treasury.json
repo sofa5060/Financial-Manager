@@ -91,5 +91,7 @@
   "cash": "Cash",
   "checkDate": "Check Date",
   "refNo": "Reference No",
-  "basicInfo": "Basic Info"
+  "basicInfo": "Basic Info",
+  "attachments": "Attachments"
+
 }

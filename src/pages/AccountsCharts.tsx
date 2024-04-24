@@ -48,8 +48,6 @@ const AccountsCharts = () => {
     });
   };
 
-  console.log(accounts)
-
   if (isLoading)
     return (
       <div className="grid place-items-center w-full h-full min-h-screen">
@@ -72,7 +70,14 @@ const AccountsCharts = () => {
           <h1 className="text-primary text-3xl font-semibold">{t("charts")}</h1>
           <div className="flex">
             <div className="flex gap-4 flex-wrap">
-              <Button className="btn-outline">{t("download")}</Button>
+              <Button
+                className="btn-outline"
+                onClick={() => {
+                  AccountsManager.exportExcel(searchQuery, Object.keys(searchResults ? searchResults[0] : accounts![0]));
+                }}
+              >
+                {t("download")}
+              </Button>
               <Button className="btn-outline" onClick={collapseAllAccounts}>
                 {t("collapseAll")}
               </Button>

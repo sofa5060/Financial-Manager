@@ -3,6 +3,7 @@
 import { Account, NewAccount, SubAccount } from "@/components/Accounts/schema";
 import { handleAxiosError } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
+import fileDownload from "js-file-download";
 
 class AccountsManager {
   static async getAccounts(): Promise<Account[] | undefined> {
@@ -50,10 +51,10 @@ class AccountsManager {
   }
 
   static async addAccount(account: NewAccount): Promise<Account | undefined> {
-    if(account.properties === "main"){
+    if (account.properties === "main") {
       delete account.categories;
       delete account.currencies;
-      delete account.cost_center
+      delete account.cost_center;
     }
 
     try {
@@ -70,12 +71,12 @@ class AccountsManager {
     account: Partial<Account>,
     accountId: number
   ): Promise<Account | undefined> {
-    if(account.properties === "main"){
+    if (account.properties === "main") {
       delete account.categories;
       delete account.currencies;
-      delete account.cost_center
+      delete account.cost_center;
     }
-    
+
     try {
       const response = await axios.put(`/api/account/${accountId}`, account);
       console.log(response.data);
@@ -102,6 +103,33 @@ class AccountsManager {
       const response = await axios.put(`/api/account/${accountId}/enabled`, {
         enabled,
       });
+      return response.data;
+    } catch (error) {
+      handleAxiosError(error as AxiosError);
+    }
+  }
+
+  static async exportExcel(query: string, columns: string[]) {
+    try {
+      const response = await axios.get(
+        `/api/account?search=${query}&columns=${columns
+          .map((column) => `${column}-${column}`)
+          .join(",")}`,
+        {
+          responseType: "blob",
+          headers: {
+            Accept:
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          },
+        }
+      );
+      console.log((response.data as Blob).slice(28, response.data.size - 1));
+      fileDownload(
+        (response.data as Blob).slice(27, response.data.size - 1),
+        "test.csv"
+      );
+      console.log(response.data);
+
       return response.data;
     } catch (error) {
       handleAxiosError(error as AxiosError);
