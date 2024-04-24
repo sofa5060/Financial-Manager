@@ -31,6 +31,7 @@
   "close": "Close",
   "applyTemplate": "Apply Template",
   "apply": "Apply",
+  "edit": "Edit",
   "save": "Save",
   "accountCategory": "Account Category",
   "accountCode": "Account Code",
@@ -41,5 +42,7 @@
   "debitInForeignCurrency": "Debit in Foreign Currency",
   "creditInForeignCurrency": "Credit in Foreign Currency",
   "checkDate": "Check Date",
-  "refNo": "Reference No"
+  "refNo": "Reference No",
+  "template": "Template",
+  "view": "View"
 }

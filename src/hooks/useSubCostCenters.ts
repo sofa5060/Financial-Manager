@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 type state = {
   subCostCenters: SubCostCenter[];
-  subCostCentersOptions: { value: number | null; label: string }[];
+  enSubCostCentersOptions: { value: number | null; label: string }[];
+  arSubCostCentersOptions: { value: number | null; label: string }[];
   subCostCentersCodesOptions: { value: number | null; label: string }[];
 };
 
@@ -13,16 +14,24 @@ type actions = {
 
 export const useSubCostCentersStore = create<state & actions>((set) => ({
   subCostCenters: [],
-  subCostCentersOptions: [],
+  enSubCostCentersOptions: [],
+  arSubCostCentersOptions: [],
   subCostCentersCodesOptions: [],
   setSubCostCenters: (subCostCenters) =>
     set({
       subCostCenters,
-      subCostCentersOptions: [
+      enSubCostCentersOptions: [
         { value: null, label: "None" },
         ...subCostCenters.map((subCostCenters) => ({
           value: subCostCenters.id,
           label: subCostCenters.name_en,
+        })),
+      ],
+      arSubCostCentersOptions: [
+        { value: null, label: "None" },
+        ...subCostCenters.map((subCostCenters) => ({
+          value: subCostCenters.id,
+          label: subCostCenters.name_ar,
         })),
       ],
       subCostCentersCodesOptions: [

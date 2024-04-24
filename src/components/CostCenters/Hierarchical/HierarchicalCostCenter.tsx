@@ -49,7 +49,7 @@ const HierarchicalCostCenter = ({
     <div className="flex items-stretch">
       <div
         className={cn(
-          "border-l-2 border-dashed border-[#E4E4E7]",
+          "border-l-2 border-dashed border-[#999]",
           lastElement && "h-0",
           level === 1 && "hidden"
         )}
@@ -61,11 +61,11 @@ const HierarchicalCostCenter = ({
               {lastElement && (
                 <div
                   className={cn(
-                    "border-s-2 border-dashed border-[#E4E4E7] h-1/2 -ms-0.5 mt-0.5"
+                    "border-s-2 border-dashed border-[#999] h-1/2 -ms-0.5 mt-0.5"
                   )}
                 ></div>
               )}
-              <div className="border-b-2 border-dashed border-[#E4E4E7] w-6 h-1 self-center"></div>
+              <div className="border-b-2 border-dashed border-[#999] w-6 h-1 self-center"></div>
             </div>
           )}
           <div className="flex items-center gap-4 mt-4">
@@ -74,7 +74,7 @@ const HierarchicalCostCenter = ({
                 className={cn(
                   "border-s-4 border-primary ps-2 flex items-center gap-4",
                   {
-                    "border-[#A16207]": costCenter.properties === "sub",
+                    "border-secondary": costCenter.properties === "sub",
                   }
                 )}
               >
@@ -84,7 +84,7 @@ const HierarchicalCostCenter = ({
                       className={cn(
                         "text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap",
                         {
-                          "bg-[#A16207]": costCenter.properties === "sub",
+                          "bg-secondary": costCenter.properties === "sub",
                         }
                       )}
                     >

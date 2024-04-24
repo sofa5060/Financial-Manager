@@ -39,7 +39,7 @@ type BondFormProps = {
 };
 
 const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
-  const { t } = useTranslation("treasury");
+  const { t, i18n } = useTranslation("treasury");
   const name = useAuthStore((state) => state.name);
   const [rate, setRate] = useState<number | undefined>(bond?.rate ?? undefined);
   const currenciesOptions = useCurrenciesStore(
@@ -47,12 +47,16 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
   );
   const currencies = useCurrenciesStore((state) => state.currencies);
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
-  const banksOptions = useBanksStore((state) => state.banksOptions);
+  const enBanksOptions = useBanksStore((state) => state.enBanksOptions);
+  const arBanksOptions = useBanksStore((state) => state.arBanksOptions);
   // const subCostCentersOptions = useSubCostCentersStore(
   //   (state) => state.subCostCentersOptions
   // );
-  const subAccountOptions = useSubAccountsStore(
-    (state) => state.subAccountOptions
+  const enSubAccountOptions = useSubAccountsStore(
+    (state) => state.enSubAccountOptions
+  );
+  const arSubAccountOptions = useSubAccountsStore(
+    (state) => state.arSubAccountOptions
   );
   const [isDefaultCurrency, setIsDefaultCurrency] = useState(
     bond ? bond.currency_id === defaultCurrency?.id : true
@@ -169,7 +173,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
     }
   }, [form.watch("rate"), form.watch("currency_id"), currencies]);
 
-  console.log(form.formState.errors)
+  console.log(form.formState.errors);
 
   return (
     <div>
@@ -356,11 +360,21 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                         form.clearErrors("bank_id");
                         setValue("bank_id", val!.value);
                       }}
-                      defaultValue={banksOptions.find(
-                        (bank) => bank.value === bond?.bank_id
-                      )}
+                      defaultValue={
+                        bond
+                          ? i18n.language === "en"
+                            ? enBanksOptions.find(
+                                (bank) => bank.value === bond?.bank_id
+                              )
+                            : arBanksOptions.find(
+                                (bank) => bank.value === bond?.bank_id
+                              )
+                          : undefined
+                      }
                       className="w-full"
-                      options={banksOptions}
+                      options={
+                        i18n.language === "en" ? enBanksOptions : arBanksOptions
+                      }
                     />
                     {errors.bank_id && (
                       <span className="error-text">
@@ -478,11 +492,21 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                     form.clearErrors("safe_account_id");
                     setValue("safe_account_id", val!.value as number);
                   }}
-                  defaultValue={subAccountOptions.find(
-                    (account) => account.value === bond?.safe_account_id
-                  )}
+                  defaultValue={
+                    i18n.language === "en"
+                      ? enSubAccountOptions.find(
+                          (account) => account.value === bond?.safe_account_id
+                        )
+                      : arSubAccountOptions.find(
+                          (account) => account.value === bond?.safe_account_id
+                        )
+                  }
                   className="w-full"
-                  options={subAccountOptions}
+                  options={
+                    i18n.language === "en"
+                      ? enSubAccountOptions
+                      : arSubAccountOptions
+                  }
                 />
                 {errors.safe_account_id && (
                   <span className="error-text">

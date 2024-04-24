@@ -3,9 +3,11 @@ import { toast } from "@/components/ui/use-toast";
 import TemplatesManager from "@/managers/TemplatesManager";
 import { useQuery } from "@tanstack/react-query";
 import { FlowerSpinner } from "react-epic-spinners";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 const EditTemplateForm = () => {
+  const {t} = useTranslation("templates");
   const { id } = useParams();
 
   const { data, isLoading, isError } = useQuery({
@@ -33,7 +35,7 @@ const EditTemplateForm = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Edit Account <span className="text-primary">Template</span>
+          {t("edit")} <span className="text-primary">{t("template")}</span>
         </h1>
       </div>
       <div className="mt-7 ms-2">

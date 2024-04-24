@@ -23,19 +23,28 @@ const DynamicTableForm = ({
   disabled,
   rate,
 }: DynamicTableFormProps) => {
-  const { t } = useTranslation("treasury");
-  const subAccountOptions = useSubAccountsStore(
-    (state) => state.subAccountOptions
+  const { t, i18n } = useTranslation("treasury");
+  const enSubAccountOptions = useSubAccountsStore(
+    (state) => state.enSubAccountOptions
+  );
+  const arSubAccountOptions = useSubAccountsStore(
+    (state) => state.arSubAccountOptions
   );
   const subAccounts = useSubAccountsStore((state) => state.subAccounts);
   const subAccountCodesOptions = useSubAccountsStore(
     (state) => state.subAccountCodesOptions
   );
-  const subCostCentersOptions = useSubCostCentersStore(
-    (state) => state.subCostCentersOptions
+  const enSubCostCentersOptions = useSubCostCentersStore(
+    (state) => state.enSubCostCentersOptions
   );
-  const categoriesOptions = useCategoriesStore(
-    (state) => state.categoriesOptions
+  const arSubCostCentersOptions = useSubCostCentersStore(
+    (state) => state.arSubCostCentersOptions
+  );
+  const arCategoriesOptions = useCategoriesStore(
+    (state) => state.arCategoriesOptions
+  );
+  const enCategoriesOptions = useCategoriesStore(
+    (state) => state.enCategoriesOptions
   );
 
   const [rows, setRows] = useState<NewTreasuryTransaction[]>(
@@ -169,11 +178,23 @@ const DynamicTableForm = ({
                   onChange={(val) => {
                     handleChange(index, "category_id", val!.value!);
                   }}
-                  value={categoriesOptions.find(
-                    (option) => option.value === row.account_id
-                  )}
+                  value={
+                    row.category_id === null
+                      ? null
+                      : i18n.language === "en"
+                      ? enCategoriesOptions.find(
+                          (option) => option.value === row.category_id
+                        )
+                      : arCategoriesOptions.find(
+                          (option) => option.value === row.category_id
+                        )
+                  }
                   className="min-w-48"
-                  options={categoriesOptions}
+                  options={
+                    i18n.language === "en"
+                      ? enCategoriesOptions
+                      : arCategoriesOptions
+                  }
                   isDisabled={disabled}
                 />
               </td>
@@ -206,11 +227,21 @@ const DynamicTableForm = ({
                     handleChange(index, "account_id", val!.value);
                     handleChange(index, "cost_center_id", null);
                   }}
-                  value={subAccountOptions.find(
-                    (option) => option.value === row.account_id
-                  )}
+                  value={
+                    i18n.language === "en"
+                      ? enSubAccountOptions.find(
+                          (option) => option.value === row.account_id
+                        )
+                      : arSubAccountOptions.find(
+                          (option) => option.value === row.account_id
+                        )
+                  }
                   className="min-w-48"
-                  options={subAccountOptions}
+                  options={
+                    i18n.language === "en"
+                      ? enSubAccountOptions
+                      : arSubAccountOptions
+                  }
                   required
                   isDisabled={disabled}
                 />
@@ -239,7 +270,7 @@ const DynamicTableForm = ({
                     handleChange(index, "amount", e.target.value)
                   }
                   required
-                  className="min-w-32"
+                  className="w-36"
                   disabled={!isDefaultCurrency || disabled}
                 />
               </td>
@@ -253,7 +284,7 @@ const DynamicTableForm = ({
                         handleChange(index, "f_amount", e.target.value)
                       }
                       required
-                      className="min-w-32"
+                      className="w-36"
                       disabled={disabled}
                     />
                   </td>
@@ -270,11 +301,21 @@ const DynamicTableForm = ({
                     onChange={(val) => {
                       handleChange(index, "cost_center_id", val!.value!);
                     }}
-                    value={subCostCentersOptions.find(
-                      (option) => option.value === row.cost_center_id
-                    )}
+                    value={
+                      i18n.language === "en"
+                        ? enSubCostCentersOptions.find(
+                            (option) => option.value === row.cost_center_id
+                          )
+                        : arSubCostCentersOptions.find(
+                            (option) => option.value === row.cost_center_id
+                          )
+                    }
                     className="min-w-48"
-                    options={subCostCentersOptions}
+                    options={
+                      i18n.language === "en"
+                        ? enSubCostCentersOptions
+                        : arSubCostCentersOptions
+                    }
                     isDisabled={disabled}
                   />
                 </td>

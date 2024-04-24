@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 type State = {
   groups: Group[];
-  groupsOptions: { value: number; label: string }[];
+  enGroupsOptions: { value: number; label: string }[];
+  arGroupsOptions: { value: number; label: string }[];
 };
 
 type Actions = {
@@ -12,13 +13,18 @@ type Actions = {
 
 export const useGroupsStore = create<State & Actions>((set) => ({
   groups: [],
-  groupsOptions: [],
+  enGroupsOptions: [],
+  arGroupsOptions: [],
   setGroups: (groups) =>
     set({
       groups,
-      groupsOptions: groups.map((group) => ({
+      enGroupsOptions: groups.map((group) => ({
         value: group.id,
         label: group.name_en,
+      })),
+      arGroupsOptions: groups.map((group) => ({
+        value: group.id,
+        label: group.name_ar,
       })),
     }),
 }));

@@ -13,7 +13,7 @@
   "delete.confirm": "حذف هذا القالب",
   "cancel": "إلغاء",
   "template.view": "عرض القالب",
-  "template.edit": "تحرير القالب",
+  "template.edit": "تعديل القالب",
   "template.apply": "تطبيق القالب",
   "edit.success": "تم تحديث القالب بنجاح.",
   "edit.failed": "فشل تحديث القالب.",
@@ -31,6 +31,7 @@
   "close": "إغلاق",
   "applyTemplate": "تطبيق القالب",
   "apply": "تطبيق",
+  "edit": "تعديل",
   "save": "حفظ",
   "accountCategory": "فئة الحساب",
   "accountCode": "كود الحساب",
@@ -41,5 +42,7 @@
   "debitInForeignCurrency": "مدين بالعملة الأجنبية",
   "creditInForeignCurrency": "دائن بالعملة الأجنبية",
   "checkDate": "تاريخ الشيك",
-  "refNo": "الرقم المرجعي"
+  "refNo": "الرقم المرجعي",
+  "template": "القالب",
+  "view": "عرض"
 }

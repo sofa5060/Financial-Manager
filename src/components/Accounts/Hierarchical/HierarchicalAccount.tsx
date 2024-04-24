@@ -51,7 +51,7 @@ const HierarchicalAccount = ({
     <div className="flex items-stretch">
       <div
         className={cn(
-          "border-s-2 border-dashed border-[#E4E4E7]",
+          "border-s-2 border-dashed border-[#999]",
           lastElement && "h-0",
           level === 1 && "hidden"
         )}
@@ -63,11 +63,11 @@ const HierarchicalAccount = ({
               {lastElement && (
                 <div
                   className={cn(
-                    "border-s-2 border-dashed border-[#E4E4E7] h-1/2 -ms-0.5 mt-0.5"
+                    "border-s-2 border-dashed border-[#999] h-1/2 -ms-0.5 mt-0.5"
                   )}
                 ></div>
               )}
-              <div className="border-b-2 border-dashed border-[#E4E4E7] w-6 h-1 self-center"></div>
+              <div className="border-b-2 border-dashed border-[#999] w-6 h-1 self-center"></div>
             </div>
           )}
           <div className="flex items-center gap-4 mt-4">
@@ -75,7 +75,7 @@ const HierarchicalAccount = ({
               <div
                 className={cn("border-s-4 ps-2 flex items-center gap-4", {
                   "border-primary": account.properties === "main",
-                  "border-[#A16207]": account.properties === "sub",
+                  "border-secondary": account.properties === "sub",
                 })}
               >
                 <div className="flex gap-2">
@@ -84,7 +84,7 @@ const HierarchicalAccount = ({
                       className={cn(
                         "text-xs bg-primary text-white px-2 rounded-sm whitespace-nowrap",
                         {
-                          "bg-[#A16207]": account.properties === "sub",
+                          "bg-secondary": account.properties === "sub",
                         }
                       )}
                     >

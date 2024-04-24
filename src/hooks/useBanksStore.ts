@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 type State = {
   banks: Bank[];
-  banksOptions: { value: number; label: string }[];
+  enBanksOptions: { value: number; label: string }[];
+  arBanksOptions: { value: number; label: string }[];
 };
 
 type Actions = {
@@ -13,13 +14,18 @@ type Actions = {
 export const useBanksStore = create<State & Actions>((set) => ({
   banks: [],
   defaultBank: null,
-  banksOptions: [],
+  enBanksOptions: [],
+  arBanksOptions: [],
   setBanks: (banks) =>
     set({
       banks,
-      banksOptions: banks.map((bank) => ({
+      enBanksOptions: banks.map((bank) => ({
         value: bank.id,
         label: bank.name_en,
       })),
+      arBanksOptions: banks.map((bank) => ({
+        value: bank.id,
+        label: bank.name_ar,
+      }))
     }),
 }));

@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 type state = {
   subAccounts: SubAccount[];
-  subAccountOptions: { value: number; label: string }[];
+  enSubAccountOptions: { value: number; label: string }[];
+  arSubAccountOptions: { value: number; label: string }[];
   subAccountCodesOptions: { value: number; label: string }[];
 };
 
@@ -13,14 +14,19 @@ type actions = {
 
 export const useSubAccountsStore = create<state & actions>((set) => ({
   subAccounts: [],
-  subAccountOptions: [],
+  enSubAccountOptions: [],
+  arSubAccountOptions: [],
   subAccountCodesOptions: [],
   setSubAccounts: (subAccounts) =>
     set({
       subAccounts,
-      subAccountOptions: subAccounts.map((subAccount) => ({
+      enSubAccountOptions: subAccounts.map((subAccount) => ({
         value: subAccount.id,
         label: subAccount.name_en,
+      })),
+      arSubAccountOptions: subAccounts.map((subAccount) => ({
+        value: subAccount.id,
+        label: subAccount.name_ar,
       })),
       subAccountCodesOptions: subAccounts.map((subAccount) => ({
         value: subAccount.id,

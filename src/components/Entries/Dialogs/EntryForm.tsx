@@ -32,7 +32,7 @@ type EntryFormProps = {
   entry?: Entry;
 };
 const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
-  const { t } = useTranslation("entries");
+  const { t, i18n } = useTranslation("entries");
   const [rate, setRate] = useState<number | undefined>(
     entry?.rate ?? undefined
   );
@@ -42,7 +42,8 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
   );
   const currencies = useCurrenciesStore((state) => state.currencies);
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
-  const banksOptions = useBanksStore((state) => state.banksOptions);
+  const enBanksOptions = useBanksStore((state) => state.enBanksOptions);
+  const arBanksOptions = useBanksStore((state) => state.arBanksOptions);
   const [isDefaultCurrency, setIsDefaultCurrency] = useState(
     entry ? entry.currency_id === defaultCurrency?.id : true
   );
@@ -332,11 +333,19 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                         form.clearErrors("bank_id");
                         setValue("bank_id", val!.value);
                       }}
-                      defaultValue={banksOptions.find(
-                        (bank) => bank.value === entry?.bank_id
-                      )}
+                      defaultValue={
+                        entry
+                          ? i18n.language === "en"
+                            ? enBanksOptions.find(
+                                (bank) => bank.value === entry?.bank_id
+                              )
+                            : arBanksOptions.find(
+                                (bank) => bank.value === entry?.bank_id
+                              )
+                          : undefined
+                      }
                       className="w-full"
-                      options={banksOptions}
+                      options={i18n.language === "en" ? enBanksOptions : arBanksOptions}
                     />
                     {errors.bank_id && (
                       <span className="error-text">

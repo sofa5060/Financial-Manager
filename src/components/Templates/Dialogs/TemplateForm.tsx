@@ -38,7 +38,7 @@ type TemplateFormProps = {
   template?: Template;
 };
 const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
-  const { t } = useTranslation("templates");
+  const { t, i18n } = useTranslation("templates");
   const [rate, setRate] = useState<number | undefined>(
     template?.rate ?? undefined
   );
@@ -48,7 +48,8 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
   );
   const currencies = useCurrenciesStore((state) => state.currencies);
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
-  const banksOptions = useBanksStore((state) => state.banksOptions);
+  const enBanksOptions = useBanksStore((state) => state.enBanksOptions);
+  const arBanksOptions = useBanksStore((state) => state.arBanksOptions);
   const [isDefaultCurrency, setIsDefaultCurrency] = useState(
     template ? template.currency_id === defaultCurrency?.id : true
   );
@@ -160,7 +161,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
       <Separator className="my-6" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="flex max-w-[70%] gap-4 max-md:flex-col max-sm:max-w-full">
+          <div className="flex max-w-[70%] gap-4 max-md:flex-col max-sm:max-w-full items-center max-md:items-start">
             <div className="flex justify-end flex-col items-start gap-1">
               <label htmlFor="currency_id" className="font-medium text-sm">
                 {t("date")}
@@ -318,11 +319,19 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                         form.clearErrors("bank_id");
                         setValue("bank_id", val!.value);
                       }}
-                      defaultValue={banksOptions.find(
-                        (bank) => bank.value === template?.bank_id
-                      )}
+                      defaultValue={
+                        template
+                          ? i18n.language === "en"
+                            ? enBanksOptions.find(
+                                (bank) => bank.value === template?.bank_id
+                              )
+                            : arBanksOptions.find(
+                                (bank) => bank.value === template?.bank_id
+                              )
+                          : undefined
+                      }
                       className="w-full"
-                      options={banksOptions}
+                      options={i18n.language === "en" ? enBanksOptions : arBanksOptions}
                     />
                     {errors.bank_id && (
                       <span className="error-text">

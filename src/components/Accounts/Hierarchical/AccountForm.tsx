@@ -51,8 +51,11 @@ const AccountForm = ({
   const currenciesOptions = useCurrenciesStore(
     (state) => state.currenciesOptions
   );
-  const categoriesOptions = useCategoriesStore(
-    (state) => state.categoriesOptions
+  const arCategoriesOptions = useCategoriesStore(
+    (state) => state.arCategoriesOptions
+  );
+  const enCategoriesOptions = useCategoriesStore(
+    (state) => state.enCategoriesOptions
   );
 
   const enReportsOptions = useReportsStore((state) => state.enReportsOptions);
@@ -361,14 +364,21 @@ const AccountForm = ({
                           values!.map((val) => val.value)
                         );
                       }}
-                      defaultValue={account?.categories_ids?.map(
-                        (category) =>
-                          categoriesOptions.find(
-                            (option) => option.value === category.id
-                          )!
+                      defaultValue={account?.categories_ids?.map((category) =>
+                        i18n.language === "en"
+                          ? enCategoriesOptions.find(
+                              (option) => option.value === category.id
+                            )!
+                          : arCategoriesOptions.find(
+                              (option) => option.value === category.id
+                            )!
                       )}
                       className="w-full"
-                      options={categoriesOptions}
+                      options={
+                        i18n.language === "en"
+                          ? enCategoriesOptions
+                          : arCategoriesOptions
+                      }
                     />
                     {errors.categories && (
                       <span className="error-text">

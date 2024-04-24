@@ -21,7 +21,7 @@ import { useUsersStore } from "@/hooks/useUsersStore";
 import { useTranslation } from "react-i18next";
 
 const ViewPermissionsForm = () => {
-  const { t } = useTranslation("settings");
+  const { t, i18n } = useTranslation("settings");
   const [isGroup, setIsGroup] = useState(false);
   const [searchResult, setSearchResult] = useState<FeaturesList | null>();
   const [searchResultName, setSearchResultName] = useState<string>("");
@@ -38,7 +38,8 @@ const ViewPermissionsForm = () => {
 
   const usersOptions = useUsersStore((state) => state.usersOptions);
 
-  const groupsOptions = useGroupsStore((state) => state.groupsOptions);
+  const enGroupsOptions = useGroupsStore((state) => state.enGroupsOptions);
+  const arGroupsOptions = useGroupsStore((state) => state.arGroupsOptions);
 
   const { mutate: viewPermissionMutate, isPending } = useMutation({
     mutationFn: ({ feature, user_id, group_id }: PermissionsList) =>
@@ -52,9 +53,13 @@ const ViewPermissionsForm = () => {
       setSearchResult(data!);
       setSearchResultName(
         isGroup
-          ? groupsOptions!.find(
-              (option) => option.value === form.getValues("group_id")
-            )!.label!
+          ? i18n.language === "en"
+            ? enGroupsOptions!.find(
+                (option) => option.value === form.getValues("group_id")
+              )!.label!
+            : arGroupsOptions!.find(
+                (option) => option.value === form.getValues("group_id")
+              )!.label!
           : usersOptions!.find(
               (option) => option.value === form.getValues("user_id")
             )!.label!
@@ -119,15 +124,27 @@ const ViewPermissionsForm = () => {
                 }}
                 value={
                   isGroup
-                    ? groupsOptions.find(
-                        (option) => option.value === form.getValues("group_id")
-                      )
+                    ? i18n.language === "en"
+                      ? enGroupsOptions.find(
+                          (option) =>
+                            option.value === form.getValues("group_id")
+                        )
+                      : arGroupsOptions.find(
+                          (option) =>
+                            option.value === form.getValues("group_id")
+                        )
                     : usersOptions.find(
                         (option) => option.value === form.getValues("user_id")
                       )
                 }
                 className="min-w-48"
-                options={isGroup ? groupsOptions : usersOptions}
+                options={
+                  isGroup
+                    ? i18n.language === "en"
+                      ? enGroupsOptions
+                      : arGroupsOptions
+                    : usersOptions
+                }
               />
               {errors.user_id && (
                 <span className="error-text">{errors.user_id.message}</span>

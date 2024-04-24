@@ -7,8 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useParams } from "react-router-dom";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 const ApplyTemplateForm = () => {
+  const { t } = useTranslation("templates");
   const { id } = useParams();
 
   const { data, isLoading, isError } = useQuery({
@@ -54,7 +56,9 @@ const ApplyTemplateForm = () => {
     <div>
       <div className="flex gap-5 justify-between">
         <h1 className="font-semibold text-2xl">
-          Apply Account <span className="text-primary">Template</span>
+          {t("apply")} <span className="text-primary">
+            {t("template")}
+          </span>
         </h1>
       </div>
       <div className="mt-7 ms-2">

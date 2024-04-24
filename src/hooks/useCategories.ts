@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 type State = {
   categories: Category[];
-  categoriesOptions: { value: number; label: string }[];
+  enCategoriesOptions: { value: number; label: string }[];
+  arCategoriesOptions: { value: number; label: string }[];
 };
 
 type Actions = {
@@ -12,13 +13,18 @@ type Actions = {
 
 export const useCategoriesStore = create<State & Actions>((set) => ({
   categories: [],
-  categoriesOptions: [],
+  enCategoriesOptions: [],
+  arCategoriesOptions: [],
   setCategories: (categories) =>
     set({
       categories,
-      categoriesOptions: categories.map((category) => ({
+      enCategoriesOptions: categories.map((category) => ({
         value: category.id,
         label: category.name_en,
+      })),
+      arCategoriesOptions: categories.map((category) => ({
+        value: category.id,
+        label: category.name_ar,
       })),
     }),
 }));

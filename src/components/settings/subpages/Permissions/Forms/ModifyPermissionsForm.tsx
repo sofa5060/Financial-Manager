@@ -18,7 +18,7 @@ import { useUsersStore } from "@/hooks/useUsersStore";
 import { useTranslation } from "react-i18next";
 
 const ModifyPermissionsForm = () => {
-  const { t } = useTranslation("settings");
+  const { t, i18n } = useTranslation("settings");
   const [isGroup, setIsGroup] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -36,7 +36,8 @@ const ModifyPermissionsForm = () => {
 
   const usersOptions = useUsersStore((state) => state.usersOptions);
 
-  const groupsOptions = useGroupsStore((state) => state.groupsOptions);
+  const enGroupsOptions = useGroupsStore((state) => state.enGroupsOptions);
+  const arGroupsOptions = useGroupsStore((state) => state.arGroupsOptions);
 
   const { mutate: modifyPermissionMutate, isPending } = useMutation({
     mutationFn: ({
@@ -79,9 +80,7 @@ const ModifyPermissionsForm = () => {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <h2 className="text-lg font-semibold">
-            {t("modifyPermissions")}
-          </h2>
+          <h2 className="text-lg font-semibold">{t("modifyPermissions")}</h2>
           <div className="flex gap-4 items-center justify-end">
             <label htmlFor="isGroup" className="font-medium text-sm">
               {t("group")} / {t("user")}
@@ -127,12 +126,20 @@ const ModifyPermissionsForm = () => {
                   form.getValues(isGroup ? "groups" : "users")?.map((val) => {
                     console.log(val);
                     return isGroup
-                      ? groupsOptions.find((option) => option.value === val)
+                      ? i18n.language === "en"
+                        ? enGroupsOptions.find((option) => option.value === val)
+                        : arGroupsOptions.find((option) => option.value === val)
                       : usersOptions.find((option) => option.value === val);
                   }) || []
                 }
                 className="min-w-48"
-                options={isGroup ? groupsOptions : usersOptions}
+                options={
+                  isGroup
+                    ? i18n.language === "en"
+                      ? enGroupsOptions
+                      : arGroupsOptions
+                    : usersOptions
+                }
               />
               {errors.users && (
                 <span className="error-text">{errors.users.message}</span>
