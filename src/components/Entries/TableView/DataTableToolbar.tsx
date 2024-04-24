@@ -80,13 +80,18 @@ export function DataTableToolbar<TData>({
           <Button type="submit">{t("search")}</Button>
         </div>
         <div className="flex gap-2 items-center flex-wrap">
+        {createdBySearchTerm.length ||
+          postedBySearchTerm.length ||
+          updatedBySearchTerm.length ? (
+            <Button type="submit">{t("applyFilter")}</Button>
+          ) : null}
           {isFiltered && (
             <Button
               variant="ghost"
               onClick={clearFilters}
               className="h-8 px-2 lg:px-3"
             >
-              Reset filters
+              {t("resetFilters")}
               <Cross2Icon className="ms-2 h-4 w-4" />
             </Button>
           )}

@@ -81,6 +81,10 @@
   "refNo": "الرقم المرجعي",
   "paymentWay": "طريقة الدفع",
   "basicInfo": "البايانات الاساسية",
-  "attachments": "المرفقات"
-
+  "attachments": "المرفقات",
+  "totalDebit": "إجمالي المدين",
+  "totalCredit": "إجمالي الدائن",
+  "net": "صافي",
+  "applyFilter": "تطبيق الفلاتر",
+  "resetFilters": "إعادة تعيين الفلاتر"
 }

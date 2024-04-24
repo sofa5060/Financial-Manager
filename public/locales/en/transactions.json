@@ -22,5 +22,6 @@
   "park": "Park",
   "post": "Post",
   "rowsPerPage": "Rows per page",
-  "pageOf": "Page {{page}} of {{totalPages}}"
+  "pageOf": "Page {{page}} of {{totalPages}}",
+  "applyFilter": "Apply Filter"
 }

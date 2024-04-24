@@ -92,5 +92,7 @@
   "checkDate": "تاريخ الشيك",
   "refNo": "الرقم المرجعي",
   "basicInfo": "البايانات الاساسية",
-  "attachments": "المرفقات"
+  "attachments": "المرفقات",
+  "applyFilter": "تطبيق الفلاتر",
+  "resetFilters": "إعادة تعيين الفلاتر"
 }

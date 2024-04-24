@@ -182,15 +182,15 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
         <h2 className="font-medium text-lg">{HEADERS[type]}</h2>
         <div className="flex items-center gap-12">
           <div className="flex flex-col gap-2 items-center">
-            <h3 className="text-sm font-medium">Total Debit</h3>
+            <h3 className="text-sm font-medium">{t("totalDebit")}</h3>
             <h2 className="text-xl font-semibold">{totalDebit}</h2>
           </div>
           <div className="flex flex-col gap-2 items-center">
-            <h3 className="text-sm font-medium">Total Credit</h3>
+            <h3 className="text-sm font-medium">{t("totalCredit")}</h3>
             <h2 className="text-xl font-semibold">{totalCredit}</h2>
           </div>
           <div className="flex flex-col gap-2 items-center">
-            <h3 className="text-sm font-medium">Net</h3>
+            <h3 className="text-sm font-medium">{t("net")}</h3>
             <h2
               className={cn("text-xl font-semibold", {
                 "text-green-500": totalDebit - totalCredit === 0,

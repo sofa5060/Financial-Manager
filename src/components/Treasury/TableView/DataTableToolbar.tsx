@@ -24,7 +24,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
-  const {t} = useTranslation("treasury");
+  const { t } = useTranslation("treasury");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(
@@ -83,11 +83,14 @@ export function DataTableToolbar<TData>({
             onChange={(event) => setSearchTerm(event.target.value)}
             className="h-10 w-[250px] lg:w-[350px]"
           />
-          <Button type="submit">
-            {t("search")}
-          </Button>
+          <Button type="submit">{t("search")}</Button>
         </div>
         <div className="flex gap-2 items-center flex-wrap">
+          {createdBySearchTerm.length ||
+          postedBySearchTerm.length ||
+          updatedBySearchTerm.length ? (
+            <Button type="submit">{t("applyFilter")}</Button>
+          ) : null}
           {isFiltered && (
             <Button
               variant="ghost"

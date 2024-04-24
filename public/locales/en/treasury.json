@@ -92,6 +92,7 @@
   "checkDate": "Check Date",
   "refNo": "Reference No",
   "basicInfo": "Basic Info",
-  "attachments": "Attachments"
-
+  "attachments": "Attachments",
+  "applyFilter": "Apply Filter",
+  "resetFilters": "Reset Filters"
 }

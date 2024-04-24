@@ -22,5 +22,6 @@
   "park": "غير مرحلة",
   "post": "مرحلة",
   "rowsPerPage": "الصفوف لكل صفحة",
-  "pageOf": "الصفحة {{page}} من {{totalPages}}"
+  "pageOf": "الصفحة {{page}} من {{totalPages}}",
+  "applyFilter": "تطبيق الفلاتر"
 }

@@ -91,6 +91,12 @@ export function DataTableToolbar<TData>({
           <Button type="submit">{t("search")}</Button>
         </div>
         <div className="flex gap-2 items-center flex-wrap">
+          {createdBySearchTerm.length ||
+          postedBySearchTerm.length ||
+          updatedBySearchTerm.length ||
+          currencySearchTerm.length ? (
+            <Button type="submit">{t("applyFilter")}</Button>
+          ) : null}
           {isFiltered && (
             <Button
               variant="ghost"
