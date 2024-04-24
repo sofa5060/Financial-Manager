@@ -4,6 +4,7 @@ import {
   AccountTypeSchema,
 } from "./Hierarchical/data";
 import { Currency } from "../settings/subpages/Currencies/schema";
+import { Category } from "../settings/subpages/Categories/schema";
 
 export type SubAccount = {
   id: number;
@@ -13,13 +14,13 @@ export type SubAccount = {
   properties: string;
   type: string;
   currencies: Currency[];
-  categories: number[];
   cost_center: boolean;
   parent_id: number | null;
   reporting_type: string;
   company_id: number;
   created_at: string;
   updated_at: string;
+  categories: Category[];
 };
 
 export type Account = {

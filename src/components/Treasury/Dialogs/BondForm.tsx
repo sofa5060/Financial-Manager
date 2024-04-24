@@ -31,6 +31,12 @@ import { useEntryType } from "@/components/Entries/data";
 import { useSubAccountsStore } from "@/hooks/useSubAccountsStore";
 import { useTranslation } from "react-i18next";
 import InputDate from "@/components/common/InputDate/InputDate";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 type BondFormProps = {
   type?: "view" | "edit" | "add";
@@ -181,164 +187,279 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
       <Separator className="my-6" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
-            {bond && (
-              <FormField
-                control={form.control}
-                name="document_code"
-                render={({ field }) => (
-                  <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
-                    <FormLabel className="whitespace-nowrap">
-                      {t("documentNo")}
-                    </FormLabel>
-                    <div className="flex-col w-full">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="w-full"
-                          disabled
-                          defaultValue={bond.code!}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
-            )}
-            <div className="flex justify-end flex-col items-start gap-1">
-              <label htmlFor="currency_id" className="font-medium text-sm">
-                {t("date")}
-              </label>
-              <div className="flex-col w-full">
-                <InputDate
-                  value={form.getValues("date")}
-                  onChange={(val) => {
-                    setValue("date", val);
-                  }}
-                  disabled={type === "view"}
-                  disableFuture
-                />
-                {errors.date && (
-                  <span className="error-text">{errors.date.message}</span>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-end flex-1 flex-col items-start gap-1">
-              <label htmlFor="currency_id" className="font-medium text-sm">
-                {t("currency")}
-              </label>
-              <div className="flex-col w-full">
-                <Select
-                  id="currency_id"
-                  isSearchable={true}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  onChange={(val) => {
-                    form.clearErrors("currency_id");
-                    setValue("currency_id", val!.value);
-                    setIsDefaultCurrency(val!.value === defaultCurrency?.id);
-                  }}
-                  defaultValue={currenciesOptions.find(
-                    (currency) => currency.value === bond?.currency_id
+          <Accordion type="single" collapsible defaultValue={"item"}>
+            <AccordionItem value="item">
+              <AccordionTrigger>
+                <h3 className="text-lg font-medium">{t("basicInfo")}</h3>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
+                  {bond && (
+                    <FormField
+                      control={form.control}
+                      name="document_code"
+                      render={({ field }) => (
+                        <FormItem className="flex gap-1 items-start flex-col w-full flex-1">
+                          <FormLabel className="whitespace-nowrap">
+                            {t("documentNo")}
+                          </FormLabel>
+                          <div className="flex-col w-full">
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="w-full"
+                                disabled
+                                defaultValue={bond.code!}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
                   )}
-                  className="w-full"
-                  options={currenciesOptions}
-                />
-                {errors.currency_id && (
-                  <span className="error-text">
-                    {errors.currency_id.message}
-                  </span>
-                )}
-              </div>
-            </div>
-            {!isDefaultCurrency ? (
-              <FormField
-                control={form.control}
-                name="rate"
-                render={({ field }) => (
-                  <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
-                    <FormLabel className="whitespace-nowrap">
-                      {t("rate")}
-                    </FormLabel>
+                  <div className="flex justify-end flex-col items-start gap-1">
+                    <label
+                      htmlFor="currency_id"
+                      className="font-medium text-sm"
+                    >
+                      {t("date")}
+                    </label>
                     <div className="flex-col w-full">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="w-full"
-                          placeholder="Rate (Optional)"
-                          type="number"
-                          value={field.value!}
-                          onChange={(e) => {
-                            form.setValue(
-                              "rate",
-                              e.target.value ? parseFloat(e.target.value) : null
-                            );
-                          }}
-                          disabled={type === "view"}
-                        />
-                      </FormControl>
-                      <FormMessage />
+                      <InputDate
+                        value={form.getValues("date")}
+                        onChange={(val) => {
+                          setValue("date", val);
+                        }}
+                        disabled={type === "view"}
+                        disableFuture
+                      />
+                      {errors.date && (
+                        <span className="error-text">
+                          {errors.date.message}
+                        </span>
+                      )}
                     </div>
-                  </FormItem>
-                )}
-              />
-            ) : (
-              <div className="flex justify-end flex-1 flex-col items-start gap-1">
-                {/* Temp to keep design consistent */}
-              </div>
-            )}
-          </div>
-          <div className="flex items-center max-w-[50%] gap-4 max-sm:max-w-full max-md:flex-col max-md:items-start">
-            <div className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
-              <label htmlFor="type" className="font-medium text-sm">
-                {t("type")}
-              </label>
-              <div className="flex-col w-full">
-                <Select
-                  id="type"
-                  isSearchable={false}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  onChange={(val) => {
-                    form.clearErrors("type");
-                    setValue("type", val!.value as BondType);
-                    setIsCheckPayment(val!.value === "check");
-                  }}
-                  defaultValue={
-                    bond
-                      ? entryTypes.find(
-                          (entryType) => entryType.value === bond?.type
-                        )
-                      : entryTypes[0]
-                  }
-                  className="w-full"
-                  options={entryTypes}
-                />
-                {errors.type && (
-                  <span className="error-text">{errors.type.message}</span>
-                )}
-              </div>
-            </div>
-            {isCheckPayment ? (
-              <>
+                  </div>
+                  <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                    <label
+                      htmlFor="currency_id"
+                      className="font-medium text-sm"
+                    >
+                      {t("currency")}
+                    </label>
+                    <div className="flex-col w-full">
+                      <Select
+                        id="currency_id"
+                        isSearchable={true}
+                        isClearable={false}
+                        isDisabled={type === "view"}
+                        onChange={(val) => {
+                          form.clearErrors("currency_id");
+                          setValue("currency_id", val!.value);
+                          setIsDefaultCurrency(
+                            val!.value === defaultCurrency?.id
+                          );
+                        }}
+                        defaultValue={currenciesOptions.find(
+                          (currency) => currency.value === bond?.currency_id
+                        )}
+                        className="w-full"
+                        options={currenciesOptions}
+                      />
+                      {errors.currency_id && (
+                        <span className="error-text">
+                          {errors.currency_id.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {!isDefaultCurrency ? (
+                    <FormField
+                      control={form.control}
+                      name="rate"
+                      render={({ field }) => (
+                        <FormItem className="flex justify-end flex-1 flex-col items-start gap-1">
+                          <FormLabel className="whitespace-nowrap">
+                            {t("rate")}
+                          </FormLabel>
+                          <div className="flex-col w-full">
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="w-full"
+                                placeholder="Rate (Optional)"
+                                type="number"
+                                value={field.value!}
+                                onChange={(e) => {
+                                  form.setValue(
+                                    "rate",
+                                    e.target.value
+                                      ? parseFloat(e.target.value)
+                                      : null
+                                  );
+                                }}
+                                disabled={type === "view"}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  ) : (
+                    <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                      {/* Temp to keep design consistent */}
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center max-w-[50%] gap-4 max-sm:max-w-full max-md:flex-col max-md:items-start">
+                  <div className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
+                    <label htmlFor="type" className="font-medium text-sm">
+                      {t("type")}
+                    </label>
+                    <div className="flex-col w-full">
+                      <Select
+                        id="type"
+                        isSearchable={false}
+                        isClearable={false}
+                        isDisabled={type === "view"}
+                        onChange={(val) => {
+                          form.clearErrors("type");
+                          setValue("type", val!.value as BondType);
+                          setIsCheckPayment(val!.value === "check");
+                        }}
+                        defaultValue={
+                          bond
+                            ? entryTypes.find(
+                                (entryType) => entryType.value === bond?.type
+                              )
+                            : entryTypes[0]
+                        }
+                        className="w-full"
+                        options={entryTypes}
+                      />
+                      {errors.type && (
+                        <span className="error-text">
+                          {errors.type.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {isCheckPayment ? (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="check_no"
+                        render={({ field }) => (
+                          <FormItem className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
+                            <FormLabel className="whitespace-nowrap">
+                              {t("checkNo")}
+                            </FormLabel>
+                            <div className="flex-col w-full">
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  className="w-full"
+                                  placeholder="Check No"
+                                  type="text"
+                                  disabled={type === "view"}
+                                  value={field.value ?? undefined}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <div className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
+                        <label
+                          htmlFor="bank_id"
+                          className="font-medium text-sm"
+                        >
+                          {t("bank")}
+                        </label>
+                        <div className="flex-col w-full">
+                          <Select
+                            id="bank_id"
+                            isSearchable={true}
+                            isClearable={false}
+                            isDisabled={type === "view"}
+                            onChange={(val) => {
+                              form.clearErrors("bank_id");
+                              setValue("bank_id", val!.value);
+                            }}
+                            defaultValue={
+                              bond
+                                ? i18n.language === "en"
+                                  ? enBanksOptions.find(
+                                      (bank) => bank.value === bond?.bank_id
+                                    )
+                                  : arBanksOptions.find(
+                                      (bank) => bank.value === bond?.bank_id
+                                    )
+                                : undefined
+                            }
+                            className="w-full"
+                            options={
+                              i18n.language === "en"
+                                ? enBanksOptions
+                                : arBanksOptions
+                            }
+                          />
+                          {errors.bank_id && (
+                            <span className="error-text">
+                              {errors.bank_id.message}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                        <label
+                          htmlFor="currency_id"
+                          className="font-medium text-sm"
+                        >
+                          {t("checkDate")}
+                        </label>
+                        <div className="flex-col w-full">
+                          <InputDate
+                            value={form.getValues("check_date")}
+                            onChange={(val) => {
+                              setValue("check_date", val);
+                            }}
+                            disabled={type === "view"}
+                          />
+                          {errors.check_date && (
+                            <span className="error-text">
+                              {errors.check_date.message}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+                      <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+                      <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
+                    </>
+                  )}
+                </div>
                 <FormField
                   control={form.control}
-                  name="check_no"
+                  name="ref_no"
                   render={({ field }) => (
-                    <FormItem className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
+                    <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
                       <FormLabel className="whitespace-nowrap">
-                        {t("checkNo")}
+                        {t("refNo")}
                       </FormLabel>
                       <div className="flex-col w-full">
                         <FormControl>
                           <Input
                             {...field}
                             className="w-full"
-                            placeholder="Check No"
-                            type="text"
+                            placeholder={t("refNo")}
                             disabled={type === "view"}
-                            value={field.value ?? undefined}
                           />
                         </FormControl>
                         <FormMessage />
@@ -346,176 +467,97 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex justify-end flex-1 flex-col items-start gap-1 w-full">
-                  <label htmlFor="bank_id" className="font-medium text-sm">
-                    {t("bank")}
-                  </label>
-                  <div className="flex-col w-full">
-                    <Select
-                      id="bank_id"
-                      isSearchable={true}
-                      isClearable={false}
-                      isDisabled={type === "view"}
-                      onChange={(val) => {
-                        form.clearErrors("bank_id");
-                        setValue("bank_id", val!.value);
-                      }}
-                      defaultValue={
-                        bond
-                          ? i18n.language === "en"
-                            ? enBanksOptions.find(
-                                (bank) => bank.value === bond?.bank_id
-                              )
-                            : arBanksOptions.find(
-                                (bank) => bank.value === bond?.bank_id
-                              )
-                          : undefined
-                      }
-                      className="w-full"
-                      options={
-                        i18n.language === "en" ? enBanksOptions : arBanksOptions
-                      }
-                    />
-                    {errors.bank_id && (
-                      <span className="error-text">
-                        {errors.bank_id.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex justify-end flex-1 flex-col items-start gap-1">
-                  <label htmlFor="currency_id" className="font-medium text-sm">
-                    {t("checkDate")}
-                  </label>
-                  <div className="flex-col w-full">
-                    <InputDate
-                      value={form.getValues("check_date")}
-                      onChange={(val) => {
-                        setValue("check_date", val);
-                      }}
-                      disabled={type === "view"}
-                    />
-                    {errors.check_date && (
-                      <span className="error-text">
-                        {errors.check_date.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
-                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
-                <div className="flex justify-end flex-1 flex-col items-start gap-1"></div>
-              </>
-            )}
-          </div>
-          <FormField
-            control={form.control}
-            name="ref_no"
-            render={({ field }) => (
-              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
-                <FormLabel className="whitespace-nowrap">
-                  {t("refNo")}
-                </FormLabel>
-                <div className="flex-col w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full"
-                      placeholder={t("refNo")}
-                      disabled={type === "view"}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
-                <FormLabel className="whitespace-nowrap">
-                  {t("title")}
-                </FormLabel>
-                <div className="flex-col w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full"
-                      placeholder="Title"
-                      disabled={type === "view"}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
-                <FormLabel className="whitespace-nowrap">
-                  {t("description")}
-                </FormLabel>
-                <div className="flex-col w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full"
-                      placeholder="Description"
-                      disabled={type === "view"}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
-          <div className="flex items-center max-w-[50%] gap-4  w-full max-sm:max-w-full">
-            <div className="flex justify-end flex-1 flex-col items-start gap-1">
-              <label htmlFor="safe_account_id" className="font-medium text-sm">
-                {t("safeAccount")}
-              </label>
-              <div className="flex-col w-full">
-                <Select
-                  id="safe_account_id"
-                  isSearchable={false}
-                  isClearable={false}
-                  isDisabled={type === "view"}
-                  onChange={(val) => {
-                    form.clearErrors("safe_account_id");
-                    setValue("safe_account_id", val!.value as number);
-                  }}
-                  defaultValue={
-                    i18n.language === "en"
-                      ? enSubAccountOptions.find(
-                          (account) => account.value === bond?.safe_account_id
-                        )
-                      : arSubAccountOptions.find(
-                          (account) => account.value === bond?.safe_account_id
-                        )
-                  }
-                  className="w-full"
-                  options={
-                    i18n.language === "en"
-                      ? enSubAccountOptions
-                      : arSubAccountOptions
-                  }
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
+                      <FormLabel className="whitespace-nowrap">
+                        {t("title")}
+                      </FormLabel>
+                      <div className="flex-col w-full">
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="w-full"
+                            placeholder="Title"
+                            disabled={type === "view"}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
                 />
-                {errors.safe_account_id && (
-                  <span className="error-text">
-                    {errors.safe_account_id.message}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="flex gap-1 items-start flex-col max-w-[50%] w-full max-sm:max-w-full">
+                      <FormLabel className="whitespace-nowrap">
+                        {t("description")}
+                      </FormLabel>
+                      <div className="flex-col w-full">
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="w-full"
+                            placeholder="Description"
+                            disabled={type === "view"}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex items-center max-w-[50%] gap-4  w-full max-sm:max-w-full">
+                  <div className="flex justify-end flex-1 flex-col items-start gap-1">
+                    <label
+                      htmlFor="safe_account_id"
+                      className="font-medium text-sm"
+                    >
+                      {t("safeAccount")}
+                    </label>
+                    <div className="flex-col w-full">
+                      <Select
+                        id="safe_account_id"
+                        isSearchable={false}
+                        isClearable={false}
+                        isDisabled={type === "view"}
+                        onChange={(val) => {
+                          form.clearErrors("safe_account_id");
+                          setValue("safe_account_id", val!.value as number);
+                        }}
+                        defaultValue={
+                          i18n.language === "en"
+                            ? enSubAccountOptions.find(
+                                (account) =>
+                                  account.value === bond?.safe_account_id
+                              )
+                            : arSubAccountOptions.find(
+                                (account) =>
+                                  account.value === bond?.safe_account_id
+                              )
+                        }
+                        className="w-full"
+                        options={
+                          i18n.language === "en"
+                            ? enSubAccountOptions
+                            : arSubAccountOptions
+                        }
+                      />
+                      {errors.safe_account_id && (
+                        <span className="error-text">
+                          {errors.safe_account_id.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           <div className="mt-4">
             <DynamicTableForm
               transactions={transactions}
