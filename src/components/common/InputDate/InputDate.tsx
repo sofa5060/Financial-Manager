@@ -31,6 +31,7 @@ export default function InputDate({
         //decresed the padding of the date picker
         slotProps={{
           textField: {
+            size: "small",
             sx: {
               padding: "0px",
               maxWidth: "250px",

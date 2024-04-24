@@ -111,27 +111,57 @@ class AccountsManager {
 
   static async exportExcel(query: string, columns: string[]) {
     try {
+      // axios({
+      //   url: `/api/account?search=${query}&columns=${columns
+      //     .map((column) => `${column}-${column}`)
+      //     .join(",")}`, //your url
+      //   method: "GET",
+      //   responseType: "blob", // important
+      // }).then((response) => {
+      //   // create file link in browser's memory
+      //   const href = URL.createObjectURL(response.data);
+
+      //   // create "a" HTML element with href to file & click
+      //   const link = document.createElement("a");
+      //   link.href = href;
+      //   link.setAttribute("download", "accounts.xlsx"); //or any other extension
+      //   document.body.appendChild(link);
+      //   link.click();
+
+      //   // clean up "a" element & remove ObjectURL
+      //   document.body.removeChild(link);
+      //   URL.revokeObjectURL(href);
+      // });
+      const a = document.createElement("a");
+      a.style.display = "none";
+      document.body.appendChild(a);
       const response = await axios.get(
         `/api/account?search=${query}&columns=${columns
           .map((column) => `${column}-${column}`)
           .join(",")}`,
         {
-          responseType: "blob",
           headers: {
-            Accept:
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "Content-Disposition": "filename=accounts.xls",
+            "Content-Type": "application/vnd.ms-excel", // or Content-type: "application/vnd.ms-excel"
           },
+          responseType: "blob",
         }
       );
-      console.log((response.data as Blob).slice(28, response.data.size - 1));
-      fileDownload(
-        (response.data as Blob).slice(27, response.data.size - 1),
-        "test.csv"
-      );
-      console.log(response.data);
+
+      fileDownload(response.data, 'accounts.xlsx');
+      // console.log(response);
+      // const blobFile = new Blob([response.data]);
+      // const url = window.URL.createObjectURL(blobFile);
+      // console.log(url);
+      // const fileName = "accounts.csv";
+
+      // a.href = url;
+      // a.download = fileName;
+      // a.click();
 
       return response.data;
     } catch (error) {
+      console.log(error);
       handleAxiosError(error as AxiosError);
     }
   }
