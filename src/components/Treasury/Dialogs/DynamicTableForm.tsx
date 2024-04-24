@@ -27,6 +27,7 @@ const DynamicTableForm = ({
   const subAccountOptions = useSubAccountsStore(
     (state) => state.subAccountOptions
   );
+  const subAccounts = useSubAccountsStore((state) => state.subAccounts);
   const subAccountCodesOptions = useSubAccountsStore(
     (state) => state.subAccountCodesOptions
   );
@@ -55,7 +56,7 @@ const DynamicTableForm = ({
   const handleChange = (
     index: number,
     field: string,
-    value: string | number
+    value: string | number | null
   ) => {
     const updatedRows = [...rows];
     if (field === "amount" || field === "account_id") {
@@ -163,8 +164,8 @@ const DynamicTableForm = ({
               <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="category_id"
-                  isSearchable={false}
-                  isClearable={false}
+                  isSearchable={true}
+                  isClearable={true}
                   onChange={(val) => {
                     handleChange(index, "category_id", val!.value!);
                   }}
@@ -179,11 +180,12 @@ const DynamicTableForm = ({
               <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="account_code"
-                  isSearchable={false}
+                  isSearchable={true}
                   isClearable={false}
                   onChange={(val) => {
                     console.log(val);
                     handleChange(index, "account_id", val!.value);
+                    handleChange(index, "cost_center_id", null);
                   }}
                   value={subAccountCodesOptions.find(
                     (option) => option.value === row.account_id
@@ -197,11 +199,12 @@ const DynamicTableForm = ({
               <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="account_name"
-                  isSearchable={false}
+                  isSearchable={true}
                   isClearable={false}
                   onChange={(val) => {
                     console.log(val);
                     handleChange(index, "account_id", val!.value);
+                    handleChange(index, "cost_center_id", null);
                   }}
                   value={subAccountOptions.find(
                     (option) => option.value === row.account_id
@@ -256,22 +259,28 @@ const DynamicTableForm = ({
                   </td>
                 </>
               )}
-              <td className="px-3 py-4 whitespace-nowrap">
-                <Select
-                  id="cost_center_id"
-                  isSearchable={false}
-                  isClearable={false}
-                  onChange={(val) => {
-                    handleChange(index, "cost_center_id", val!.value!);
-                  }}
-                  value={subCostCentersOptions.find(
-                    (option) => option.value === row.cost_center_id
-                  )}
-                  className="min-w-48"
-                  options={subCostCentersOptions}
-                  isDisabled={disabled}
-                />
-              </td>
+              {row.account_id &&
+              subAccounts.find((acc) => acc.id === row.account_id)
+                ?.cost_center ? (
+                <td className="px-3 py-4 whitespace-nowrap">
+                  <Select
+                    id="cost_center_id"
+                    isSearchable={true}
+                    isClearable={false}
+                    onChange={(val) => {
+                      handleChange(index, "cost_center_id", val!.value!);
+                    }}
+                    value={subCostCentersOptions.find(
+                      (option) => option.value === row.cost_center_id
+                    )}
+                    className="min-w-48"
+                    options={subCostCentersOptions}
+                    isDisabled={disabled}
+                  />
+                </td>
+              ) : (
+                <td className="px-3 py-4 whitespace-nowrap"></td>
+              )}
               {!disabled && (
                 <td className="px-3 py-4 whitespace-nowrap">
                   <div className="flex gap-2">

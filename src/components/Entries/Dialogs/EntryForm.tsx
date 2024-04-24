@@ -201,7 +201,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               <div className="flex-col w-full">
                 <Select
                   id="currency_id"
-                  isSearchable={false}
+                  isSearchable={true}
                   isClearable={false}
                   isDisabled={type === "view"}
                   onChange={(val) => {
@@ -324,8 +324,8 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                   </label>
                   <div className="flex-col w-full">
                     <Select
-                      id="currency_id"
-                      isSearchable={false}
+                      id="bank_id"
+                      isSearchable={true}
                       isClearable={false}
                       isDisabled={type === "view"}
                       onChange={(val) => {
