@@ -37,6 +37,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Attachment from "./attachment";
 
 type BondFormProps = {
   type?: "view" | "edit" | "add";
@@ -45,6 +46,7 @@ type BondFormProps = {
 };
 
 const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const { t, i18n } = useTranslation("treasury");
   const name = useAuthStore((state) => state.name);
   const [rate, setRate] = useState<number | undefined>(bond?.rate ?? undefined);
@@ -93,6 +95,8 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["bonds"] });
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      setIsFormSubmitted(false);
 
       toast({
         title: t("add.success"),
@@ -152,6 +156,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
 
   const {
     setValue,
+    register,
     formState: { errors },
   } = form;
 
@@ -160,6 +165,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
 
     console.log(data);
     if (type === "edit") {
+      setIsFormSubmitted(true);
       editBondMutate(data as TreasuryBond);
       return;
     }
@@ -466,6 +472,13 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                       </div>
                     </FormItem>
                   )}
+                />
+                <Attachment
+                  register={register}
+                  isFormSubmitted={isFormSubmitted}
+                  attachments={bond ? bond.attachments : undefined}
+                  bondId={bond ? bond.id : undefined}
+                  disabled={type === "view"}
                 />
                 <FormField
                   control={form.control}

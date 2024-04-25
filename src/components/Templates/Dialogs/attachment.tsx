@@ -7,20 +7,20 @@ import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
-import { NewEntry } from "../schema";
+import { NewTemplate } from "../schema";
 import { useTranslation } from "react-i18next";
 
 type AttachmentProps = {
-  register: UseFormRegister<NewEntry>;
+  register: UseFormRegister<NewTemplate>;
   isFormSubmitted?: boolean;
   attachments?: string[] | null;
-  entryId?: number;
+  templateId?: number;
   disabled?: boolean;
 };
 const Attachment = ({
   register,
   attachments,
-  entryId,
+  templateId,
   isFormSubmitted,
   disabled,
 }: AttachmentProps) => {
@@ -32,7 +32,7 @@ const Attachment = ({
   const [attachmentsToDelete, setAttachmentsToDelete] = useState<string[]>([]);
 
   const deleteAttachment = (attachment: string) => {
-    if (!entryId || disabled) return;
+    if (!templateId || disabled || !attachmentsClone) return;
     setAttachmentsToDelete((prev) => prev.concat(attachment));
 
     // delete local file (optimistic update)
@@ -40,12 +40,12 @@ const Attachment = ({
   };
 
   const deleteAttachments = useCallback(async () => {
-    if (!attachmentsClone || !entryId || attachmentsToDelete.length === 0)
+    if (!attachmentsClone || !templateId || attachmentsToDelete.length === 0)
       return;
 
     try {
       await AccountingEntriesManager.deleteAttachments(
-        entryId,
+        templateId,
         attachmentsToDelete.map(
           (attachment) => attachment.split("/").slice(-1)[0]
         )
@@ -62,7 +62,7 @@ const Attachment = ({
       setAttachmentsClone(attachments || undefined);
     }
     setAttachmentsToDelete([]);
-  }, [attachmentsClone, attachmentsToDelete, entryId, attachments]);
+  }, [attachmentsClone, attachmentsToDelete, templateId, attachments]);
 
   useEffect(() => {
     if (isFormSubmitted) {

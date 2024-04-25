@@ -40,6 +40,7 @@ type EntryFormProps = {
   entry?: Entry;
 };
 const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const { t, i18n } = useTranslation("entries");
   const [rate, setRate] = useState<number | undefined>(
     entry?.rate ?? undefined
@@ -102,6 +103,8 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ["entry", entry!.id] });
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
 
+      setIsFormSubmitted(false);
+
       toast({
         title: t("edit.success"),
       });
@@ -136,6 +139,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
 
     console.log(data);
     if (type === "edit") {
+      setIsFormSubmitted(true);
       editEntryMutate(data as Entry);
       return;
     }
@@ -169,7 +173,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
     );
   }, [transactions]);
 
-  console.log(form.formState.errors)
+  console.log(form.formState.errors);
 
   return (
     <div>
@@ -480,7 +484,13 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     </FormItem>
                   )}
                 />
-                <Attachment register={register}/>
+                <Attachment
+                  register={register}
+                  isFormSubmitted={isFormSubmitted}
+                  attachments={entry ? entry.attachments : undefined}
+                  entryId={entry ? entry.id : undefined}
+                  disabled={type === "view"}
+                />
                 <FormField
                   control={form.control}
                   name="title"

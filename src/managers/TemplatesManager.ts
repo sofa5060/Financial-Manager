@@ -65,6 +65,10 @@ class TemplatesManager {
     });
     delete template.date;
     template.transactions = tempTransactions;
+
+    delete template.attachments;
+    delete template.files;
+    delete template.ref_no;
     try {
       const response = await axios.put(`/api/template/${templateId}`, template);
       return response.data;

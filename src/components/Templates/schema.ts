@@ -20,7 +20,7 @@ export const NewTemplateSchema = z
     document_code: z.string().optional(),
     ref_no: z.string().optional(),
     attachments: z.array(z.string()).nullable().optional(),
-    files: z.array(z.any()).nullable().optional(),
+    files: z.any(),
   })
   .superRefine((val, ctx) => {
     if (val.type === "check" && !val.check_no) {

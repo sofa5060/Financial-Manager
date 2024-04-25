@@ -20,6 +20,8 @@ export const NewBondSchema = z
     transactions: z.array(TreasuryTransactionSchema),
     document_code: z.string().optional(),
     ref_no: z.string().optional(),
+    attachments: z.array(z.string()).nullable().optional(),
+    files: z.any(),
   })
   .superRefine((val, ctx) => {
     if (val.type === "check" && !val.check_no) {

@@ -39,12 +39,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Attachment from "./attachment";
 
 type TemplateFormProps = {
   type?: "view" | "edit" | "apply";
   template?: Template;
 };
 const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const { t, i18n } = useTranslation("templates");
   const [rate, setRate] = useState<number | undefined>(
     template?.rate ?? undefined
@@ -83,6 +85,8 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["entries"] });
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      setIsFormSubmitted(false);
 
       toast({
         title: t("apply.success"),
@@ -132,6 +136,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
   });
 
   const {
+    register,
     setValue,
     formState: { errors },
   } = form;
@@ -146,6 +151,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
       return;
     }
 
+    setIsFormSubmitted(true);
     applyTemplateMutate(data);
   };
 
@@ -462,6 +468,14 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                     </FormItem>
                   )}
                 />
+                {type === "apply" && (
+                  <Attachment
+                    register={register}
+                    isFormSubmitted={isFormSubmitted}
+                    attachments={template ? template.attachments : undefined}
+                    templateId={template ? template.id : undefined}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name="title"

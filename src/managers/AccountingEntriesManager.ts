@@ -15,9 +15,9 @@ async function updateAttachments(
   entryId: number,
   attachments: File[]
 ): Promise<Entry | undefined> {
-  console.log("called")
+  console.log("called");
   const formData = new FormData();
-  console.log(attachments)
+  console.log(attachments);
   Array.from(attachments).forEach((attachment) => {
     formData.append("file", attachment);
   });
@@ -95,7 +95,9 @@ class AccountingEntriesManager {
   static async deleteAttachments(entryId: number, attachmentNames: string[]) {
     try {
       const response = await axios.delete(`/api/entry/${entryId}/attachment`, {
-        files: [attachmentNames],
+        data: {
+          files: attachmentNames,
+        },
       });
 
       return response.data;
@@ -132,7 +134,7 @@ class AccountingEntriesManager {
 
     try {
       const response = await axios.post("/api/entry", entry);
-      console.log(entry)
+      console.log(entry);
       if (files && files.length > 0) {
         await updateAttachments(response.data.id, files);
       } else {
@@ -231,9 +233,19 @@ class AccountingEntriesManager {
       return transaction;
     });
     console.log(entry);
+
+    const files = entry.files;
+    delete entry.files;
+    delete entry.attachments;
+
     try {
       const response = await axios.put(`/api/entry/${entryId}`, entry);
-      return response.data;
+      console.log(entry);
+      if (files && files.length > 0) {
+        await updateAttachments(entryId, files);
+      } else {
+        return response.data;
+      }
     } catch (error) {
       console.log(error);
       handleAxiosError(error as AxiosError);

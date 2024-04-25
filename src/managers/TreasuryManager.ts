@@ -11,6 +11,37 @@ type TreasuryBondsResponse = {
   totalBonds: number;
 };
 
+async function updateAttachments(
+  entryId: number,
+  attachments: File[]
+): Promise<Entry | undefined> {
+  console.log("called");
+  const formData = new FormData();
+  console.log(attachments);
+  Array.from(attachments).forEach((attachment) => {
+    formData.append("file", attachment);
+  });
+
+  console.log(formData.get("file"));
+
+  try {
+    const response = await axios.post(
+      `/api/entry/${entryId}/attachment`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    handleAxiosError(error as AxiosError);
+  }
+}
+
 class TreasuryManager {
   static async getReceiveTreasuryBonds(
     page: number = 1,
@@ -55,9 +86,16 @@ class TreasuryManager {
   static async addReceiveTreasuryBond(
     bond: NewBond
   ): Promise<TreasuryBond | undefined> {
+    const files = bond.files;
+    delete bond.files;
+
     try {
       const response = await axios.post(`/api/safe/receive`, bond);
-      return response.data.data;
+      if (files && files.length > 0) {
+        await updateAttachments(response.data.id, files);
+      } else {
+        return response.data.data;
+      }
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
@@ -66,9 +104,16 @@ class TreasuryManager {
   static async addPaymentTreasuryBond(
     bond: NewBond
   ): Promise<TreasuryBond | undefined> {
+    const files = bond.files;
+    delete bond.files;
+
     try {
       const response = await axios.post(`/api/safe/payment`, bond);
-      return response.data.data;
+      if (files && files.length > 0) {
+        await updateAttachments(response.data.id, files);
+      } else {
+        return response.data.data;
+      }
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
@@ -109,9 +154,17 @@ class TreasuryManager {
     });
 
     bond.transactions = transactions;
+
+    const files = bond.files;
+    delete bond.files;
+    delete bond.attachments;
     try {
       const response = await axios.put(`/api/safe/${bondId}/receive`, bond);
-      return response.data.data;
+      if (files && files.length > 0) {
+        await updateAttachments(bondId, files);
+      } else {
+        return response.data.data;
+      }
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
@@ -152,9 +205,17 @@ class TreasuryManager {
     });
 
     bond.transactions = transactions;
+
+    const files = bond.files;
+    delete bond.files;
+    delete bond.attachments;
     try {
       const response = await axios.put(`/api/safe/${bondId}/payment`, bond);
-      return response.data.data;
+      if (files && files.length > 0) {
+        await updateAttachments(bondId, files);
+      } else {
+        return response.data.data;
+      }
     } catch (error) {
       handleAxiosError(error as AxiosError);
     }
