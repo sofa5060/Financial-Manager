@@ -209,7 +209,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               <AccordionTrigger>
                 <h3 className="text-lg font-medium">{t("basicInfo")}</h3>
               </AccordionTrigger>
-              <AccordionContent className="space-y-4">
+              <AccordionContent className="space-y-4 ps-1">
                 <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
                   {entry && (
                     <FormField

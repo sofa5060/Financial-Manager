@@ -198,7 +198,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
               <AccordionTrigger>
                 <h3 className="text-lg font-medium">{t("basicInfo")}</h3>
               </AccordionTrigger>
-              <AccordionContent className="space-y-4">
+              <AccordionContent className="space-y-4 ps-1">
                 <div className="flex max-w-[50%] gap-4 max-lg:flex-col max-sm:max-w-full lg:items-center">
                   {bond && (
                     <FormField
@@ -553,6 +553,8 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                                   account.value === bond?.safe_account_id
                               )
                         }
+                        maxMenuHeight={200}
+                        menuPlacement="top"
                         className="w-full"
                         options={
                           i18n.language === "en"
