@@ -12,7 +12,7 @@ import {
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import ReverseEntry from "../Dialogs/ReverseEntry";
-import { cn, formatDateTime } from "@/lib/utils";
+import { cn, formatDate, formatDateTime } from "@/lib/utils";
 import DeleteModal from "../Dialogs/DeleteModal";
 import { useNavigate } from "react-router-dom";
 import PostModal from "../Dialogs/PostModal";
@@ -96,7 +96,7 @@ export const useParkAccountingEntriesColumns = () => {
         <DataTableColumnHeader column={column} title={t("documentDate")} />
       ),
       cell({ row }) {
-        return formatDateTime(row.original.date);
+        return formatDate(row.original.date);
       },
       meta: {
         header: t("documentDate"),
@@ -304,7 +304,7 @@ export const usePostAccountingEntriesColumns = () => {
         <DataTableColumnHeader column={column} title={t("documentDate")} />
       ),
       cell({ row }) {
-        return formatDateTime(row.original.date);
+        return formatDate(row.original.date);
       },
       meta: {
         header: t("documentDate"),

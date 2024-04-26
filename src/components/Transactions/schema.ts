@@ -9,6 +9,7 @@ export const NewTransactionSchema = z.object({
   debit: z.number().positive().optional(),
   credit: z.number().positive().optional(),
   description: z.string(),
+  id: z.string().or(z.number()).nullable().optional(),
 });
 
 export const NewTreasuryTransactionSchema = z.object({
@@ -18,6 +19,7 @@ export const NewTreasuryTransactionSchema = z.object({
   f_amount: z.number().nullable(),
   amount: z.number().positive().optional(),
   description: z.string(),
+  id: z.string().or(z.number()).nullable().optional(),
 });
 
 export const TransactionSchema = z
@@ -71,5 +73,7 @@ export const TreasuryTransactionSchema = z
 
 export type NewTransaction = z.infer<typeof NewTransactionSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;
-export type NewTreasuryTransaction = z.infer<typeof NewTreasuryTransactionSchema>;
+export type NewTreasuryTransaction = z.infer<
+  typeof NewTreasuryTransactionSchema
+>;
 export type TreasuryTransaction = z.infer<typeof TreasuryTransactionSchema>;

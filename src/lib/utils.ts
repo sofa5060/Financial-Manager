@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { type ClassValue, clsx } from "clsx";
+import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,7 +56,7 @@ export const handleAxiosError = (error: AxiosError) => {
  * @returns {string} The formatted date and time string.
  */
 export const formatDateTime = (date: string) => {
-  return new Date(date).toLocaleString();
+  return dayjs(date).format("YYYY-MM-DD, h:mmA");
 };
 
 /**
@@ -66,7 +67,7 @@ export const formatDateTime = (date: string) => {
  */
 export const formatDate = (date: string) => {
   // return date only
-  return formatDateTime(date).replace(/\//g, "-").split(",")[0];
+  return dayjs(date).format("YYYY-MM-DD");
 };
 
 export const createSearchQuery = (
@@ -115,4 +116,4 @@ export const arrFromQuery = (query: string | null) =>
 
 export const capitalizeString = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};

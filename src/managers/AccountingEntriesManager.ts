@@ -111,6 +111,8 @@ class AccountingEntriesManager {
     const tempTransactions = JSON.parse(JSON.stringify(entry.transactions));
     // replace undefined debit with 0
     entry.transactions = tempTransactions.map((transaction: Transaction) => {
+      delete transaction.id;
+
       if (transaction.debit === undefined) {
         transaction.debit = 0;
       }

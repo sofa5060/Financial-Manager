@@ -4,7 +4,7 @@ import { ClipboardPlus, Eye, Pen, Trash2 } from "lucide-react";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import DeleteModal from "../Dialogs/DeleteModal";
 import { useNavigate } from "react-router-dom";
-import { formatDateTime } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 export const useTemplatesColumns = () => {
@@ -25,7 +25,7 @@ export const useTemplatesColumns = () => {
         <DataTableColumnHeader column={column} title={t("createdAt")} />
       ),
       cell({ row }) {
-        return formatDateTime(row.original.created_at);
+        return formatDate(row.original.created_at);
       },
       meta: {
         header: t("createdAt"),

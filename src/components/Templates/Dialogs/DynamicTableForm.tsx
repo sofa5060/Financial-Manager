@@ -7,6 +7,7 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
+import { v4 as uuid } from "uuid";
 
 type DynamicTableFormProps = {
   transactions: NewTransaction[];
@@ -63,6 +64,7 @@ const DynamicTableForm = ({
         }))
       : [
           {
+            id: uuid(),
             account_id: undefined,
             category_id: null,
             cost_center_id: null,
@@ -105,6 +107,7 @@ const DynamicTableForm = ({
     if (disabled) return;
     const updatedRows = [...rows];
     updatedRows.splice(index + 1, 0, {
+      id: uuid(),
       account_id: undefined,
       category_id: null,
       cost_center_id: null,
@@ -236,7 +239,7 @@ const DynamicTableForm = ({
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {rows.map((row, index) => (
-            <tr key={index}>
+            <tr key={row.id}>
               <td className="px-3 py-4 whitespace-nowrap">
                 <Select
                   id="category_id"
