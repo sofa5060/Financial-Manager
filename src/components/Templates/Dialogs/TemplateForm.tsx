@@ -260,6 +260,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                           setIsDefaultCurrency(
                             val!.value === defaultCurrency?.id
                           );
+                          setValue("rate", undefined);
                         }}
                         defaultValue={currenciesOptions.find(
                           (currency) => currency.value === template?.currency_id
@@ -294,12 +295,22 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
                                 onChange={(e) => {
                                   form.setValue(
                                     "rate",
-                                    e.target.value
+                                    e.target.value && e.target.value !== ""
                                       ? parseFloat(e.target.value)
                                       : undefined
                                   );
                                 }}
                                 disabled={type === "view"}
+                                key={form.getValues("currency_id")}
+                                defaultValue={
+                                  !isDefaultCurrency
+                                    ? currencies.find(
+                                        (currency) =>
+                                          currency.id ===
+                                          form.getValues("currency_id")
+                                      )?.default_rate
+                                    : undefined
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -533,6 +544,7 @@ const TemplateForm = ({ type = "apply", template }: TemplateFormProps) => {
               disabled={type === "view"}
               rate={rate}
               type={type}
+              description={form.getValues("description")}
             />
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">

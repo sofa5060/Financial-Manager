@@ -14,7 +14,9 @@ export const useTemplatesColumns = () => {
   const columns: ColumnDef<Template>[] = [
     {
       accessorKey: "id",
-      header: t("serial"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("serial")} />
+      ),
       meta: {
         header: t("serial"),
       },

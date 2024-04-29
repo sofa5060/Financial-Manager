@@ -8,9 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FlowerSpinner } from "react-epic-spinners";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const PostAccountingEntries = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation("entries");
   const [searchParams] = useSearchParams();
   const columns = usePostAccountingEntriesColumns();
@@ -59,7 +60,14 @@ const PostAccountingEntries = () => {
           <span className="text-primary">{t("post")}</span>
         </h1>
         <div className="flex gap-5">
-          <Button className="btn-outline">{t("printSelected")}</Button>
+          <Button
+            className="btn-outline"
+            onClick={() => {
+              navigate("/transactions/post");
+            }}
+          >
+            {t("showAllTransactions")}
+          </Button>
         </div>
       </div>
       <DataTable data={data!.entries} columns={columns} />

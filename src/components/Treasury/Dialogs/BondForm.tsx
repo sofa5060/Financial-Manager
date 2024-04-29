@@ -266,6 +266,10 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                           setIsDefaultCurrency(
                             val!.value === defaultCurrency?.id
                           );
+                          setValue(
+                            "rate",
+                            undefined
+                          );
                         }}
                         defaultValue={currenciesOptions.find(
                           (currency) => currency.value === bond?.currency_id
@@ -300,12 +304,22 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
                                 onChange={(e) => {
                                   form.setValue(
                                     "rate",
-                                    e.target.value
+                                    e.target.value && e.target.value !== ""
                                       ? parseFloat(e.target.value)
-                                      : null
+                                      : undefined
                                   );
                                 }}
                                 disabled={type === "view"}
+                                key={form.getValues("currency_id")}
+                                defaultValue={
+                                  !isDefaultCurrency
+                                    ? currencies.find(
+                                        (currency) =>
+                                          currency.id ===
+                                          form.getValues("currency_id")
+                                      )?.default_rate
+                                    : undefined
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -584,6 +598,7 @@ const BondForm = ({ type = "add", bond, bondType }: BondFormProps) => {
               isDefaultCurrency={isDefaultCurrency}
               disabled={type === "view"}
               rate={rate}
+              description={form.getValues("description")}
             />
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">

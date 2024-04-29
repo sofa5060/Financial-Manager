@@ -26,10 +26,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import TemplatesManager from "@/managers/TemplatesManager";
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
+import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 
 export const useParkAccountingEntriesColumns = () => {
   const { t } = useTranslation("entries");
   const queryClient = useQueryClient();
+  const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
 
   const { mutate: saveTemplateMutate, isPending } = useMutation({
     mutationFn: TemplatesManager.addTemplate,
@@ -78,14 +80,18 @@ export const useParkAccountingEntriesColumns = () => {
     },
     {
       accessorKey: "id",
-      header: t("serial"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("serial")} />
+      ),
       meta: {
         header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("documentNo"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("documentNo")} />
+      ),
       meta: {
         header: t("documentNo"),
       },
@@ -133,7 +139,10 @@ export const useParkAccountingEntriesColumns = () => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("amount")} />
+        <DataTableColumnHeader
+          column={column}
+          title={t("amountColumn", { currency: defaultCurrency?.appreviation })}
+        />
       ),
       meta: {
         header: t("amount"),
@@ -239,6 +248,7 @@ export const usePostAccountingEntriesColumns = () => {
   const { t } = useTranslation("entries");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
 
   const { mutate: saveTemplateMutate, isPending } = useMutation({
     mutationFn: TemplatesManager.addTemplate,
@@ -286,14 +296,18 @@ export const usePostAccountingEntriesColumns = () => {
     },
     {
       accessorKey: "id",
-      header: t("serial"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("serial")} />
+      ),
       meta: {
         header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("documentNo"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("documentNo")} />
+      ),
       meta: {
         header: t("documentNo"),
       },
@@ -353,7 +367,10 @@ export const usePostAccountingEntriesColumns = () => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("amount")} />
+        <DataTableColumnHeader
+          column={column}
+          title={t("amountColumn", { currency: defaultCurrency?.appreviation })}
+        />
       ),
       meta: {
         header: t("amount"),

@@ -10,14 +10,18 @@ export const usePostAccountTransactionsColumns = () => {
   const columns: ColumnDef<Transaction>[] = [
     {
       accessorKey: "id",
-      header: t("serial"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("serial")} />
+      ),
       meta: {
         header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("documentNo"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("documentNo")} />
+      ),
       meta: {
         header: t("documentNo"),
       },

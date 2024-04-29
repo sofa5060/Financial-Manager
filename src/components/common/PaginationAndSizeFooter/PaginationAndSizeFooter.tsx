@@ -30,7 +30,7 @@ const PaginationAndSizeFooter = ({
   totalPages,
   size,
   setSize,
-  sizeOptions = [10, 20, 30, 40, 50],
+  sizeOptions = [10, 20, 50, 100, 1000, 5000],
 }: PaginationAndSizeFooterProps) => {
   const { t } = useTranslation("transactions");
 

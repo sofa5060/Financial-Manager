@@ -14,7 +14,11 @@ export const NewBondSchema = z
     bank_id: z.number().nullable().optional(),
     check_no: z.string().nullable().optional(),
     check_date: z.string().nullable().optional(),
-    date: z.string(),
+    date: z.string().refine((val) => {
+      const date = new Date(val);
+      // Check if the date is not in the future
+      return date <= new Date();
+    }, "Date cannot be in the future"),
     description: z.string(),
     safe_account_id: z.number(),
     transactions: z.array(TreasuryTransactionSchema),

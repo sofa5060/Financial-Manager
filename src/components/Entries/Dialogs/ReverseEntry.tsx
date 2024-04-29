@@ -25,6 +25,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AccountingEntriesManager from "@/managers/AccountingEntriesManager";
 import { useTranslation } from "react-i18next";
+import InputDate from "@/components/common/InputDate/InputDate";
 
 type ReverseEntryProps = {
   children: React.ReactNode;
@@ -34,7 +35,11 @@ type ReverseEntryProps = {
 const ReverseEntrySchema = z.object({
   code: z.string(),
   reason: z.string(),
-  date: z.string(),
+  date: z.string().refine((val) => {
+    const date = new Date(val);
+    // Check if the date is not in the future
+    return date <= new Date();
+  }, "Date cannot be in the future"),
 });
 
 const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
@@ -76,6 +81,11 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
     },
   });
 
+  const {
+    formState: { errors },
+    setValue,
+  } = form;
+
   const onSubmit = (data: z.infer<typeof ReverseEntrySchema>) => {
     console.log(data);
     reverseEntryMutate({ reason: data.reason, date: data.date });
@@ -110,23 +120,23 @@ const ReverseEntry = ({ children, entry }: ReverseEntryProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex gap-4 items-center justify-end">
-                  <FormLabel className="whitespace-nowrap">
-                    {t("date")}
-                  </FormLabel>
-                  <div className="flex-col w-full max-w-[65%]">
-                    <FormControl>
-                      <Input {...field} className="w-full" type="date" />
-                    </FormControl>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+            <div className="flex gap-4 items-center justify-end z-50">
+              <label htmlFor="date" className="font-medium text-sm">
+                {t("date")}
+              </label>
+              <div className="flex flex-col w-full max-w-[65%]">
+                <InputDate
+                  value={form.getValues("date")}
+                  onChange={(val) => {
+                    setValue("date", val);
+                  }}
+                  disableFuture
+                />
+                {errors.date && (
+                  <span className="error-text">{errors.date.message}</span>
+                )}
+              </div>
+            </div>
             <FormField
               control={form.control}
               name="reason"

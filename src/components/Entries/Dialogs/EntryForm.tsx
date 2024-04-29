@@ -236,10 +236,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                     />
                   )}
                   <div className="flex justify-end flex-col items-start gap-1">
-                    <label
-                      htmlFor="currency_id"
-                      className="font-medium text-sm"
-                    >
+                    <label htmlFor="date" className="font-medium text-sm">
                       {t("date")}
                     </label>
                     <div className="flex-col w-full">
@@ -277,6 +274,10 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                           setIsDefaultCurrency(
                             val!.value === defaultCurrency?.id
                           );
+                          setValue(
+                            "rate",
+                            undefined
+                          );
                         }}
                         defaultValue={currenciesOptions.find(
                           (currency) => currency.value === entry?.currency_id
@@ -311,12 +312,22 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
                                 onChange={(e) => {
                                   form.setValue(
                                     "rate",
-                                    e.target.value
+                                    e.target.value && e.target.value !== ""
                                       ? parseFloat(e.target.value)
                                       : undefined
                                   );
                                 }}
                                 disabled={type === "view"}
+                                key={form.getValues("currency_id")}
+                                defaultValue={
+                                  !isDefaultCurrency
+                                    ? currencies.find(
+                                        (currency) =>
+                                          currency.id ===
+                                          form.getValues("currency_id")
+                                      )?.default_rate
+                                    : undefined
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -548,6 +559,7 @@ const EntryForm = ({ type = "add", entry }: EntryFormProps) => {
               isDefaultCurrency={isDefaultCurrency}
               disabled={type === "view"}
               rate={rate}
+              description={form.getValues("description")}
             />
           </div>
           <div className="flex gap-4 items-center max-w-[400px] ms-auto">

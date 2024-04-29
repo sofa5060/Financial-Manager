@@ -15,6 +15,7 @@ type DynamicTableFormProps = {
   isDefaultCurrency: boolean;
   disabled: boolean;
   rate?: number;
+  description?: string;
 };
 
 const DynamicTableForm = ({
@@ -23,6 +24,7 @@ const DynamicTableForm = ({
   isDefaultCurrency,
   disabled,
   rate,
+  description,
 }: DynamicTableFormProps) => {
   const { t, i18n } = useTranslation("treasury");
   const enSubAccountOptions = useSubAccountsStore(
@@ -58,7 +60,7 @@ const DynamicTableForm = ({
             category_id: null,
             cost_center_id: null,
             f_amount: 0,
-            description: "",
+            description: description || "",
             amount: 0,
           },
         ]
@@ -99,7 +101,7 @@ const DynamicTableForm = ({
       category_id: null,
       cost_center_id: null,
       f_amount: 0,
-      description: "",
+      description: description || "",
       amount: 0,
     });
     setRows(updatedRows);

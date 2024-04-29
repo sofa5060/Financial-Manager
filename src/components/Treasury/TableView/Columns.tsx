@@ -7,10 +7,12 @@ import DeleteModal from "../Dialogs/DeleteModal";
 import { formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 
 export const useTreasuryPaymentBondsColumns = () => {
   const { t } = useTranslation("treasury");
   const navigate = useNavigate();
+  const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
 
   const columns: ColumnDef<TreasuryBond>[] = [
     {
@@ -41,14 +43,18 @@ export const useTreasuryPaymentBondsColumns = () => {
     },
     {
       accessorKey: "id",
-      header: t("serial"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("serial")} />
+      ),
       meta: {
         header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("documentNo"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("documentNo")} />
+      ),
       meta: {
         header: t("documentNo"),
       },
@@ -100,7 +106,10 @@ export const useTreasuryPaymentBondsColumns = () => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("amount")} />
+        <DataTableColumnHeader
+          column={column}
+          title={t("amountColumn", { currency: defaultCurrency?.appreviation })}
+        />
       ),
       meta: {
         header: t("amount"),
@@ -150,6 +159,7 @@ export const useTreasuryPaymentBondsColumns = () => {
 export const useTreasuryReceiptBondsColumns = () => {
   const { t } = useTranslation("treasury");
   const navigate = useNavigate();
+  const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
 
   const columns: ColumnDef<TreasuryBond>[] = [
     {
@@ -180,14 +190,18 @@ export const useTreasuryReceiptBondsColumns = () => {
     },
     {
       accessorKey: "id",
-      header: t("serial"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("serial")} />
+      ),
       meta: {
         header: t("serial"),
       },
     },
     {
       accessorKey: "code",
-      header: t("documentNo"),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("documentNo")} />
+      ),
       meta: {
         header: t("documentNo"),
       },
@@ -239,7 +253,10 @@ export const useTreasuryReceiptBondsColumns = () => {
     {
       accessorKey: "amount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("amount")} />
+        <DataTableColumnHeader
+          column={column}
+          title={t("amountColumn", { currency: defaultCurrency?.appreviation })}
+        />
       ),
       meta: {
         header: t("amount"),

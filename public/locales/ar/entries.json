@@ -5,7 +5,8 @@
   "title": "العنوان",
   "user": "المستخدم",
   "amount": "المبلغ",
-  "currency": "العملة",
+  "amountColumn": "المبلغ ({{currency}})",
+  "currency": "عملة القيد",
   "actions": "الإجراءات",
   "template.failed": "فشل حفظ القالب",
   "template.saved": "تم حفظ القالب بنجاح",
@@ -86,5 +87,6 @@
   "totalCredit": "إجمالي الدائن",
   "net": "صافي",
   "applyFilter": "تطبيق الفلاتر",
-  "resetFilters": "إعادة تعيين الفلاتر"
+  "resetFilters": "إعادة تعيين الفلاتر",
+  "showAllTransactions": "عرض جميع الحركات المالية"
 }

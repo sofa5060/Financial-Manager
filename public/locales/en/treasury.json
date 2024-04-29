@@ -5,6 +5,7 @@
   "title": "Title",
   "user": "User",
   "amount": "Amount",
+  "amountColumn": "Amount ({{currency}})",
   "currency": "Currency",
   "actions": "Actions",
   "template.failed": "Failed to save template",
