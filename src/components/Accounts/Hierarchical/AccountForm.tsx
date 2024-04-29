@@ -265,7 +265,7 @@ const AccountForm = ({
                     (property) => property.value === account?.properties
                   )}
                   className="w-full"
-                  options={ACCOUNT_PROPERTIES}
+                  options={level === 1 ? [ACCOUNT_PROPERTIES[0]] : ACCOUNT_PROPERTIES}
                 />
                 {errors.properties && (
                   <span className="error-text">

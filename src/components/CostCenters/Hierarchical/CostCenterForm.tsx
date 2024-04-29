@@ -216,7 +216,7 @@ const CostCenterForm = ({
                     (property) => property.value === costCenter?.properties
                   )}
                   className="w-full"
-                  options={COST_CENTER_PROPERTIES}
+                  options={level === 1 ? [COST_CENTER_PROPERTIES[0]] : COST_CENTER_PROPERTIES}
                 />
                 {errors.properties && (
                   <span className="error-text">
