@@ -83,6 +83,7 @@ const CostCenterForm = ({
     mutationFn: CostCentersManager.addCostCenter,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["costCenters"] });
+      await queryClient.invalidateQueries({ queryKey: ["sub-cost-centers"] });
       form.reset();
       setIsOpen(false);
     },
@@ -102,6 +103,7 @@ const CostCenterForm = ({
         CostCentersManager.updateCostCenter(data, costCenter!.id),
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["costCenters"] });
+        await queryClient.invalidateQueries({ queryKey: ["sub-cost-centers"] });
         setIsOpen(false);
       },
       onError: (error) => {

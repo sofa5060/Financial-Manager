@@ -35,6 +35,7 @@ const DeleteModal = ({ children, costCenterId }: DeleteModalProps) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["costCenters"] });
+      await queryClient.invalidateQueries({ queryKey: ["sub-cost-centers"] });
       toast({
         title: t("delete.success"),
       });
