@@ -89,6 +89,12 @@ class TreasuryManager {
     const files = bond.files;
     delete bond.files;
 
+    const tempTransactions = JSON.parse(JSON.stringify(bond.transactions));
+    bond.transactions = tempTransactions.map((transaction: Transaction) => {
+      delete transaction.id;
+      return transaction;
+    });
+
     try {
       const response = await axios.post(`/api/safe/receive`, bond);
       if (files && files.length > 0) {
@@ -106,6 +112,12 @@ class TreasuryManager {
   ): Promise<TreasuryBond | undefined> {
     const files = bond.files;
     delete bond.files;
+
+    const tempTransactions = JSON.parse(JSON.stringify(bond.transactions));
+    bond.transactions = tempTransactions.map((transaction: Transaction) => {
+      delete transaction.id;
+      return transaction;
+    });
 
     try {
       const response = await axios.post(`/api/safe/payment`, bond);

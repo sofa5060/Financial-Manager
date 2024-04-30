@@ -117,3 +117,13 @@ export const arrFromQuery = (query: string | null) =>
 export const capitalizeString = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const isNotFutureDate = (date: string) => {
+  const val = new Date(date);
+  // Check if the date is not in the future based on day
+
+  const now = new Date();
+  now.setDate(now.getDate() + 1);
+  now.setHours(0, 0, 0, 0);
+  return val < now;
+};

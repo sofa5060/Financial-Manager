@@ -79,7 +79,7 @@ export const useParkAccountingEntriesColumns = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "id",
+      accessorKey: "serial",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
@@ -295,7 +295,7 @@ export const usePostAccountingEntriesColumns = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "id",
+      accessorKey: "serial",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),

@@ -1,5 +1,6 @@
 import z from "zod";
 import { TreasuryTransactionSchema } from "../Transactions/schema";
+import { isNotFutureDate } from "@/lib/utils";
 
 export const BondStatusSchema = z.enum(["park", "post"]);
 
@@ -14,11 +15,7 @@ export const NewBondSchema = z
     bank_id: z.number().nullable().optional(),
     check_no: z.string().nullable().optional(),
     check_date: z.string().nullable().optional(),
-    date: z.string().refine((val) => {
-      const date = new Date(val);
-      // Check if the date is not in the future
-      return date <= new Date();
-    }, "Date cannot be in the future"),
+    date: z.string().refine((val) => isNotFutureDate(val), "Date cannot be in the future"),
     description: z.string(),
     safe_account_id: z.number(),
     transactions: z.array(TreasuryTransactionSchema),
@@ -54,6 +51,7 @@ export const NewBondSchema = z
   });
 
 export type TreasuryBond = {
+  serial: string;
   created_by: number;
   code: string;
   status: BondStatus;

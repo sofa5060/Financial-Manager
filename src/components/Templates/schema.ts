@@ -1,5 +1,6 @@
 import z from "zod";
 import { TransactionSchema } from "../Transactions/schema";
+import { isNotFutureDate } from "@/lib/utils";
 
 export const TemplateStatusSchema = z.enum(["park", "post"]);
 
@@ -14,11 +15,9 @@ export const NewTemplateSchema = z
     bank_id: z.number().optional().nullable(),
     check_no: z.string().optional().nullable(),
     check_date: z.string().optional().nullable(),
-    date: z.string().refine((val) => {
-      const date = new Date(val);
-      // Check if the date is not in the future
-      return date <= new Date();
-    }, "Date cannot be in the future"),
+    date: z
+      .string()
+      .refine((val) => isNotFutureDate(val), "Date cannot be in the future"),
     description: z.string(),
     transactions: z.array(TransactionSchema),
     document_code: z.string().optional(),

@@ -42,7 +42,7 @@ export const useTreasuryPaymentBondsColumns = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "id",
+      accessorKey: "serial",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
@@ -189,7 +189,7 @@ export const useTreasuryReceiptBondsColumns = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "id",
+      accessorKey: "serial",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
