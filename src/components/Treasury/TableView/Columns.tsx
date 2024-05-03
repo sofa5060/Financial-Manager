@@ -42,16 +42,19 @@ export const useTreasuryPaymentBondsColumns = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "serial",
+      accessorKey: "index",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
+      cell({ row }) {
+        return row.index + 1;
+      },
       meta: {
         header: t("serial"),
       },
     },
     {
-      accessorKey: "code",
+      accessorKey: "serial",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("documentNo")} />
       ),
@@ -189,16 +192,19 @@ export const useTreasuryReceiptBondsColumns = () => {
       enableHiding: false,
     },
     {
-      accessorKey: "serial",
+      accessorKey: "index",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
+      cell({ row }) {
+        return row.index + 1;
+      },
       meta: {
         header: t("serial"),
       },
     },
     {
-      accessorKey: "code",
+      accessorKey: "serial",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("documentNo")} />
       ),

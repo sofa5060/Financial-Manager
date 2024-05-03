@@ -13,10 +13,13 @@ export const useTemplatesColumns = () => {
 
   const columns: ColumnDef<Template>[] = [
     {
-      accessorKey: "id",
+      accessorKey: "index",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
+      cell({ row }) {
+        return row.index + 1;
+      },
       meta: {
         header: t("serial"),
       },
