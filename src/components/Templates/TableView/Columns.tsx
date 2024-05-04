@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDate } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-export const useTemplatesColumns = () => {
+export const useTemplatesColumns = (page: number, size: number) => {
   const { t } = useTranslation("templates");
   const navigate = useNavigate();
 
@@ -18,10 +18,13 @@ export const useTemplatesColumns = () => {
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
       cell({ row }) {
-        return row.index + 1;
+        return row.index + 1 + (page - 1) * size;
       },
       meta: {
         header: t("serial"),
+      },
+      sortingFn: (rowA, rowB) => {
+        return rowA.index - rowB.index;
       },
     },
     {

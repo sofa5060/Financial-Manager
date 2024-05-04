@@ -14,9 +14,9 @@ const PostAccountingEntries = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("entries");
   const [searchParams] = useSearchParams();
-  const columns = usePostAccountingEntriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const columns = usePostAccountingEntriesColumns(page, size);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [

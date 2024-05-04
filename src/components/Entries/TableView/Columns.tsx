@@ -28,7 +28,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 
-export const useParkAccountingEntriesColumns = () => {
+export const useParkAccountingEntriesColumns = (page: number, size: number) => {
   const { t } = useTranslation("entries");
   const queryClient = useQueryClient();
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
@@ -84,10 +84,13 @@ export const useParkAccountingEntriesColumns = () => {
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
       cell({ row }) {
-        return row.index + 1;
+        return row.index + 1 + (page - 1) * size;
       },
       meta: {
         header: t("serial"),
+      },
+      sortingFn: (rowA, rowB) => {
+        return rowA.index - rowB.index;
       },
     },
     {
@@ -247,7 +250,7 @@ export const useParkAccountingEntriesColumns = () => {
   return columns;
 };
 
-export const usePostAccountingEntriesColumns = () => {
+export const usePostAccountingEntriesColumns = (page: number, size: number) => {
   const { t } = useTranslation("entries");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -303,10 +306,13 @@ export const usePostAccountingEntriesColumns = () => {
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
       cell({ row }) {
-        return row.index + 1;
+        return row.index + 1 + (page - 1) * size;
       },
       meta: {
         header: t("serial"),
+      },
+      sortingFn: (rowA, rowB) => {
+        return rowA.index - rowB.index;
       },
     },
     {

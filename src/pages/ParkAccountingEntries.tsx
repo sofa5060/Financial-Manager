@@ -16,9 +16,9 @@ const ParkAccountingEntries = () => {
   const { t } = useTranslation("entries");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const columns = useParkAccountingEntriesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const columns = useParkAccountingEntriesColumns(page, size);
   const [selectedEntries, setSelectedEntries] = useState<number[]>([]);
 
   const queryClient = useQueryClient();

@@ -10,9 +10,9 @@ import { useTranslation } from "react-i18next";
 
 const AccountsTemplates = () => {
   const { t } = useTranslation("templates");
-  const columns = useTemplatesColumns();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const columns = useTemplatesColumns(page, size);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["templates", "page", page, "size", size],

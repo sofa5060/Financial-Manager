@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCurrenciesStore } from "@/hooks/useCurrenciesStore";
 
-export const useTreasuryPaymentBondsColumns = () => {
+export const useTreasuryPaymentBondsColumns = (page: number, size: number) => {
   const { t } = useTranslation("treasury");
   const navigate = useNavigate();
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
@@ -47,10 +47,13 @@ export const useTreasuryPaymentBondsColumns = () => {
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
       cell({ row }) {
-        return row.index + 1;
+        return row.index + 1 + (page - 1) * size;
       },
       meta: {
         header: t("serial"),
+      },
+      sortingFn: (rowA, rowB) => {
+        return rowA.index - rowB.index;
       },
     },
     {
@@ -159,7 +162,7 @@ export const useTreasuryPaymentBondsColumns = () => {
   return columns;
 };
 
-export const useTreasuryReceiptBondsColumns = () => {
+export const useTreasuryReceiptBondsColumns = (page: number, size: number) => {
   const { t } = useTranslation("treasury");
   const navigate = useNavigate();
   const defaultCurrency = useCurrenciesStore((state) => state.defaultCurrency);
@@ -197,7 +200,10 @@ export const useTreasuryReceiptBondsColumns = () => {
         <DataTableColumnHeader column={column} title={t("serial")} />
       ),
       cell({ row }) {
-        return row.index + 1;
+        return row.index + 1 + (page - 1) * size;
+      },
+      sortingFn: (rowA, rowB) => {
+        return rowA.index - rowB.index;
       },
       meta: {
         header: t("serial"),

@@ -14,10 +14,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const TreasuryPayments = () => {
   const { t } = useTranslation("treasury");
   const [searchParams] = useSearchParams();
-  const columns = useTreasuryPaymentBondsColumns();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const columns = useTreasuryPaymentBondsColumns(page, size);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [
