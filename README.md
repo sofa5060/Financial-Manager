@@ -1,30 +1,23 @@
-# React + TypeScript + Vite
+# Ayat Financial Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Ayat Financial Management System is a comprehensive software solution designed to streamline financial operations for businesses. It offers a wide range of features and functionalities to effectively manage financial transactions, entries, charts of accounts, and user permissions.
 
-Currently, two official plugins are available:
+## Functionality
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Accounting Entries Table**: The system provides a powerful Entries Table with advanced filtering and searching capabilities. This allows users to easily navigate and analyze financial data.
 
-## Expanding the ESLint configuration
+![Entries Table](https://i.ibb.co/dLSSp9w/Vite-React-TS.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **New Entry Form**: The New Entry Form enables users to create new financial entries with all the necessary fields. It also supports adding multiple transactions related to the entry.
 
-- Configure the top-level `parserOptions` property like this:
+![New Entry Form](https://i.ibb.co/0FNRZRr/financial-manager-omega-vercel-app-5.png)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **Charts of Accounts**: The system organizes accounts in a tree view, providing users with a clear and easily accessible representation of their financial structure. This simplifies the management of accounts and facilitates efficient financial reporting.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+![Charts of Accounts](https://i.ibb.co/M5Lfszb/financial-manager-omega-vercel-app-2.png)
+
+- **Settings Page**: The Settings Page offers comprehensive control over user permissions, user groups, currencies, and banks used in accounting entries. This allows administrators to customize the system according to their specific requirements.
+
+![Settings Page](https://i.ibb.co/MRcKWY3/Vite-React-TS-3.png)
+
+This financial management system is designed to enhance productivity, accuracy, and control over financial operations, making it an ideal solution for businesses of all sizes.
